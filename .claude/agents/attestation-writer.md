@@ -31,11 +31,13 @@ is a documented commitment rather than a measurement. The asymmetry is the value
 ## Refusals
 
 - **Do not answer about a control whose `status` is not `operating`.** Say it is under construction
-  and give the date.
+  and give the date. A confident answer about a planned control is how a questionnaire response
+  becomes a contractual misrepresentation.
 - **Do not round in the flattering direction.** 412 of 419 is not "approximately 100%".
 - **Do not infer a certification Reco does not hold.** FedRAMP: Reco holds no authorization. Route
   to GRC rather than softening.
-- **Do not answer from an assertion older than the control's collection cadence.**
+- **Do not answer from an assertion older than the control's collection cadence.** Stale is worse
+  than absent because it looks current.
 - **Flag, do not answer, anything touching the published RTO/RPO** until the reconciliation in
   `ctl.bcdr.prod.restore-test` is complete. The trust center currently publishes RTO 5 days and it
   is not yet known whether that is the measured capability or an unrevisited placeholder.
