@@ -1,0 +1,23 @@
+{
+  "_stamp": "NOT REAL EVIDENCE",
+  "_comment": "Collection cycle 1 of 3. Establishes the baseline: 6 principals in the population, 1 failing. Account 999988887777 is outside the production organisation and 1111:svc-batch has neither a console password nor an active key, so both sit outside the population and prove the WHERE clause in models/controls/ctl_iam_cloud_platform_mfa.sql is doing work. Every identifier, account number and timestamp in this file is invented. The AWS account IDs are RFC-style placeholders and belong to nobody.",
+  "as_of": "2026-06-15T00:00:00Z",
+  "tables": {
+    "landing_aws_org_accounts": [
+      { "account_id": "111122223333", "account_name": "prod-core",    "account_status": "ACTIVE", "is_production_org": true },
+      { "account_id": "444455556666", "account_name": "prod-data",    "account_status": "ACTIVE", "is_production_org": true },
+      { "account_id": "999988887777", "account_name": "sandbox-team", "account_status": "ACTIVE", "is_production_org": false }
+    ],
+    "landing_aws_credential_report": [
+      { "account_id": "111122223333", "user_name": "alice",          "arn": "arn:aws:iam::111122223333:user/alice",          "user_creation_time": "2025-02-11T00:00:00Z", "password_enabled": "true",          "password_last_changed": "2026-06-01T00:00:00Z", "mfa_active": true,  "access_key_1_active": false, "access_key_2_active": false, "access_key_1_last_rotated": null,                     "access_key_2_last_rotated": null },
+      { "account_id": "111122223333", "user_name": "bob",            "arn": "arn:aws:iam::111122223333:user/bob",            "user_creation_time": "2025-03-02T00:00:00Z", "password_enabled": "true",          "password_last_changed": "2026-05-14T00:00:00Z", "mfa_active": false, "access_key_1_active": false, "access_key_2_active": false, "access_key_1_last_rotated": null,                     "access_key_2_last_rotated": null },
+      { "account_id": "111122223333", "user_name": "carol",          "arn": "arn:aws:iam::111122223333:user/carol",          "user_creation_time": "2025-05-20T00:00:00Z", "password_enabled": "true",          "password_last_changed": "2026-05-22T00:00:00Z", "mfa_active": true,  "access_key_1_active": false, "access_key_2_active": false, "access_key_1_last_rotated": null,                     "access_key_2_last_rotated": null },
+      { "account_id": "111122223333", "user_name": "svc-batch",      "arn": "arn:aws:iam::111122223333:user/svc-batch",      "user_creation_time": "2025-08-01T00:00:00Z", "password_enabled": "false",         "password_last_changed": null,                  "mfa_active": false, "access_key_1_active": false, "access_key_2_active": false, "access_key_1_last_rotated": null,                     "access_key_2_last_rotated": null },
+      { "account_id": "444455556666", "user_name": "<root_account>", "arn": "arn:aws:iam::444455556666:root",                "user_creation_time": "2025-01-04T00:00:00Z", "password_enabled": "not_supported", "password_last_changed": null,                  "mfa_active": true,  "access_key_1_active": false, "access_key_2_active": false, "access_key_1_last_rotated": null,                     "access_key_2_last_rotated": null },
+      { "account_id": "444455556666", "user_name": "dan",            "arn": "arn:aws:iam::444455556666:user/dan",            "user_creation_time": "2025-06-30T00:00:00Z", "password_enabled": "true",          "password_last_changed": "2026-02-02T00:00:00Z", "mfa_active": true,  "access_key_1_active": false, "access_key_2_active": false, "access_key_1_last_rotated": null,                     "access_key_2_last_rotated": null },
+      { "account_id": "444455556666", "user_name": "erin",           "arn": "arn:aws:iam::444455556666:user/erin",           "user_creation_time": "2025-04-19T00:00:00Z", "password_enabled": "true",          "password_last_changed": "2026-04-30T00:00:00Z", "mfa_active": true,  "access_key_1_active": false, "access_key_2_active": false, "access_key_1_last_rotated": null,                     "access_key_2_last_rotated": null },
+      { "account_id": "999988887777", "user_name": "sandbox-sam",    "arn": "arn:aws:iam::999988887777:user/sandbox-sam",    "user_creation_time": "2025-09-09T00:00:00Z", "password_enabled": "true",          "password_last_changed": "2026-01-15T00:00:00Z", "mfa_active": false, "access_key_1_active": true,  "access_key_2_active": false, "access_key_1_last_rotated": "2025-09-09T00:00:00Z", "access_key_2_last_rotated": null }
+    ],
+    "landing_ticket_first_touch": []
+  }
+}

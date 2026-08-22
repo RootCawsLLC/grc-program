@@ -98,7 +98,8 @@ npm run intake     validate extracted audit findings, reconcile against the inve
 npm run health     control health as a classification
 npm run gap        four-direction gap assessment
 npm run oscal      OSCAL assessment-results, deterministic UUIDs
-npm test           75 tests
+npm run demo       the whole synthetic pipeline, end to end, on stamped fixtures
+npm test           111 tests
 ```
 
 ## Day one

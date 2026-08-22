@@ -32,6 +32,7 @@
     },
     "passing": { "type": ["array", "null"], "default": null, "description": "Null by default. Populate only for small populations or on auditor request. Enumerating 400k passing rows is storage, not evidence." },
     "coverage_basis": { "type": "string", "description": "Carries exclusions explicitly. Exceptions reduce coverage; they do not vanish from the denominator." },
-    "confidence_tier": { "type": "integer", "minimum": 1, "maximum": 4, "description": "1-4 data ladder. A well-built pipeline produces tier 4 (internal empirical)." }
+    "confidence_tier": { "type": "integer", "minimum": 1, "maximum": 4, "description": "1-4 data ladder. A well-built pipeline produces tier 4 (internal empirical)." },
+    "fixture": { "type": "boolean", "description": "True when this record was generated from synthetic fixture data rather than a real collection. Optional and absent on real records. It exists because additionalProperties is false: without a declared field the stamp cannot ride on the record at all, and a synthetic assertion would be byte-indistinguishable from a real one. Every artifact derived from a set containing one of these is marked NOT REAL EVIDENCE, and src/lib/load.mjs refuses a set that mixes the two." }
   }
 }

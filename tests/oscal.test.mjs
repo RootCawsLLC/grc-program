@@ -42,3 +42,41 @@ test('FAIR-CAM props are namespaced to a domain Reco controls', async () => {
   assert.ok(props.every((p) => p.ns.startsWith('https://reco.ai/ns/')));
   assert.ok(props.some((p) => p.name === 'function' && p.class === 'primary'));
 });
+
+// --- the fixture stamp has to survive the trip into OSCAL ------------------------------------
+//
+// The point of the flag is not that it exists on the assertion record; it is that a person holding
+// only the emitted package can tell the numbers are synthetic. These pin the three places it lands.
+
+test('a synthetic assertion set stamps the OSCAL package it produces', async () => {
+  const { controls, assertions } = await load();
+  const synthetic = structuredClone(assertions).map((a) => ({ ...a, fixture: true }));
+  const doc = emitAssessmentResults({ assertions: synthetic, controls, asOf: '2026-09-15T00:00:00Z' });
+  const meta = doc['assessment-results'].metadata;
+  const result = doc['assessment-results'].results[0];
+
+  assert.match(meta.title, /\[NOT REAL EVIDENCE\]/);
+  assert.match(meta.remarks, /NOT REAL EVIDENCE\. This assessment results package/);
+  assert.match(meta.remarks, /not submittable/);
+  assert.match(result.description, /NOT REAL EVIDENCE/);
+
+  // and on the observation itself, for a consumer that reads one in isolation
+  const props = result.observations[0].props;
+  assert.ok(props.some((p) => p.name === 'fixture' && p.value === 'NOT REAL EVIDENCE'));
+});
+
+test('a real assertion set carries no stamp anywhere', async () => {
+  const { controls, assertions } = await load();
+  const doc = emitAssessmentResults({ assertions, controls, asOf: '2026-09-15T00:00:00Z' });
+  const json = stableStringify(doc);
+  assert.doesNotMatch(json, /NOT REAL EVIDENCE/);
+  assert.equal(doc['assessment-results'].metadata.remarks, undefined);
+});
+
+test('the stamped package is still byte-identical on re-export', async () => {
+  const { controls, assertions } = await load();
+  const synthetic = structuredClone(assertions).map((a) => ({ ...a, fixture: true }));
+  const a = stableStringify(emitAssessmentResults({ assertions: synthetic, controls, asOf: '2026-09-15T00:00:00Z' }));
+  const b = stableStringify(emitAssessmentResults({ assertions: synthetic, controls, asOf: '2026-09-15T00:00:00Z' }));
+  assert.equal(a, b);
+});

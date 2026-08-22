@@ -20,8 +20,21 @@ production. Time-indexing is the only hard requirement: the landing layer must b
 "what was true on 14 March", not just "what is true now". If it overwrites, the entire risk layer
 is unreachable and the pipeline degrades to an expensive screenshot generator.
 
-Two models are included as worked examples rather than a full set. The rest are written one at a
-time against real telemetry, in scenario-weight order — see `docs/OPERATING-MODEL.md`.
-The staging models they `ref()` are intentionally not stubbed out: writing an empty
-`stg_aws_iam_principals.sql` that returns no rows would make `dbt run` succeed while proving
-nothing, which is a worse failure than a missing file.
+Two control models are included as worked examples rather than a full set. The rest are written one
+at a time against real telemetry, in scenario-weight order — see `docs/OPERATING-MODEL.md`.
+
+**The staging models are real, and they are not stubs.** `stg_aws_iam_principals.sql` and
+`stg_ticket_first_touch.sql` derive their columns from the landing tables in `src/lib/tables.mjs`
+and return rows. The distinction that matters: writing an empty `stg_*.sql` that returns nothing so
+the build succeeds would make a control look instrumented while proving nothing, which is a worse
+failure than a missing file. Running the real models against fixtures that are stamped
+`NOT REAL EVIDENCE` proves the pipeline's shape without asserting anything about a real system.
+The test of which side of that line you are on is whether any control's `status` changed. None did.
+
+**There is no dbt here, and the models are still dbt models.** `src/warehouse.mjs` runs them
+against DuckDB, resolving `ref()`, `source()`, `var()`, `config()` and `is_incremental()` and
+refusing anything richer. dbt is Python, and requiring a Python toolchain is where an initiative
+like this dies; the machine this was built on has no Python at all. Moving to real dbt against a
+real warehouse later is a profile and a dialect pass, not a rewrite.
+
+Run the whole thing with `npm run demo`.

@@ -1,4 +1,5 @@
 import { resultUuid, observationUuid, componentUuid, uuid5 } from '../lib/uuid5.mjs';
+import { isFixtureSet, isFixture, FIXTURE_STAMP, fixtureNotice } from '../lib/load.mjs';
 
 const FAIRCAM_NS = 'https://reco.ai/ns/faircam';
 
@@ -11,6 +12,12 @@ const FAIRCAM_NS = 'https://reco.ai/ns/faircam';
  * Keys are sorted for the same reason. Review the diff, not the file.
  */
 export function emitAssessmentResults({ assertions, controls, efficacy = {}, asOf }) {
+  // One synthetic record marks the whole package. A set cannot be half-and-half — the loader
+  // refuses that before it reaches here — so this is a property of the package rather than a
+  // per-observation footnote. It goes in the title because a title survives being pasted into an
+  // email, and in remarks because that is what a reader of the raw JSON meets first.
+  const fixture = isFixtureSet(assertions);
+
   const byId = new Map(controls.map((c) => [c.control_id, c]));
   const sorted = [...assertions].sort((a, b) => a.control_id.localeCompare(b.control_id));
 
@@ -60,10 +67,13 @@ export function emitAssessmentResults({ assertions, controls, efficacy = {}, asO
     'assessment-results': {
       uuid: uuid5(`assessment-results|${asOf}`),
       metadata: {
-        title: 'Reco continuous control assessment results',
+        title: fixture
+          ? `Reco continuous control assessment results [${FIXTURE_STAMP}]`
+          : 'Reco continuous control assessment results',
         'last-modified': asOf,
         version: asOf,
         'oscal-version': '1.1.2',
+        ...(fixture ? { remarks: fixtureNotice('This assessment results package') } : {}),
         // No random uuid, no generation timestamp: those are the two fields that make an
         // otherwise-unchanged export produce a dirty diff.
       },
@@ -71,7 +81,9 @@ export function emitAssessmentResults({ assertions, controls, efficacy = {}, asO
       results: [{
         uuid: resultUuid('all-controls', asOf),
         title: 'Continuous controls monitoring cycle',
-        description: 'Population assertions produced by the control test layer. No samples, no screenshots.',
+        description:
+          'Population assertions produced by the control test layer. No samples, no screenshots.' +
+          (fixture ? ` ${fixtureNotice('These results')}` : ''),
         start: asOf,
         'reviewed-controls': {
           'control-selections': [{
@@ -96,6 +108,7 @@ function buildProps(control, assertion, eff) {
     { ns: FAIRCAM_NS, name: 'as-of', value: assertion.as_of },
     { ns: FAIRCAM_NS, name: 'confidence-tier', value: String(assertion.confidence_tier) },
     { ns: FAIRCAM_NS, name: 'population-total', value: String(assertion.total) },
+    ...(isFixture(assertion) ? [{ ns: FAIRCAM_NS, name: 'fixture', value: FIXTURE_STAMP }] : []),
   ];
   for (const f of control.faircam) {
     props.push({ ns: FAIRCAM_NS, name: 'function', value: f.function, class: f.primary ? 'primary' : 'secondary' });

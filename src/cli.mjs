@@ -6,6 +6,7 @@ import { push } from './push/scytale.mjs';
 import { assessAll, DEFICIENCIES, BANDS } from './health.mjs';
 import { assessGaps } from './gap.mjs';
 import { loadFindings, loadRequirementIndex, reconcile } from './intake.mjs';
+import { loadAssertions, isFixtureSet, FIXTURE_STAMP } from './lib/load.mjs';
 
 const [, , cmd, ...args] = process.argv;
 const flag = (n) => args.includes(`--${n}`);
@@ -16,9 +17,8 @@ const load = async () => ({
   scenarios:  await loadYamlDir('scenarios'),
   exceptions: await loadYamlDir('exceptions'),
   findings:   await loadFindings(),
-  assertions: await readJson('fixtures/assertions.json', []),
+  assertions: await loadAssertions(opt('assertions') ?? 'fixtures/assertions.json'),
 });
-const readJson = async (p, d) => { try { return JSON.parse(await readFile(p, 'utf8')); } catch { return d; } };
 const write = async (p, o) => { await mkdir('out', { recursive: true }); await writeFile(p, stableStringify(o)); };
 
 const commands = {
