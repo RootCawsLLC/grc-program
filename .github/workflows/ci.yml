@@ -1,0 +1,64 @@
+name: ci
+
+# Every third-party action is pinned to a full commit SHA, not a tag.
+#
+# In March 2026 an attacker force-pushed 76 of 77 tags in aquasecurity/trivy-action to malicious
+# commits carrying an infostealer that harvested AWS, GCP and Azure credentials, SSH keys and
+# kubeconfigs from CI runners (GHSA-69fq-xp46-6x23, CVE-2026-33634). Tag immutability did not prevent it.
+#
+# Pins verified against the upstream repositories on 2026-08-21 via
+# `gh api repos/<owner>/<repo>/git/ref/tags/<tag> --jq '.object.sha'`.
+# One of the three was originally wrong — a plausible-looking SHA that pointed at nothing — which
+# is exactly the failure mode this practice exists to prevent. Re-verify on every version bump;
+# never take a pin on trust, including from this file's own history.
+#
+# This pipeline holds read credentials to the identity provider, the cloud estate and the source
+# repositories. It is a higher-value target than the product build. Treat it accordingly.
+
+on:
+  pull_request:
+  push: { branches: [main] }
+
+permissions:
+  contents: read          # least privilege by default; jobs escalate only where they must
+
+jobs:
+  control-inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with: { node-version: '22', cache: 'npm' }
+      - run: npm ci
+
+      # Schema plus guards. The guards are the part that matters: they are the rules this repo
+      # refuses to break, expressed as an exit code rather than as a paragraph in a runbook.
+      - name: Validate control inventory
+        run: npm run validate
+
+      - name: Test
+        run: npm test
+
+      # Determinism gate. If an unchanged inventory produces a different OSCAL package, the
+      # deterministic-UUID contract is broken and every downstream diff becomes unreviewable.
+      - name: OSCAL determinism
+        run: |
+          npm run oscal && cp out/assessment-results.json /tmp/first.json
+          npm run oscal
+          diff -u /tmp/first.json out/assessment-results.json \
+            || { echo "::error::OSCAL export is not deterministic. A random UUID or a timestamp leaked into the emitter."; exit 1; }
+
+  policy-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Refuse framework text in the repository
+        # ADR-0003. SCF is CC BY-ND 4.0 and its terms explicitly prohibit AI-assisted generation of
+        # derivative content. We carry identifiers and resolve text at runtime from a local release.
+        # This grep is the enforcement, not the ADR.
+        run: |
+          if grep -rInE '^\s*(description|requirement_text|control_text)\s*:' controls/ reference/ 2>/dev/null; then
+            echo "::error::Framework text found in the control inventory. Carry identifiers only — see docs/adr/0003-no-framework-text.md"
+            exit 1
+          fi
+          echo "No framework text present."

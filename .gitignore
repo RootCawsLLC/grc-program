@@ -1,0 +1,10 @@
+node_modules/
+out/
+inbox/**/*.csv
+.env
+*.duckdb
+
+# Audit deliverables. NDA-gated, usually watermarked to the recipient, and the auditor's property.
+# The structured extraction in intake/extracted/ is committed; the source document never is.
+intake/source/**
+!intake/source/.gitkeep

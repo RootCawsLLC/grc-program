@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reco.ai/ns/grc/gap.schema.json",
+  "title": "Gap record",
+  "description": "Emitted by `grc gap`, not hand-authored. Four directions of gap, each meaning something different and each with a different fix.",
+  "type": "object",
+  "required": ["gap_id", "direction", "subject", "statement"],
+  "properties": {
+    "gap_id": { "type": "string" },
+    "direction": {
+      "type": "string",
+      "enum": ["coverage", "assurance", "remediation", "risk"],
+      "description": "coverage: a framework requirement with no control. assurance: a control with no executable evidence. remediation: an open finding with no operating control behind it. risk: a scenario with nothing mitigating it."
+    },
+    "subject": { "type": "string", "description": "The framework identifier, control_id, finding_id or scenario_id the gap is about" },
+    "statement": { "type": "string" },
+    "severity_basis": { "type": "string", "description": "Why this ranks where it does, in words. Never a bare number." },
+    "related": { "type": "array", "items": { "type": "string" } }
+  }
+}

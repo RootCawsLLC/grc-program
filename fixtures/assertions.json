@@ -1,0 +1,21 @@
+[
+  {
+    "control_id": "ctl.iam.cloud-platform.mfa",
+    "as_of": "2026-09-15T00:00:00Z",
+    "population_definition": "All IAM principals in every AWS account in the production organisation that can authenticate interactively or hold a long-lived access key.",
+    "source_system": "aws",
+    "query_ref": "models/controls/ctl_iam_cloud_platform_mfa.sql",
+    "total": 47,
+    "passing_count": 43,
+    "failing_count": 4,
+    "failing": [
+      { "subject_id": "111122223333:ci-deploy", "reason": "long_lived_access_key_present", "first_observed": "2026-06-02T00:00:00Z", "exception_ref": null },
+      { "subject_id": "111122223333:legacy-etl", "reason": "long_lived_access_key_present", "first_observed": "2025-11-14T00:00:00Z", "exception_ref": null },
+      { "subject_id": "444455556666:<root_account>", "reason": "root_without_mfa", "first_observed": "2026-09-01T00:00:00Z", "exception_ref": null },
+      { "subject_id": "444455556666:contractor-a", "reason": "no_mfa_device", "first_observed": "2026-09-10T00:00:00Z", "exception_ref": null }
+    ],
+    "passing": null,
+    "coverage_basis": "47 principals in scope; no documented exceptions in force.",
+    "confidence_tier": 4
+  }
+]

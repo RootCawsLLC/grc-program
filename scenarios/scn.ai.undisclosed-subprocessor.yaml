@@ -1,0 +1,29 @@
+scenario_id: scn.ai.undisclosed-subprocessor
+statement: >
+  Customer data is processed by a model provider or third party that does not appear in the published subprocessor register, and a customer or supervisory authority identifies the discrepancy.
+asset: "customer personal data and the accuracy of Reco's published disclosures"
+threat_actor: "regulator or customer exercising audit rights"
+effect: confidentiality
+estimation_level: lef
+estimation_rationale: >
+  Loss here is overwhelmingly secondary — regulatory response, contractual breach, and remediation of the disclosure — not primary data loss. Estimate at LEF; magnitude decomposes into FAIR-MAM response and fines/judgements modules.
+parameters:
+  loss_event_frequency:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: events_per_year
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — populate at the Day-45 calibration workshop. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+  primary_loss_magnitude:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: usd
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — FAIR-MAM module decomposition required. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+controls: [ctl.ai.inference.model-inventory, ctl.vendor.procurement.subprocessor-register]

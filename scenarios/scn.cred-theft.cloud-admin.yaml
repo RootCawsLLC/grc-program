@@ -1,0 +1,29 @@
+scenario_id: scn.cred-theft.cloud-admin
+statement: >
+  An external actor obtains a long-lived AWS access key or an unprotected console credential for a principal in the production organisation and acts within the production cloud environment.
+asset: "Reco AWS production environment"
+threat_actor: "external financially-motivated actor"
+effect: confidentiality
+estimation_level: tef-vuln
+estimation_rationale: >
+  Decomposed to TEF and Susceptibility because the credential-report telemetry gives a clean, continuously measured Susceptibility denominator, and because the control decision (kill static keys vs. add detection) turns on which factor dominates.
+parameters:
+  loss_event_frequency:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: events_per_year
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — populate at the Day-45 calibration workshop. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+  primary_loss_magnitude:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: usd
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — FAIR-MAM module decomposition required. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+controls: [ctl.iam.cloud-platform.mfa]

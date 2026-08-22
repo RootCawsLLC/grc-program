@@ -1,0 +1,29 @@
+scenario_id: scn.phish.bec
+statement: >
+  An external actor sends a pretexted message to a Reco worker who takes an action that discloses credentials or authorises a fraudulent payment.
+asset: "Reco workforce identities and payment authority"
+threat_actor: "external financially-motivated actor"
+effect: confidentiality
+estimation_level: lef
+estimation_rationale: >
+  Phishing simulation results give a directly observable Susceptibility proxy once the training platform is instrumented, which will support decomposition later. Not yet.
+parameters:
+  loss_event_frequency:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: events_per_year
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — populate at the Day-45 calibration workshop. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+  primary_loss_magnitude:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: usd
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — FAIR-MAM module decomposition required. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+controls: [ctl.iam.enterprise-sso.mfa, ctl.people.workforce.security-training]

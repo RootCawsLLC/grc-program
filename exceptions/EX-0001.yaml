@@ -1,0 +1,21 @@
+exception_id: EX-0001
+control_id: ctl.iam.enterprise-sso.mfa
+subjects:
+  - breakglass-us-01
+  - breakglass-il-01
+rationale: >
+  Break-glass accounts must remain usable when the identity provider itself is unavailable, which
+  is precisely the condition under which IdP-enforced phishing-resistant MFA cannot be satisfied.
+  The residual is carried by detection rather than prevention: credentials are held in sealed
+  escrow, any authentication triggers an immediate page, and use is reconciled against a change
+  record within one business day.
+approved_by: PLACEHOLDER-approver
+approved_on: '2026-09-01'
+expires_on: '2027-03-01'
+compensating:
+  - ctl.iam.cloud-platform.mfa
+coverage_impact: 0.005
+
+# NOTE: approved_by is a deliberate placeholder. The approver depends on who owns the ISMS after
+# the CISO transition — an open discovery item, not something to invent here. CI will accept this
+# file; a human will not accept it in an audit. Fix it in week 1.

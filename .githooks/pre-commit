@@ -1,0 +1,53 @@
+#!/bin/sh
+# The RootCawsLLC account rejects pushes that expose its private address, so a commit made
+# under the wrong identity cannot be fixed forward — it has to be rewritten. Refuse it here,
+# before the commit exists, which is the cheapest place to catch it.
+#
+# Hooks and local config do not survive a clone: a fresh checkout must run `npm install`
+# (or `npm run setup`) once, or this guard is not running at all.
+
+required='RootCawsLLC <317738477+RootCawsLLC@users.noreply.github.com>'
+
+# GIT_AUTHOR_IDENT resolves the identity this commit would actually use, whichever layer it
+# comes from (-c flags, env, local, global). Trailing timestamp and offset are not identity.
+actual=$(git var GIT_AUTHOR_IDENT 2>/dev/null | sed 's/ [0-9][0-9]* [-+][0-9][0-9]*$//')
+
+if [ "$actual" != "$required" ]; then
+	echo "pre-commit: refusing to commit under the wrong identity." >&2
+	echo "  expected: $required" >&2
+	echo "  actual:   ${actual:-<unset>}" >&2
+	echo "Fix for this clone:  npm run setup" >&2
+	echo "Or for one commit:   git -c user.name=RootCawsLLC -c user.email=317738477+RootCawsLLC@users.noreply.github.com commit ..." >&2
+	exit 1
+fi
+
+# --- the primary checkout is not a working tree ----------------------------------------------
+#
+# Machine-wide rule, and it is a hook rather than a README line because a convention written
+# down is read only by whoever is already following it. On 2026-08-20 two sessions shared the
+# cui-control-plane checkout for an afternoon: CLAUDE.md was rewritten mid-edit under one of
+# them, .evidence/ was emptied between two commands, source files changed under a read, and a
+# `git add -A` swept the other session's unfinished work into an index it did not belong in.
+# None of it was a conflict, so git had nothing to report.
+#
+# This repo is the system of record for a control inventory. A control record silently changing
+# under a session that is mid-assertion is the same failure with worse consequences.
+#
+# The git dir and the common git dir are equal ONLY in the primary worktree; a linked one has
+# its own under .git/worktrees/<name>. --path-format=absolute normalises the primary's relative
+# ".git" so this is not comparing a relative path against an absolute one.
+git_dir=$(git rev-parse --path-format=absolute --absolute-git-dir 2>/dev/null)
+common_dir=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
+
+if [ -n "$git_dir" ] && [ "$git_dir" = "$common_dir" ] && [ "$ALLOW_PRIMARY_COMMIT" != "1" ]; then
+	echo "pre-commit: refusing to commit in the primary checkout." >&2
+	echo "  Work belongs in a worktree, one per session, so two sessions cannot share an index." >&2
+	echo "" >&2
+	echo "  Make one:  node ~/.claude/scripts/worktree.mjs add ~/agent-workspace/reco-grc <branch>" >&2
+	echo "             (reco-grc is not in that script's REPOS list, so pass the path.)" >&2
+	echo "" >&2
+	echo "  Your staged changes are untouched and still here. Nothing was lost." >&2
+	echo "" >&2
+	echo "  Deliberate exception:  ALLOW_PRIMARY_COMMIT=1 git commit ..." >&2
+	exit 1
+fi

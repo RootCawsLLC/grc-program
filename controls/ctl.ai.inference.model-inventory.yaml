@@ -1,0 +1,47 @@
+control_id: ctl.ai.inference.model-inventory
+title: Every model and inference endpoint reachable from production is in the AI system inventory
+layer: inference
+owner: ml-platform
+status: building
+
+faircam:
+  - { function: provide-asset-data, primary: true }
+  - { function: preventing-misaligned-decisions, primary: false }
+
+population_definition: >
+  Every model endpoint invocable from a Reco production workload — Amazon Bedrock model IDs,
+  first-party OpenAI and Anthropic API keys, and any self-hosted inference service. Discovered
+  from egress telemetry and IaC, NOT from a spreadsheet anyone maintains. Passing requires a
+  matching inventory record carrying provider, model identifier and version, data classes sent,
+  retention terms, and named accountable owner.
+source_system: aws
+query_ref: models/controls/ctl_ai_inference_model_inventory.sql
+
+collection:
+  cadence: daily
+  mechanism: api
+  variance_started_at_quality: source-timestamp
+
+crosswalk:
+  scf: [AAT-02, AAT-04, TPM-03]
+  iso42001_2023: [A.4, A.6, A.10]
+  euaiact: ["Art.11", "Art.12", "Annex IV"]   # high-risk articles, deferred to 2027-12-02 by Reg. (EU) 2026/1744; Art.50 transparency applied 2026-08-02 and was not deferred
+  nist_ai_rmf: ["MAP-1", "MAP-2", "GOVERN-1"]
+  iso27001_2022: [A.5.9, A.5.19]
+
+scenarios: [scn.ai.undisclosed-subprocessor, scn.data-exposure.prompt-egress]
+policy_ref: null
+cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER" }
+
+notes: >
+  OPEN ITEM, and a real one. In an AWS ML blog post of 2026-03-23 co-authored by Reco's CTO,
+  Reco states its Alert Story Generator runs on Anthropic Claude Sonnet via Amazon Bedrock, and
+  describes a team leading Reco's generative-AI solutions "including multiple production AI
+  agents." The trust-center subprocessor register lists five entities — ClickHouse, Amplitude,
+  Segment, Datadog, AWS — and names neither Bedrock nor Anthropic. Bedrock is plausibly in-scope
+  under the AWS entry; Anthropic as a model provider is a separate question.
+  For ISO/IEC 42001 and EU AI Act transparency purposes, model-provider disclosure is normally
+  expected to be explicit rather than inherited. This control produces the denominator that
+  settles the question with data instead of an argument.
+  Framework identifiers require verification against the licensed standard text and the current
+  consolidated EU AI Act; ISO 42001 mappings are asserted at Annex A objective level only.

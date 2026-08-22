@@ -1,0 +1,38 @@
+control_id: ctl.iam.in-product.tenant-authz
+title: Tenant isolation enforced on every authenticated product API route
+layer: in-product
+owner: product-engineering
+status: planned
+
+faircam:
+  - { function: resistance, primary: true }
+
+population_definition: >
+  Every authenticated route exposed by the Reco product API. Passing requires an executed
+  cross-tenant access attempt returning deny, captured in CI — not the presence of an authz
+  middleware declaration. Routes added without a corresponding cross-tenant test fail by default.
+source_system: ci
+query_ref: models/controls/ctl_iam_in_product_tenant_authz.sql
+
+collection:
+  cadence: continuous
+  mechanism: api
+  variance_started_at_quality: source-timestamp
+
+crosswalk:
+  scf: [IAC-20, TDA-06]
+  soc2: [CC6.1, CC8.1]
+  iso27001_2022: [A.8.3, A.8.26, A.8.29]
+  nist80053r5: ["AC-3", "AC-4", "SA-11"]
+  csf2: [PR.AA-05, PR.PS-06]
+
+scenarios: [scn.tenant-boundary.cross-customer-read]
+policy_ref: null
+cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER" }
+
+notes: >
+  ACTIVE TESTING, not attestation. The control is proved by an executed attack that fails, not by
+  a code review sign-off. This is the highest-consequence control in the inventory for a
+  multi-tenant SaaS security vendor and the one a Fortune 500 customer security review will
+  probe hardest. Deliberately marked planned — it requires product-engineering capacity that has
+  not been negotiated yet, and marking it operating before that negotiation would be a lie in YAML.

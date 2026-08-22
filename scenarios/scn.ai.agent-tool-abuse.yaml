@@ -1,0 +1,29 @@
+scenario_id: scn.ai.agent-tool-abuse
+statement: >
+  A production AI agent is induced, via indirect prompt injection or a crafted input, to invoke a tool outside its intended scope and takes an action with security consequence.
+asset: "Reco production systems reachable by agent tooling"
+threat_actor: "external actor via indirect injection"
+effect: integrity
+estimation_level: lef
+estimation_rationale: >
+  Frequency is genuinely unknown and public base rates do not yet exist at usable quality. This is the scenario where executed probe results substitute for base-rate data: probe outcomes give Susceptibility empirically even while TEF stays a wide calibrated estimate.
+parameters:
+  loss_event_frequency:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: events_per_year
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — populate at the Day-45 calibration workshop. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+  primary_loss_magnitude:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: usd
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — FAIR-MAM module decomposition required. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+controls: [ctl.ai.agent.tool-allowlist]

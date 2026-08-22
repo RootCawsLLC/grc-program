@@ -1,0 +1,45 @@
+control_id: ctl.vendor.procurement.subprocessor-register
+title: Every processor touching customer data appears in the published subprocessor register
+layer: procurement
+owner: grc
+status: planned
+
+faircam:
+  - { function: provide-asset-data, primary: true }
+  - { function: defined-expectations, primary: false }
+
+population_definition: >
+  Every third party that processes customer personal data or customer SaaS configuration data,
+  derived from three independent sources and reconciled: (1) SaaS spend in the finance system,
+  (2) OAuth grants and SaaS-to-SaaS connections observed by Reco's own product on the Reco tenant,
+  (3) the DPA repository. Passing requires presence in the published register with processing
+  purpose, location, and a current DPA.
+source_system: reco-graph
+query_ref: models/controls/ctl_vendor_procurement_subprocessor_register.sql
+
+collection:
+  cadence: weekly
+  mechanism: reco-graph
+  variance_started_at_quality: interpolated
+
+crosswalk:
+  scf: [TPM-03, TPM-05, PRI-07]
+  soc2: [CC9.2]
+  iso27001_2022: [A.5.19, A.5.20, A.5.21]
+  gdpr: ["Art.28", "Art.30"]
+  nist80053r5: ["SR-3", "SR-6"]
+  csf2: ["GV.SC-04", "GV.SC-07"]
+
+scenarios: [scn.ai.undisclosed-subprocessor, scn.vendor.fourth-party-breach]
+policy_ref: null
+cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER" }
+
+notes: >
+  This is the flagship dogfooding control. Reco's product discovers shadow SaaS and SaaS-to-SaaS
+  OAuth connections across 260+ applications. Pointed at Reco's own tenant it produces the
+  subprocessor denominator directly from observed connections rather than from a spreadsheet
+  someone remembers to update. The register currently publishes five entities; the reconciliation
+  is expected to find more, which is the point — GDPR Art.30 and Art.28 obligations attach to what
+  is actually processing, not to what is listed.
+  Deliberately owned by grc rather than legal: legal approves the DPA, this control proves the
+  register matches reality.

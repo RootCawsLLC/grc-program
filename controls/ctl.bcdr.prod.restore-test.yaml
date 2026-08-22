@@ -1,0 +1,44 @@
+control_id: ctl.bcdr.prod.restore-test
+title: Production data restore tested to a measured RTO and RPO, not an asserted one
+layer: prod-host
+owner: platform-engineering
+status: planned
+
+faircam:
+  - { function: loss-reduction, primary: true }
+  - { function: control-monitoring, primary: false }
+
+population_definition: >
+  Every production data store in scope for the customer-facing availability commitment. Passing
+  requires a restore executed within the trailing 90 days into an isolated environment, with the
+  achieved recovery time and recovery point RECORDED AS MEASURED VALUES. A restore that succeeds
+  without recording elapsed time does not pass — an untimed restore cannot substantiate an RTO.
+source_system: aws
+query_ref: models/controls/ctl_bcdr_prod_restore_test.sql
+
+collection:
+  cadence: quarterly
+  mechanism: api
+  variance_started_at_quality: interpolated
+
+crosswalk:
+  scf: [BCD-11, BCD-12]
+  soc2: [A1.2, A1.3]
+  iso27001_2022: [A.5.29, A.5.30, A.8.13]
+  nist80053r5: ["CP-9", "CP-10(2)"]
+  csf2: ["RC.RP-01", "PR.DS-11"]
+
+scenarios: [scn.availability.prod-data-loss]
+policy_ref: null
+cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER" }
+
+notes: >
+  PRIORITY FLAG. The trust center currently publishes RTO 5 days and RPO 22 hours. For a security
+  vendor selling to Fortune 500 and to a health system, a five-day RTO is well outside what
+  enterprise procurement typically accepts and is very likely inconsistent with availability terms
+  already signed in some MSAs. Two things have to happen and they are separate: confirm whether
+  the published figure is the real measured capability or a conservative placeholder nobody
+  revisited, and reconcile it against executed contracts. If the measured capability is materially
+  better than the published figure, republishing it is a same-week revenue-facing win that costs
+  engineering nothing. If it is not, this is a genuine finding and belongs in the risk register
+  with a quantified loss scenario attached rather than in a remediation backlog.

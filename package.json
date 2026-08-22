@@ -1,0 +1,30 @@
+{
+  "name": "reco-grc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Control inventory, evidence pipeline and risk layer for Reco's GRC program. This repo is the system of record.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "prepare": "node scripts/setup-git.mjs",
+    "setup": "node scripts/setup-git.mjs",
+    "validate": "node src/cli.mjs validate",
+    "intake": "node src/cli.mjs intake",
+    "health": "node src/cli.mjs health",
+    "gap": "node src/cli.mjs gap",
+    "baseline": "node src/cli.mjs baseline",
+    "oscal": "node src/cli.mjs oscal",
+    "push:dry": "node src/cli.mjs push",
+    "test": "node --test \"tests/*.test.mjs\""
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "yaml": "^2.5.1"
+  },
+  "bin": {
+    "grc": "src/cli.mjs"
+  }
+}

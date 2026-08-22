@@ -1,0 +1,45 @@
+control_id: ctl.people.workforce.security-training
+title: Role-appropriate security, privacy and AI training completed within SLA of joining and annually
+layer: workforce
+owner: grc
+status: building
+
+faircam:
+  - { function: communication-of-expectations, primary: true }
+  - { function: preventing-misaligned-decisions, primary: false }
+
+population_definition: >
+  Every active worker across all Reco entities — employees and contractors, US, Israel and Moldova —
+  sourced from HRIS as the authoritative roster, NOT from the training platform's own user list.
+  A worker absent from the training platform is a failure, not an exclusion. Engineers additionally
+  require secure-development training; anyone with production model or agent access additionally
+  requires AI-specific training. Passing requires completion within 30 days of start and within
+  the trailing 365 days thereafter.
+source_system: hris
+query_ref: models/controls/ctl_people_workforce_security_training.sql
+
+collection:
+  cadence: weekly
+  mechanism: api
+  variance_started_at_quality: source-timestamp
+
+crosswalk:
+  scf: [SAT-02, SAT-03]
+  soc2: [CC1.4, CC2.2]
+  iso27001_2022: [A.6.3]
+  iso42001_2023: [A.4]
+  nist80053r5: ["AT-2", "AT-3"]
+  csf2: ["PR.AT-01", "PR.AT-02"]
+
+scenarios: [scn.phish.bec]
+policy_ref: null
+cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER — training platform licence" }
+
+notes: >
+  The denominator inversion is the whole control. Sourcing the population from the training
+  platform makes completion look like 100% while every unenrolled worker is invisible. Sourcing it
+  from HRIS makes unenrolment a visible failure. This single change is usually worth more than any
+  amount of content improvement, and it is the difference between a training metric and a
+  training control.
+  Multi-entity scope matters here: the Moldova entity does not appear in the trust center's
+  location story and needs explicit confirmation that its workers are in the HRIS roster.

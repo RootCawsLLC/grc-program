@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reco.ai/ns/grc/exception.schema.json",
+  "title": "Control exception",
+  "description": "An exception is a control change, not an escape hatch. It changes the INTENDED state for a population subset. No expiry = undocumented control change = rejected by CI.",
+  "type": "object",
+  "required": ["exception_id", "control_id", "subjects", "rationale", "approved_by", "approved_on", "expires_on", "compensating"],
+  "additionalProperties": false,
+  "properties": {
+    "exception_id": { "type": "string", "pattern": "^EX-[0-9]{4}$" },
+    "control_id": { "type": "string" },
+    "subjects": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "rationale": { "type": "string", "minLength": 20 },
+    "approved_by": { "type": "string" },
+    "approved_on": { "type": "string", "format": "date" },
+    "expires_on": { "type": "string", "format": "date", "description": "Mandatory. CI fails the build on an expired or absent expiry." },
+    "compensating": { "type": "array", "items": { "type": "string" }, "description": "control_ids that carry the residual. Empty array is legal but must be deliberate." },
+    "coverage_impact": { "type": "number", "minimum": 0, "maximum": 1, "description": "Fraction of population removed from intended state. Feeds FAIR-CAM coverage." }
+  }
+}

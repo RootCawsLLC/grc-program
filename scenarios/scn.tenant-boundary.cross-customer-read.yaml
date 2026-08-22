@@ -1,0 +1,29 @@
+scenario_id: scn.tenant-boundary.cross-customer-read
+statement: >
+  A Reco customer tenant, or an actor authenticated into one tenant, reads data belonging to a different customer tenant through a product API authorisation defect.
+asset: "customer SaaS configuration and identity data held in the Reco platform"
+threat_actor: "authenticated tenant or actor with tenant credentials"
+effect: confidentiality
+estimation_level: lef
+estimation_rationale: >
+  Highest-consequence scenario in the inventory. Frequency is low and poorly evidenced; magnitude is dominated by secondary loss (notification, contractual penalty, churn across the customer base, not only the affected tenant). Estimate at LEF and put the effort into magnitude.
+parameters:
+  loss_event_frequency:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: events_per_year
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — populate at the Day-45 calibration workshop. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+  primary_loss_magnitude:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: usd
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — FAIR-MAM module decomposition required. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+controls: [ctl.iam.in-product.tenant-authz]

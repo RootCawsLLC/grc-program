@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reco.ai/ns/grc/assertion.schema.json",
+  "title": "Control assertion record",
+  "description": "The output of every control test. A population statement, never a sample. total + failing[] + query_ref + lineage is strictly stronger evidence than a screenshot or a sampled n, because the auditor can re-run the query.",
+  "type": "object",
+  "required": ["control_id", "as_of", "population_definition", "source_system", "query_ref", "total", "passing_count", "failing_count", "failing", "coverage_basis", "confidence_tier"],
+  "additionalProperties": false,
+  "properties": {
+    "control_id": { "type": "string" },
+    "as_of": { "type": "string", "format": "date-time" },
+    "population_definition": { "type": "string" },
+    "source_system": { "type": "string" },
+    "query_ref": { "type": "string" },
+    "total": { "type": "integer", "minimum": 0, "description": "The denominator, and itself a control metric. Unexpected drift means the asset inventory (a Decision Support control) failed BEFORE this control did. Alert on denominator movement, not only on failures." },
+    "passing_count": { "type": "integer", "minimum": 0 },
+    "failing_count": { "type": "integer", "minimum": 0 },
+    "failing": {
+      "type": "array",
+      "description": "ALWAYS fully enumerated. This is simultaneously the work queue and the variance record.",
+      "items": {
+        "type": "object",
+        "required": ["subject_id", "reason", "first_observed"],
+        "additionalProperties": false,
+        "properties": {
+          "subject_id": { "type": "string" },
+          "reason": { "type": "string" },
+          "first_observed": { "type": "string", "format": "date-time", "description": "This is what produces Variance Duration. Without it you have a snapshot; with it you have a clock." },
+          "exception_ref": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "passing": { "type": ["array", "null"], "default": null, "description": "Null by default. Populate only for small populations or on auditor request. Enumerating 400k passing rows is storage, not evidence." },
+    "coverage_basis": { "type": "string", "description": "Carries exclusions explicitly. Exceptions reduce coverage; they do not vanish from the denominator." },
+    "confidence_tier": { "type": "integer", "minimum": 1, "maximum": 4, "description": "1-4 data ladder. A well-built pipeline produces tier 4 (internal empirical)." }
+  }
+}

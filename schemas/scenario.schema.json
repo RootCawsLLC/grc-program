@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reco.ai/ns/grc/scenario.schema.json",
+  "title": "Loss event scenario",
+  "description": "FAIR scenario in taxonomy grammar: a threat actor acting against an asset in a manner producing a specific loss effect. Controls join to scenarios; that join is what makes a control priceable.",
+  "type": "object",
+  "required": ["scenario_id", "statement", "asset", "threat_actor", "effect", "estimation_level", "parameters"],
+  "additionalProperties": false,
+  "properties": {
+    "scenario_id": { "type": "string", "pattern": "^scn\\.[a-z0-9-]+\\.[a-z0-9-]+$" },
+    "statement": { "type": "string" },
+    "asset": { "type": "string" },
+    "threat_actor": { "type": "string" },
+    "effect": { "type": "string", "enum": ["confidentiality", "integrity", "availability"] },
+    "estimation_level": {
+      "type": "string",
+      "enum": ["risk", "lef", "tef-vuln", "tef-decomposed"],
+      "description": "Estimate as HIGH in the ontology as the data supports. Decompose only when the higher estimate is accurate but not usefully precise AND sub-factor data exists. Record which level and why."
+    },
+    "estimation_rationale": { "type": "string" },
+    "parameters": {
+      "type": "object",
+      "description": "Every distribution carries min/most-likely/max and a provenance block. Never a point estimate. A range with no provenance and a range with six sourced parameters must not look equally authoritative.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["min", "most_likely", "max", "provenance"],
+        "properties": {
+          "min": { "type": "number" },
+          "most_likely": { "type": "number" },
+          "max": { "type": "number" },
+          "unit": { "type": "string" },
+          "provenance": {
+            "type": "object",
+            "required": ["derivation_level", "source", "confidence_tier"],
+            "properties": {
+              "derivation_level": { "type": "string", "enum": ["measured", "derived", "calibrated-estimate", "assumed"] },
+              "source": { "type": "string" },
+              "confidence_tier": { "type": "integer", "minimum": 1, "maximum": 4 }
+            }
+          }
+        }
+      }
+    },
+    "controls": { "type": "array", "items": { "type": "string" } }
+  }
+}

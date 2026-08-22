@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reco.ai/ns/grc/finding.schema.json",
+  "title": "Audit finding",
+  "description": "One record per exception, deviation, nonconformity, observation or recommendation raised by any assurance activity. The auditor's words are preserved verbatim in severity_as_stated and description; our interpretation lives only in control_id, mapping_confidence and disposition. Never re-grade someone else's finding and present it as theirs.",
+  "type": "object",
+  "required": ["finding_id", "source", "kind", "description", "disposition"],
+  "additionalProperties": false,
+  "properties": {
+    "finding_id": { "type": "string", "pattern": "^FND-[0-9]{4}$" },
+    "source": {
+      "type": "object",
+      "required": ["document", "document_type"],
+      "additionalProperties": false,
+      "properties": {
+        "document": { "type": "string", "description": "Stable short name, e.g. soc2-type2-fy2026" },
+        "document_type": {
+          "type": "string",
+          "enum": ["soc2-type1", "soc2-type2", "iso27001-audit", "iso27001-soa", "iso42001-audit", "pentest", "internal-audit", "customer-audit", "vulnerability-assessment", "self-identified"]
+        },
+        "period_start": { "type": "string", "format": "date" },
+        "period_end": { "type": "string", "format": "date" },
+        "issued_on": { "type": "string", "format": "date" },
+        "auditor": { "type": "string" },
+        "locator": { "type": "string", "description": "Where in the document. Page, section, control reference. An unlocatable finding cannot be defended in the next audit." }
+      }
+    },
+    "framework_ref": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Identifiers only — CC6.1, A.8.5. No framework text. ADR-0003."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["exception", "deviation", "nonconformity-major", "nonconformity-minor", "observation", "opportunity-for-improvement", "recommendation", "vulnerability"],
+      "description": "Use the word the source document used. A SOC 2 exception is not an ISO nonconformity and flattening them loses the thing that determines urgency."
+    },
+    "severity_as_stated": {
+      "type": ["string", "null"],
+      "description": "VERBATIM from the source. Null if the source stated none. Do not infer one and do not translate another scale into ours."
+    },
+    "description": { "type": "string", "minLength": 10 },
+    "auditor_test_procedure": { "type": ["string", "null"] },
+    "management_response": { "type": ["string", "null"] },
+    "control_id": { "type": ["string", "null"], "description": "Our mapping. Null is a legitimate and important answer — it means the finding has no home in the inventory, which is itself the gap." },
+    "mapping_confidence": { "type": ["string", "null"], "enum": ["high", "medium", "low", null] },
+    "mapped_by": { "type": ["string", "null"], "description": "A named human. Mapping is a judgement and carries a name." },
+    "disposition": {
+      "type": "string",
+      "enum": ["open", "in-remediation", "remediated", "risk-accepted", "superseded", "disputed"]
+    },
+    "remediated_on": { "type": ["string", "null"], "format": "date" },
+    "accepted_by": { "type": ["string", "null"], "description": "Required when disposition is risk-accepted. Acceptance carries a name, never a team." },
+    "accepted_until": { "type": ["string", "null"], "format": "date" },
+    "notes": { "type": "string" }
+  }
+}

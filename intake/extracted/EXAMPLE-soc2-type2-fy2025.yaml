@@ -1,0 +1,38 @@
+# EXAMPLE ONLY — SYNTHETIC. DELETE THIS FILE once the real extraction exists.
+#
+# This shows the shape and, more importantly, shows the discipline: the auditor's words are
+# preserved verbatim in description and severity_as_stated; our judgement appears ONLY in
+# control_id, mapping_confidence, mapped_by and disposition. Never re-grade someone else's
+# finding and then present it as theirs.
+
+findings:
+  - finding_id: FND-0001
+    source:
+      document: EXAMPLE-soc2-type2-fy2025
+      document_type: soc2-type2
+      period_start: '2024-12-01'
+      period_end: '2025-11-30'
+      auditor: UNKNOWN — not published; confirm on day 1
+      locator: 'EXAMPLE — replace with the real page/section reference'
+    framework_ref: [CC6.1]
+    kind: exception
+    severity_as_stated: null
+    description: >
+      SYNTHETIC EXAMPLE. For 2 of 25 sampled privileged accounts, evidence of multi-factor
+      authentication enrolment could not be produced for the full period under examination.
+    auditor_test_procedure: >
+      SYNTHETIC EXAMPLE. Inspected a sample of 25 privileged accounts and inquired of management.
+    management_response: >
+      SYNTHETIC EXAMPLE. Management noted both accounts were break-glass accounts covered by
+      a documented compensating detective control.
+    control_id: ctl.iam.enterprise-sso.mfa
+    mapping_confidence: high
+    mapped_by: PLACEHOLDER
+    disposition: open
+    notes: >
+      Note the shape of this exception and what it argues for. The auditor sampled 25 of a
+      population that a query would have returned in full. Under the pipeline this control emits
+      total, passing_count and a fully enumerated failing[] every day — so the same test becomes a
+      population statement rather than a sample, and the break-glass accounts appear as a named
+      exception with an expiry rather than as an unexplained deviation. This single finding is the
+      clearest available business case for the build.

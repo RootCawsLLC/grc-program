@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npm ci)",
+      "Bash(node src/cli.mjs:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git checkout -b:*)",
+      "Bash(dbt run:*)",
+      "Bash(dbt test:*)",
+      "Read(//**)",
+      "Edit(controls/**)",
+      "Edit(scenarios/**)",
+      "Edit(models/**)",
+      "Edit(src/**)",
+      "Edit(tests/**)",
+      "Edit(docs/**)",
+      "Edit(intake/extracted/**)"
+    ],
+    "deny": [
+      "Read(intake/source/**)",
+      "Read(.env)",
+      "Read(**/*.pem)",
+      "Read(**/credentials*)",
+      "Bash(git push --force:*)",
+      "Bash(git commit:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/validate-on-change.mjs"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+control_id: ctl.appsec.ci-cd.branch-protection
+title: Protected branches, required review, and SHA-pinned third-party actions on production repos
+layer: ci-cd
+owner: platform-engineering
+status: building
+
+faircam:
+  - { function: resistance, primary: true }
+  - { function: control-monitoring, primary: false }
+
+population_definition: >
+  Every repository in the Reco GitHub organisation whose default branch deploys to a production
+  environment. Passing requires ALL of: default-branch protection on, review required from a
+  non-author, force-push disabled, and every third-party GitHub Action referenced by full commit
+  SHA rather than a tag or branch.
+source_system: github
+query_ref: models/controls/ctl_appsec_ci_cd_branch_protection.sql
+
+collection:
+  cadence: daily
+  mechanism: api
+  variance_started_at_quality: source-timestamp
+
+crosswalk:
+  scf: [CHG-02, CHG-04, TDA-06]
+  soc2: [CC8.1]
+  iso27001_2022: [A.8.32, A.8.4]
+  nist80053r5: ["CM-3", "CM-5", "SA-15"]
+  csf2: [PR.PS-06, ID.RA-09]
+
+scenarios: [scn.supply-chain.ci-action-compromise]
+policy_ref: null
+cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER" }
+
+notes: >
+  The SHA-pinning clause is not hygiene theatre. In March 2026 an attacker force-pushed 76 of 77
+  tags in aquasecurity/trivy-action to malicious commits carrying a cloud-credential infostealer
+  that harvested AWS/GCP/Azure credentials, SSH keys and kubeconfigs from CI runners
+  (GHSA-69fq-xp46-6x23, CVE-2026-33634). GitHub's tag immutability did not prevent it. An evidence pipeline is a
+  higher-value CI target than the product build, because it holds read credentials to every system
+  it collects from. This control protects the GRC pipeline itself.

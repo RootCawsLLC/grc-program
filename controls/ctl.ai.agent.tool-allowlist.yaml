@@ -1,0 +1,61 @@
+control_id: ctl.ai.agent.tool-allowlist
+title: Production AI agents can invoke only allowlisted tools, proved by executed denial
+layer: agent
+owner: product-engineering
+status: planned   # capacity not yet negotiated with product-engineering
+
+faircam:
+  - { function: resistance, primary: true }
+  - { function: event-detection, primary: false }
+
+population_definition: >
+  Every agent runtime in a Reco production workload, including internal automation agents and any
+  MCP server exposed to them. Passing requires a probe that attempts to invoke a tool outside the
+  declared allowlist and is denied, with the denial recorded in the audit chain. An allowlist
+  present in configuration but never exercised does not pass.
+source_system: ci
+query_ref: models/controls/ctl_ai_agent_tool_allowlist.sql
+
+collection:
+  cadence: continuous
+  mechanism: api
+  variance_started_at_quality: source-timestamp
+
+crosswalk:
+  scf: [AAT-08, AAT-12]
+  iso42001_2023: [A.6, A.9]
+  euaiact: ["Art.14", "Art.15"]   # high-risk articles — see applicability note below
+  nist_ai_rmf: ["MANAGE-2", "MEASURE-2"]
+  mitre_atlas: ["AML.T0053"]
+  owasp_asi: ["ASI-02"]
+
+scenarios: [scn.ai.agent-tool-abuse]
+policy_ref: null
+cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER" }
+
+applicability_note: >
+  APPLICABILITY, as of 2026-08-21. The EU AI Act articles crosswalked above (Art.14 human
+  oversight, Art.15 accuracy/robustness/cybersecurity) are high-risk obligations. Regulation
+  (EU) 2026/1744 — the Digital Omnibus on AI, published in the OJ on 2026-07-24 and in force
+  from 2026-07-27 — deferred the Annex III standalone high-risk obligations to 2027-12-02
+  (Annex I embedded-product high-risk to 2028-08-02). Article 50 transparency obligations were
+  NOT deferred and applied from 2026-08-02.
+  Consequence: this mapping is correct IF a Reco system classifies as high-risk, and that
+  classification is itself an open determination (see docs/DISCOVERY.md item 15). The control is
+  worth building regardless — ISO 42001 Annex A and the Art.50 transparency obligations both
+  reach it, and the deferral is runway, not a reprieve.
+
+notes: >
+  Not a hypothetical control. Reco publicly states it runs "multiple production AI agents" built
+  on Amazon Bedrock and Anthropic Claude — from an AWS ML blog post of 2026-03-23 co-authored by
+  Reco's CTO. There are agents in production processing customer security alerts today.
+
+  This is the control that makes the ISO 42001 surveillance audit interesting rather than
+  survivable. Most certified organisations bring documentation to an AIMS audit. Bringing executed
+  probe results with paired guarded/unguarded evidence runs is a materially different conversation,
+  and it is the same artifact that makes a customer-facing AI governance claim defensible.
+  Directly transferable from the proofplane probe pattern (RootCawsLLC/proofplane) — 12 falsifiable
+  probes mapped 1:1 to controls, already crosswalked to EU AI Act, ISO 42001, ISO 27002 and
+  NIST AI RMF, already emitting OSCAL assessment-results.
+  Marked planned because it needs product-engineering capacity. See ADR-0004: an agent may not
+  evaluate whether this control works. It may only run the probe and record what happened.

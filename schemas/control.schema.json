@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reco.ai/ns/grc/control.schema.json",
+  "title": "Control record",
+  "description": "One YAML file per control. This repo is the system of record. Scytale, the trust center, and every framework baseline are projections of this.",
+  "type": "object",
+  "required": [
+    "control_id",
+    "title",
+    "layer",
+    "owner",
+    "status",
+    "faircam",
+    "population_definition",
+    "source_system",
+    "query_ref",
+    "crosswalk"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "control_id": {
+      "type": "string",
+      "pattern": "^ctl\\.[a-z0-9-]+\\.[a-z0-9-]+\\.[a-z0-9-]+$",
+      "description": "ctl.<domain>.<layer>.<control>. Stable forever. Never reused. Rename = new id + supersedes edge."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 8
+    },
+    "layer": {
+      "type": "string",
+      "enum": [
+        "cloud-platform",
+        "enterprise-sso",
+        "in-product",
+        "customer-facing",
+        "ci-cd",
+        "corp-endpoint",
+        "prod-host",
+        "inference",
+        "agent",
+        "procurement",
+        "workforce"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "description": "A team, never a person. Person-owned controls die when the person leaves."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "building",
+        "operating",
+        "retired"
+      ]
+    },
+    "supersedes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "faircam": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "function",
+          "primary"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "function": {
+            "type": "string",
+            "description": "FAIR-CAM control function. LEC = loss event control, VM = variance management, DS = decision support.",
+            "enum": [
+              "avoidance",
+              "deterrence",
+              "resistance",
+              "event-detection",
+              "event-termination",
+              "loss-reduction",
+              "control-monitoring",
+              "treatment-selection",
+              "implementation",
+              "defined-expectations",
+              "communication-of-expectations",
+              "incentives",
+              "provide-asset-data",
+              "provide-threat-data",
+              "provide-controls-data",
+              "preventing-misaligned-decisions",
+              "threat-intelligence"
+            ]
+          },
+          "primary": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "population_definition": {
+      "type": "string",
+      "description": "Prose denominator an auditor reads. Must agree with query_ref. Drift between the two is a finding and tests/population-drift.test.mjs enforces it."
+    },
+    "source_system": {
+      "type": "string"
+    },
+    "query_ref": {
+      "type": "string",
+      "description": "Path to the dbt model. The model IS the evidence."
+    },
+    "collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cadence": {
+          "type": "string",
+          "enum": [
+            "continuous",
+            "daily",
+            "weekly",
+            "monthly",
+            "quarterly",
+            "annual"
+          ]
+        },
+        "mechanism": {
+          "type": "string",
+          "enum": [
+            "api",
+            "reco-graph",
+            "csv-inbox",
+            "manual-procedure"
+          ]
+        },
+        "variance_started_at_quality": {
+          "type": "string",
+          "enum": [
+            "source-timestamp",
+            "interpolated",
+            "equals-detected"
+          ],
+          "description": "equals-detected systematically understates Variance Duration. Reliability derived from it is an UPPER BOUND and must be labelled as such."
+        }
+      }
+    },
+    "crosswalk": {
+      "type": "object",
+      "description": "Identifiers only. Never framework text. See ADR-0003 (SCF is CC BY-ND with an explicit AI-derivatives prohibition).",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "crosswalk_direct": {
+      "type": "object",
+      "description": "Hand-maintained mappings where SCF is thin. Kept separate so inherited and hand-made mappings are never confused.",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Join to risk. A control with no scenario is unpriced \u2014 find its scenario or ask why it exists."
+    },
+    "policy_ref": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Null until status == operating. Policy is generated from the control, never authored ahead of it."
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "capex": {
+          "type": "number"
+        },
+        "opex_annual": {
+          "type": "number"
+        },
+        "basis": {
+          "type": "string"
+        }
+      },
+      "description": "Populate it or ROSI has nothing to divide by."
+    },
+    "notes": {
+      "type": "string"
+    },
+    "applicability_note": {
+      "type": "string",
+      "description": "When a crosswalked obligation's applicability DATE is contested, deferred, or otherwise not simply 'in force', record it here with the instrument that changed it. A crosswalk says which clause a control serves; it does not say whether that clause bites yet, and conflating the two is how a compliance calendar goes wrong."
+    }
+  }
+}

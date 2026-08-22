@@ -1,0 +1,29 @@
+scenario_id: scn.vendor.fourth-party-breach
+statement: >
+  A subprocessor in the Reco processing chain suffers a breach exposing Reco customer data, triggering Reco's own notification obligations to its customers.
+asset: "customer data held by subprocessors"
+threat_actor: "external actor against a third party"
+effect: confidentiality
+estimation_level: lef
+estimation_rationale: >
+  Reco is the notifying party regardless of where the failure occurred. Magnitude is driven by the number of affected customer contracts and their notification clocks, which is knowable from the CLM once vendor and contract data are joined.
+parameters:
+  loss_event_frequency:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: events_per_year
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — populate at the Day-45 calibration workshop. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+  primary_loss_magnitude:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: usd
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — FAIR-MAM module decomposition required. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+controls: [ctl.vendor.procurement.subprocessor-register]

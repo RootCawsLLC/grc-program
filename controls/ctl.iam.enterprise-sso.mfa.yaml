@@ -1,0 +1,47 @@
+control_id: ctl.iam.enterprise-sso.mfa
+title: Phishing-resistant MFA enforced for all human identities in the enterprise IdP
+layer: enterprise-sso
+owner: it-identity
+status: building
+supersedes: null
+
+faircam:
+  - { function: resistance, primary: true }
+  - { function: event-detection, primary: false }
+
+population_definition: >
+  All active human identities in the enterprise identity provider across all Reco entities
+  (US / RecoLabs Inc., Israel, Moldova), excluding service principals, excluding accounts in
+  a pre-start or post-termination state. Contractors ARE in scope. Break-glass accounts are
+  in scope and expected to fail; they are covered by EX-0001 with a compensating detective control.
+source_system: idp
+query_ref: models/controls/ctl_iam_enterprise_sso_mfa.sql
+
+collection:
+  cadence: daily
+  mechanism: api
+  variance_started_at_quality: source-timestamp
+
+crosswalk:
+  scf: [IAC-06, IAC-10]
+  soc2: [CC6.1, CC6.2]
+  iso27001_2022: [A.5.17, A.8.5]
+  nist80053r5: ["IA-2(1)", "IA-2(2)"]
+  csf2: [PR.AA-03]
+
+scenarios: [scn.cred-theft.saas-admin, scn.phish.bec]
+policy_ref: null   # stays null until status == operating. Policy is generated, not authored ahead.
+
+cost:
+  capex: 0
+  opex_annual: 0
+  basis: >
+    PLACEHOLDER — populate from the actual IdP licence line in the FY26 security budget during
+    discovery. ROSI cannot be computed against a zero. This field is deliberately not guessed.
+
+notes: >
+  Layer-split from ctl.iam.cloud-platform.mfa and ctl.iam.in-product.tenant-authz. Different owner,
+  different threat model, different failure mode. Collapsing these three into one "Access Control"
+  item is the single most common reason a framework score becomes unusable in quantification.
+  Framework identifiers above are asserted at the clause level and MUST be verified against the
+  licensed standard text before they appear in an auditor-facing artifact.

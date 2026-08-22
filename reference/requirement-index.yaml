@@ -1,0 +1,293 @@
+# Requirement index — IDENTIFIERS ONLY.
+#
+# No requirement text appears here and none ever will. ADR-0003: SCF is CC BY-ND with an explicit
+# AI-derivatives prohibition, and ISO standard text is separately licensed per user. Anyone reading
+# this needs their own licensed copy of the standard, which they needed anyway.
+#
+# This file exists to give `grc gap --direction coverage` a denominator. Without it, "we have no
+# coverage gaps" means "we did not look".
+#
+# in_scope is the ONLY editable field. Set it from the actual Statement of Applicability and the
+# actual SOC 2 report scope during week-1 intake. The defaults below are deliberately null, not
+# true — asserting a control is in scope before reading the SoA is how a coverage number becomes
+# fiction.
+
+soc2_tsc_2017:
+  revision: "2017 criteria, with revised points of focus (2022)"
+  note: >
+    Common Criteria plus Availability and Confidentiality. Reco's trust center evidences an
+    Availability commitment (published RTO/RPO) and a Confidentiality commitment; confirm the
+    actual TSC categories in scope against the report cover page during intake. Processing
+    Integrity and Privacy are NOT included below because there is no public signal they are in
+    scope — add them if the report says otherwise.
+  requirements:
+    - id: CC1.1
+      in_scope: null
+    - id: CC1.2
+      in_scope: null
+    - id: CC1.3
+      in_scope: null
+    - id: CC1.4
+      in_scope: null
+    - id: CC1.5
+      in_scope: null
+    - id: CC2.1
+      in_scope: null
+    - id: CC2.2
+      in_scope: null
+    - id: CC2.3
+      in_scope: null
+    - id: CC3.1
+      in_scope: null
+    - id: CC3.2
+      in_scope: null
+    - id: CC3.3
+      in_scope: null
+    - id: CC3.4
+      in_scope: null
+    - id: CC4.1
+      in_scope: null
+    - id: CC4.2
+      in_scope: null
+    - id: CC5.1
+      in_scope: null
+    - id: CC5.2
+      in_scope: null
+    - id: CC5.3
+      in_scope: null
+    - id: CC6.1
+      in_scope: null
+    - id: CC6.2
+      in_scope: null
+    - id: CC6.3
+      in_scope: null
+    - id: CC6.4
+      in_scope: null
+    - id: CC6.5
+      in_scope: null
+    - id: CC6.6
+      in_scope: null
+    - id: CC6.7
+      in_scope: null
+    - id: CC6.8
+      in_scope: null
+    - id: CC7.1
+      in_scope: null
+    - id: CC7.2
+      in_scope: null
+    - id: CC7.3
+      in_scope: null
+    - id: CC7.4
+      in_scope: null
+    - id: CC7.5
+      in_scope: null
+    - id: CC8.1
+      in_scope: null
+    - id: CC9.1
+      in_scope: null
+    - id: CC9.2
+      in_scope: null
+    - id: A1.1
+      in_scope: null
+    - id: A1.2
+      in_scope: null
+    - id: A1.3
+      in_scope: null
+    - id: C1.1
+      in_scope: null
+    - id: C1.2
+      in_scope: null
+
+iso27001_2022_annex_a:
+  revision: "ISO/IEC 27001:2022 Annex A — 93 controls across four themes"
+  note: >
+    A.5 organizational (37), A.6 people (8), A.7 physical (14), A.8 technological (34).
+    Populate in_scope and the exclusion justification from Reco's published Statement of
+    Applicability, which is listed on the trust center as a separate document.
+  requirements:
+    - id: A.5.1
+      in_scope: null
+    - id: A.5.2
+      in_scope: null
+    - id: A.5.3
+      in_scope: null
+    - id: A.5.4
+      in_scope: null
+    - id: A.5.5
+      in_scope: null
+    - id: A.5.6
+      in_scope: null
+    - id: A.5.7
+      in_scope: null
+    - id: A.5.8
+      in_scope: null
+    - id: A.5.9
+      in_scope: null
+    - id: A.5.10
+      in_scope: null
+    - id: A.5.11
+      in_scope: null
+    - id: A.5.12
+      in_scope: null
+    - id: A.5.13
+      in_scope: null
+    - id: A.5.14
+      in_scope: null
+    - id: A.5.15
+      in_scope: null
+    - id: A.5.16
+      in_scope: null
+    - id: A.5.17
+      in_scope: null
+    - id: A.5.18
+      in_scope: null
+    - id: A.5.19
+      in_scope: null
+    - id: A.5.20
+      in_scope: null
+    - id: A.5.21
+      in_scope: null
+    - id: A.5.22
+      in_scope: null
+    - id: A.5.23
+      in_scope: null
+    - id: A.5.24
+      in_scope: null
+    - id: A.5.25
+      in_scope: null
+    - id: A.5.26
+      in_scope: null
+    - id: A.5.27
+      in_scope: null
+    - id: A.5.28
+      in_scope: null
+    - id: A.5.29
+      in_scope: null
+    - id: A.5.30
+      in_scope: null
+    - id: A.5.31
+      in_scope: null
+    - id: A.5.32
+      in_scope: null
+    - id: A.5.33
+      in_scope: null
+    - id: A.5.34
+      in_scope: null
+    - id: A.5.35
+      in_scope: null
+    - id: A.5.36
+      in_scope: null
+    - id: A.5.37
+      in_scope: null
+    - id: A.6.1
+      in_scope: null
+    - id: A.6.2
+      in_scope: null
+    - id: A.6.3
+      in_scope: null
+    - id: A.6.4
+      in_scope: null
+    - id: A.6.5
+      in_scope: null
+    - id: A.6.6
+      in_scope: null
+    - id: A.6.7
+      in_scope: null
+    - id: A.6.8
+      in_scope: null
+    - id: A.7.1
+      in_scope: null
+    - id: A.7.2
+      in_scope: null
+    - id: A.7.3
+      in_scope: null
+    - id: A.7.4
+      in_scope: null
+    - id: A.7.5
+      in_scope: null
+    - id: A.7.6
+      in_scope: null
+    - id: A.7.7
+      in_scope: null
+    - id: A.7.8
+      in_scope: null
+    - id: A.7.9
+      in_scope: null
+    - id: A.7.10
+      in_scope: null
+    - id: A.7.11
+      in_scope: null
+    - id: A.7.12
+      in_scope: null
+    - id: A.7.13
+      in_scope: null
+    - id: A.7.14
+      in_scope: null
+    - id: A.8.1
+      in_scope: null
+    - id: A.8.2
+      in_scope: null
+    - id: A.8.3
+      in_scope: null
+    - id: A.8.4
+      in_scope: null
+    - id: A.8.5
+      in_scope: null
+    - id: A.8.6
+      in_scope: null
+    - id: A.8.7
+      in_scope: null
+    - id: A.8.8
+      in_scope: null
+    - id: A.8.9
+      in_scope: null
+    - id: A.8.10
+      in_scope: null
+    - id: A.8.11
+      in_scope: null
+    - id: A.8.12
+      in_scope: null
+    - id: A.8.13
+      in_scope: null
+    - id: A.8.14
+      in_scope: null
+    - id: A.8.15
+      in_scope: null
+    - id: A.8.16
+      in_scope: null
+    - id: A.8.17
+      in_scope: null
+    - id: A.8.18
+      in_scope: null
+    - id: A.8.19
+      in_scope: null
+    - id: A.8.20
+      in_scope: null
+    - id: A.8.21
+      in_scope: null
+    - id: A.8.22
+      in_scope: null
+    - id: A.8.23
+      in_scope: null
+    - id: A.8.24
+      in_scope: null
+    - id: A.8.25
+      in_scope: null
+    - id: A.8.26
+      in_scope: null
+    - id: A.8.27
+      in_scope: null
+    - id: A.8.28
+      in_scope: null
+    - id: A.8.29
+      in_scope: null
+    - id: A.8.30
+      in_scope: null
+    - id: A.8.31
+      in_scope: null
+    - id: A.8.32
+      in_scope: null
+    - id: A.8.33
+      in_scope: null
+    - id: A.8.34
+      in_scope: null

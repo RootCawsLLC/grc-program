@@ -1,0 +1,29 @@
+scenario_id: scn.availability.prod-data-loss
+statement: >
+  Production data becomes unavailable or is lost, and restoration exceeds the recovery time committed in customer agreements.
+asset: "Reco production data stores and contractual availability commitments"
+threat_actor: "non-malicious operational failure"
+effect: availability
+estimation_level: lef
+estimation_rationale: >
+  PRIORITY. The published RTO of 5 days against enterprise and healthcare customers makes contractual exposure the dominant loss term, not technical recovery cost. Magnitude must be built from executed MSA availability clauses, not from an infrastructure estimate.
+parameters:
+  loss_event_frequency:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: events_per_year
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — populate at the Day-45 calibration workshop. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+  primary_loss_magnitude:
+    min: 0.0
+    most_likely: 0.0
+    max: 0.0
+    unit: usd
+    provenance:
+      derivation_level: assumed
+      source: "UNCALIBRATED — FAIR-MAM module decomposition required. See _CALIBRATION-STATUS.md."
+      confidence_tier: 1
+controls: [ctl.bcdr.prod.restore-test]
