@@ -2,6 +2,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { validateAll, loadYamlDir } from './validate.mjs';
 import { emitAssessmentResults, stableStringify } from './oscal/assessment-results.mjs';
+import { emitAll } from './oscal/emit.mjs';
 import { push } from './push/scytale.mjs';
 import { assessAll, DEFICIENCIES, BANDS } from './health.mjs';
 import { assessGaps } from './gap.mjs';
@@ -109,11 +110,17 @@ const commands = {
     if (flag('json')) await write('out/gap-assessment.json', r);
   },
 
+  // The whole package, not one document. The artifacts cross-reference each other, and emitting a
+  // subset leaves references dangling — which oscal-cli rejects with FODC0002 and a Java stack
+  // trace rather than anything resembling a schema message.
   async oscal() {
     const { controls, assertions } = await load();
-    const asOf = assertions[0]?.as_of ?? new Date().toISOString();
-    await write('out/assessment-results.json', emitAssessmentResults({ assertions, controls, asOf }));
-    console.log('wrote out/assessment-results.json — re-run on unchanged input and it is byte-identical');
+    const out = opt('out') ?? 'out';
+    const written = await emitAll({ controls, assertions, out });
+    console.log(`\nOSCAL package — ${written.length} document(s) in ${out}/\n`);
+    for (const f of written) console.log(`  ${f}`);
+    console.log('\n  Re-run on unchanged input and every one re-exports byte-identically.');
+    console.log('  Schema conformance is proven by oscal-cli, not asserted here.\n');
   },
 
   async push() {

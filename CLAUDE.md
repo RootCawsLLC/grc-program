@@ -97,9 +97,9 @@ npm run validate   schema + the nine guards
 npm run intake     validate extracted audit findings, reconcile against the inventory
 npm run health     control health as a classification
 npm run gap        four-direction gap assessment
-npm run oscal      OSCAL assessment-results, deterministic UUIDs
+npm run emit       the whole OSCAL package (17 documents), deterministic UUIDs
 npm run demo       the whole synthetic pipeline, end to end, on stamped fixtures
-npm test           111 tests
+npm test           126 tests
 ```
 
 ## Day one

@@ -1,5 +1,6 @@
 import { resultUuid, observationUuid, componentUuid, uuid5 } from '../lib/uuid5.mjs';
 import { isFixtureSet, isFixture, FIXTURE_STAMP, fixtureNotice } from '../lib/load.mjs';
+import { metadata, ref, resource, FILENAMES } from './common.mjs';
 
 const FAIRCAM_NS = 'https://reco.ai/ns/faircam';
 
@@ -66,18 +67,21 @@ export function emitAssessmentResults({ assertions, controls, efficacy = {}, asO
   return {
     'assessment-results': {
       uuid: uuid5(`assessment-results|${asOf}`),
-      metadata: {
-        title: fixture
-          ? `Reco continuous control assessment results [${FIXTURE_STAMP}]`
-          : 'Reco continuous control assessment results',
-        'last-modified': asOf,
-        version: asOf,
-        'oscal-version': '1.1.2',
-        ...(fixture ? { remarks: fixtureNotice('This assessment results package') } : {}),
-        // No random uuid, no generation timestamp: those are the two fields that make an
-        // otherwise-unchanged export produce a dirty diff.
-      },
-      'import-ap': { href: './assessment-plan.json' },
+      // No random uuid and no generation timestamp: those are the two fields that make an
+      // otherwise-unchanged export produce a dirty diff. Shared with every other artifact so the
+      // package agrees with itself about oscal-version and about how the fixture stamp is worded.
+      metadata: metadata({
+        title: 'Reco continuous control assessment results',
+        assertions,
+        subject: 'This assessment results package',
+      }),
+
+      // A document href is RESOLVED AND FOLLOWED by the validator. This previously pointed at
+      // './assessment-plan.json', a file no emitter produced, and oscal-cli rejected the entire
+      // document with FODC0002 and a Java stack trace rather than a readable schema message. It
+      // now references the emitted plan by deterministic UUID, with a back-matter resource for the
+      // fragment to land on.
+      'import-ap': { href: ref('assessment-plan') },
       results: [{
         uuid: resultUuid('all-controls', asOf),
         title: 'Continuous controls monitoring cycle',
@@ -93,6 +97,9 @@ export function emitAssessmentResults({ assertions, controls, efficacy = {}, asO
         observations,
         findings,
       }],
+      'back-matter': {
+        resources: [resource('assessment-plan', 'Reco continuous control assessment plan', FILENAMES['assessment-plan'])],
+      },
     },
   };
 }

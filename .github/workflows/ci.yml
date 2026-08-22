@@ -39,14 +39,66 @@ jobs:
       - name: Test
         run: npm test
 
-      # Determinism gate. If an unchanged inventory produces a different OSCAL package, the
-      # deterministic-UUID contract is broken and every downstream diff becomes unreviewable.
+      # Determinism gate, over the WHOLE package rather than one document. If an unchanged
+      # inventory produces a different OSCAL package, the deterministic-UUID contract is broken and
+      # every downstream diff becomes unreviewable.
+      #
+      # This used to cover assessment-results alone, which was the only artifact that existed. It
+      # would have passed happily while a non-deterministic catalog, profile, SSP or POA&M sat
+      # beside it.
       - name: OSCAL determinism
         run: |
-          npm run oscal && cp out/assessment-results.json /tmp/first.json
-          npm run oscal
-          diff -u /tmp/first.json out/assessment-results.json \
-            || { echo "::error::OSCAL export is not deterministic. A random UUID or a timestamp leaked into the emitter."; exit 1; }
+          npm run emit -- --out /tmp/oscal-first
+          npm run emit -- --out /tmp/oscal-second
+          diff -ru /tmp/oscal-first /tmp/oscal-second \
+            || { echo "::error::OSCAL export is not deterministic. A random UUID or a timestamp leaked into an emitter."; exit 1; }
+
+  # Schema conformance is checked by the real OSCAL CLI, not asserted in a README. The `oscal` npm
+  # package bootstraps the Java CLI (oscal-cli-enhanced 3.2.0) from Maven Central, hence setup-java.
+  #
+  # BLOCKING. Nothing here is piped through `|| true` except the bootstrap step, whose file is then
+  # validated again for real in the loop below. Reference implementations of this gate have shipped
+  # with `|| true` on the validation itself, or against a package name that does not exist on npm,
+  # and reported green while validating nothing — the precise failure mode this repository exists
+  # to argue against.
+  #
+  # All 17 documents validate clean as of 2026-08-22, so this gate can fail the build and a
+  # regression in any emitter now stops a merge.
+  oscal-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with: { node-version: '22', cache: 'npm' }
+      # Pin verified 2026-08-22 against actions/setup-java tag v4.7.1 via
+      # `gh api repos/actions/setup-java/git/ref/tags/v4.7.1 --jq '.object.sha'`.
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with: { distribution: temurin, java-version: '17' }
+      - run: npm ci
+      - run: npm run emit
+
+      # The npm wrapper downloads the Java CLI on first use and exits WITHOUT validating that first
+      # file, so whichever document came first in the loop would silently produce no result. This
+      # step absorbs the bootstrap; every file including this one is validated for real below, so
+      # the `|| true` here hides nothing.
+      - name: Bootstrap the OSCAL CLI
+        run: npx --yes oscal@2.0.7 validate --file out/oscal-catalog.json || true
+
+      - name: Validate every document against the OSCAL schemas
+        run: |
+          failed=0
+          for f in out/*.json; do
+            echo "::group::oscal validate $f"
+            if npx --yes oscal@2.0.7 validate --file "$f" 2>&1 | tee /tmp/oscal-out | grep -q 'is valid\.'; then
+              echo "PASS $f"
+            else
+              echo "::error file=$f::OSCAL schema validation failed"
+              cat /tmp/oscal-out
+              failed=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $failed
 
   policy-gate:
     runs-on: ubuntu-latest
