@@ -22,10 +22,12 @@
     "demo": "node scripts/demo.mjs",
     "emit": "node src/cli.mjs oscal",
     "probe": "node src/cli.mjs probe",
-    "probe:check": "node scripts/check-probe-evidence.mjs"
+    "probe:check": "node scripts/check-probe-evidence.mjs",
+    "mcp": "node src/mcp/server.mjs"
   },
   "dependencies": {
     "@duckdb/node-api": "^1.5.5-r.4",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "yaml": "^2.5.1"
