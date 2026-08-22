@@ -99,7 +99,8 @@ npm run health     control health as a classification
 npm run gap        four-direction gap assessment
 npm run emit       the whole OSCAL package (17 documents), deterministic UUIDs
 npm run demo       the whole synthetic pipeline, end to end, on stamped fixtures
-npm test           126 tests
+npm run probe      AI agent control probes, paired guarded/unguarded, against a local target
+npm test           140 tests
 ```
 
 ## Day one

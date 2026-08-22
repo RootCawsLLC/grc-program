@@ -2,6 +2,7 @@
   "name": "reco-grc",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "type": "module",
   "description": "Control inventory, evidence pipeline and risk layer for Reco's GRC program. This repo is the system of record.",
   "engines": {
@@ -19,7 +20,9 @@
     "push:dry": "node src/cli.mjs push",
     "test": "node --test \"tests/*.test.mjs\"",
     "demo": "node scripts/demo.mjs",
-    "emit": "node src/cli.mjs oscal"
+    "emit": "node src/cli.mjs oscal",
+    "probe": "node src/cli.mjs probe",
+    "probe:check": "node scripts/check-probe-evidence.mjs"
   },
   "dependencies": {
     "@duckdb/node-api": "^1.5.5-r.4",

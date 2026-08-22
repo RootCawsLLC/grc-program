@@ -134,6 +134,53 @@ const commands = {
     } else console.log(`pushed ${res.pushed}`);
   },
 
+  // Active testing, not attestation. Runs the AI agent probes against proofplane's reference
+  // target — never a real system; src/probes/target.mjs refuses a non-loopback address — and turns
+  // the paired guarded/unguarded results into assertion records.
+  async probe() {
+    const { runPaired, verifyChain } = await import('./probes/runner.mjs');
+    const { assertionsFrom, gapsFrom } = await import('./probes/assertion.mjs');
+    const { serialize } = await import('./oscal/common.mjs');
+
+    const guardedUrl = opt('guarded') ?? 'http://127.0.0.1:8091';
+    const unguardedUrl = opt('unguarded') ?? 'http://127.0.0.1:8092';
+    const trials = Number(opt('trials') ?? 3);
+    const out = opt('out') ?? 'out-probe';
+    const asOf = opt('as-of') ?? new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+
+    const { controls } = await load();
+    const evidence = await runPaired({ guardedUrl, unguardedUrl, trials, asOf });
+    const chain = verifyChain(evidence);
+    const { assertions, skipped } = assertionsFrom(evidence, controls);
+    const gaps = gapsFrom(evidence);
+
+    console.log(`\nAI AGENT CONTROL PROBES — ${evidence.records.length} probe(s), ${trials} trial(s) each\n`);
+    console.log(`  guarded   ${evidence.targets.guarded.base_url}   model ${evidence.targets.guarded.model.name}@${evidence.targets.guarded.model.version}`);
+    console.log(`  unguarded ${evidence.targets.unguarded.base_url}   audit chain intact: ${evidence.targets.guarded.audit_chain.intact}\n`);
+
+    for (const r of evidence.records) {
+      const flag = r.outcome === 'HELD' ? 'HELD  ' : r.outcome === 'VOID' ? 'VOID  ' : `${r.outcome}`;
+      console.log(`  ${flag} ${r.probe_id}  ${r.title}`);
+      console.log(`         guarded=${r.guarded.outcome} unguarded=${r.unguarded.outcome} discriminating=${r.discriminating}`);
+      if (r.void_reason) console.log(`         ⚠ ${r.void_reason}`);
+      if (r.qualification) console.log(`         ⚠ ${r.qualification}`);
+      if (!r.control_id) console.log(`         no control in the inventory — needs ${r.missing_control}`);
+    }
+
+    console.log(`\n  hash chain: ${chain.intact ? 'intact' : `BROKEN at record ${chain.brokenAt} — ${chain.reason}`}`);
+    console.log(`  assertions emitted: ${assertions.length}   skipped: ${skipped.length}   gaps: ${gaps.length}`);
+    for (const s of skipped) console.log(`    skipped ${s.probe_id} (${s.reason})`);
+
+    await mkdir(out, { recursive: true });
+    await writeFile(`${out}/evidence.json`, serialize(evidence));
+    await writeFile(`${out}/assertions.json`, serialize(assertions));
+    await writeFile(`${out}/gaps.json`, serialize(gaps));
+    console.log(`\n  wrote ${out}/{evidence,assertions,gaps}.json`);
+    console.log('  Every assertion is marked fixture:true — a reference target is not a Reco runtime.\n');
+
+    return chain.intact ? 0 : 1;
+  },
+
   async baseline() {
     // The day-1 command. Everything at once, in the order you should read it.
     //

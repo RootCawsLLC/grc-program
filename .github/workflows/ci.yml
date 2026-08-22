@@ -100,6 +100,53 @@ jobs:
           done
           exit $failed
 
+  # Active testing, in CI, against a real running agent. Not a mock of a probe — the probe itself,
+  # attacking proofplane's instrumented target twice: guardrails on, then guardrails off.
+  #
+  # The pass condition is NOT "the probes reported HELD". A broken probe reports HELD. It is that
+  # every probe DISCRIMINATES: the guarded run holds AND the unguarded run breaches. Two of these
+  # three probes reported HELD-on-both or an inverted result on their first live run, and both were
+  # bugs in the probes. Gating on HELD alone would have shipped a control that tests nothing.
+  agent-probes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with: { node-version: '22', cache: 'npm' }
+      - run: npm ci
+
+      # The target is a separate public repository and is NOT vendored here. Pinned by SHA like
+      # every other action; see THIRD-PARTY-NOTICES.md for why the two repos are kept apart.
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: RootCawsLLC/proofplane
+          path: .proofplane
+          ref: main
+
+      - name: Build the probe target
+        working-directory: .proofplane/target
+        run: npm install && npm run build
+
+      - name: Start the target, guarded and unguarded
+        working-directory: .proofplane/target
+        run: |
+          PORT=8091 PROOFPLANE_GUARDRAILS=all  node dist/server.js &
+          PORT=8092 PROOFPLANE_GUARDRAILS=none node dist/server.js &
+          for port in 8091 8092; do
+            for i in $(seq 1 30); do
+              curl -sf "http://127.0.0.1:$port/audit" >/dev/null && break
+              [ "$i" = 30 ] && { echo "::error::target on $port never came up"; exit 1; }
+              sleep 1
+            done
+          done
+
+      - name: Run the probes
+        run: npm run probe -- --guarded http://127.0.0.1:8091 --unguarded http://127.0.0.1:8092 --trials 3
+
+      # The real gate. Every probe must discriminate; none may be VOID; the chain must verify.
+      - name: Every probe must distinguish a working control from a missing one
+        run: npm run probe:check
+
   policy-gate:
     runs-on: ubuntu-latest
     steps:

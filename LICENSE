@@ -1,0 +1,19 @@
+Copyright (c) 2026 RootCawsLLC. All rights reserved.
+
+This repository is proprietary and unpublished. No licence is granted to any person to use,
+copy, modify, merge, publish, distribute, sublicense, or sell any part of it.
+
+WHY THIS FILE EXISTS RATHER THAN AN OPEN-SOURCE LICENCE
+
+Until 2026-08-22 this repository had no LICENCE file and no `license` field, which left its
+status undefined. "All rights reserved" is the legal default in that situation, so this file
+changes nothing substantive — it states the position instead of leaving it to be inferred.
+
+That is deliberately the conservative direction. An open-source licence GRANTS rights, and a
+grant is far harder to withdraw than to make. This repository's eventual ownership is not
+settled, and material has been ported into it from RootCawsLLC/proofplane, which is licensed
+AGPL-3.0-or-later to third parties. RootCawsLLC holds the copyright in both, so relicensing its
+own work is its own to do — but doing so should be a decision somebody makes, not a side effect
+of a default.
+
+Relicensing later is one file. Un-granting is not.
