@@ -1,3 +1,5 @@
+import { mappingsOf, needsVerification, describeConfidence, describeAttribution } from './lib/finding.mjs';
+
 /**
  * Gap assessment — four directions, because "gap" means four different things and each has a
  * different fix. Collapsing them into one list is how a gap assessment becomes a wish list.
@@ -77,21 +79,14 @@ export function assessGaps({ controls, scenarios = [], findings = [], requiremen
     }
   }
 
-  /**
-   * A mapping needs verifying unless someone recorded that they were sure.
-   *
-   * `null` counts as needing verification, and deliberately so — a mapping with no confidence
-   * recorded is weaker than one explicitly marked `low`, because nobody even said how sure they
-   * were. Treating absence as "fine" is how an unlabelled judgement acquires the authority of a
-   * checked one.
-   */
-  const needsVerification = (f) => f.mapping_confidence !== 'high';
-
   /** Appended to other remediation statements so the caveat travels with the number it qualifies. */
-  const mappingCaveat = (f) =>
-    needsVerification(f)
-      ? ` Mapping confidence is ${f.mapping_confidence ? `"${f.mapping_confidence}"` : 'not recorded'}; treat the attribution as unverified.`
+  const mappingCaveat = (m) =>
+    needsVerification(m)
+      ? ` Mapping confidence is ${m.mapping_confidence ? `"${m.mapping_confidence}"` : 'not recorded'}; treat the attribution as unverified.`
       : '';
+
+  /** How a secondary mapping is labelled in a statement, so a reader knows which one they are reading. */
+  const role = (m) => (m.primary ? '' : ' (also_implicates)');
 
   // --- 3. REMEDIATION ------------------------------------------------------------------
   for (const f of findings) {
@@ -108,50 +103,59 @@ export function assessGaps({ controls, scenarios = [], findings = [], requiremen
           'The auditor found something the control model has no place to put. Map it or write the control it belongs to.',
         related: f.framework_ref ?? [],
       });
-    } else if (!operating(f.control_id)) {
-      gaps.push({
-        gap_id: id(),
-        direction: 'remediation',
-        subject: f.finding_id,
-        statement:
-          `${f.finding_id} is open against ${f.control_id}, which is ` +
-          `"${byId.get(f.control_id)?.status ?? 'not in the inventory'}" rather than operating.` +
-          mappingCaveat(f),
-        severity_basis:
-          'The remediation depends on a control that is not yet running. This has a date attached ' +
-          'to someone else\'s calendar, which makes it the only gap direction that is not ' +
-          'self-scheduled.',
-        related: [f.control_id],
-      });
+      continue;
     }
 
-    // An unverified mapping is its own gap, and it is INDEPENDENT of the control's status.
+    // EVERY control the finding touches, primary and secondary.
     //
-    // The two branches above only fire when the finding is unmapped or the control is not
-    // operating. A finding mapped to an OPERATING control produced no gap at all — so a mapping
-    // somebody guessed at was most invisible exactly when the control looked healthiest, which is
-    // the worst possible place to hide it. If the mapping is wrong, every remediation gap above it
-    // is pointed at the wrong control and the right one looks clean.
-    //
-    // Guardrail 3 in CLAUDE.md applies to numbers: an unlabelled one is rejected, and a range with
-    // no provenance must not read like a sourced one. A control attribution is a judgement with a
-    // name on it and decays the same way. It gets the same treatment.
-    if (f.control_id && needsVerification(f)) {
-      gaps.push({
-        gap_id: id(),
-        direction: 'remediation',
-        subject: f.finding_id,
-        statement:
-          `${f.finding_id} is mapped to ${f.control_id} at ` +
-          `${f.mapping_confidence ? `"${f.mapping_confidence}" confidence` : 'NO recorded confidence'}` +
-          `${f.mapped_by ? ` by ${f.mapped_by}` : ', by nobody named'}. The mapping is unverified.`,
-        severity_basis:
-          'Mapping is a judgement, not a lookup. Until it is confirmed, this finding may be ' +
-          'attributed to the wrong control — which both misdirects the remediation and leaves the ' +
-          'correct control reading clean. Re-check against the report once the full system ' +
-          'description has been read; a mapping made during extraction is the first thing to revisit.',
-        related: [f.control_id],
-      });
+    // A finding routinely reaches further than its owner — "access to the cloud platform AND the
+    // source repository was not revoked" is one finding against two controls. Iterating only the
+    // primary is what let the second control read as clean while an auditor had already found
+    // otherwise. Each mapping gets its own gaps, because each is a separate thing that is wrong.
+    for (const m of mappingsOf(f)) {
+      if (!operating(m.control_id)) {
+        gaps.push({
+          gap_id: id(),
+          direction: 'remediation',
+          subject: f.finding_id,
+          statement:
+            `${f.finding_id} is open against ${m.control_id}${role(m)}, which is ` +
+            `"${byId.get(m.control_id)?.status ?? 'not in the inventory'}" rather than operating.` +
+            mappingCaveat(m),
+          severity_basis:
+            'The remediation depends on a control that is not yet running. This has a date attached ' +
+            'to someone else\'s calendar, which makes it the only gap direction that is not ' +
+            'self-scheduled.',
+          related: [m.control_id],
+        });
+      }
+
+      // An unverified mapping is its own gap, INDEPENDENT of the control's status.
+      //
+      // Before this, a finding mapped to an OPERATING control produced no gap at all — so a mapping
+      // somebody guessed at was most invisible exactly when the control looked healthiest, which is
+      // the worst possible place to hide it. If the mapping is wrong, the status gap above is
+      // pointed at the wrong control and the right one reads clean.
+      //
+      // Guardrail 3 in CLAUDE.md applies to numbers: an unlabelled one is rejected, and a range
+      // with no provenance must not read like a sourced one. A control attribution is a judgement
+      // with a name on it and decays the same way. It gets the same treatment.
+      if (needsVerification(m)) {
+        gaps.push({
+          gap_id: id(),
+          direction: 'remediation',
+          subject: f.finding_id,
+          statement:
+            `${f.finding_id} is mapped to ${m.control_id}${role(m)} at ` +
+            `${describeConfidence(m)}${describeAttribution(m)}. The mapping is unverified.`,
+          severity_basis:
+            'Mapping is a judgement, not a lookup. Until it is confirmed, this finding may be ' +
+            'attributed to the wrong control — which both misdirects the remediation and leaves the ' +
+            'correct control reading clean. Re-check against the report once the full system ' +
+            'description has been read; a mapping made during extraction is the first thing to revisit.',
+          related: [m.control_id],
+        });
+      }
     }
   }
 

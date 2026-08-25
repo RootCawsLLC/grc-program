@@ -275,3 +275,24 @@ test('the real repo root is still accepted', async () => {
   const c = await loadContext(process.cwd());
   assert.ok(c.controls.length > 0, 'the repo root must load a non-empty inventory');
 });
+
+test('get_findings matches a control named as a SECONDARY, not just the primary', async () => {
+  // Filtering on the primary alone would hide exactly the findings also_implicates exists to stop
+  // hiding — you would ask "what has an auditor found against this control" and be told nothing.
+  const withSecondary = {
+    ...ctx,
+    findings: [{
+      finding_id: 'F', kind: 'exception', disposition: 'open', source: { document: 'd' },
+      description: 'd', control_id: 'ctl.iam.enterprise-sso.mfa', mapped_by: 'A', mapping_confidence: 'high',
+      also_implicates: [{ control_id: 'ctl.appsec.ci-cd.branch-protection', mapped_by: 'A', mapping_confidence: 'high' }],
+    }],
+  };
+  const primary = await findTool('get_findings').handler({ control_id: 'ctl.iam.enterprise-sso.mfa' }, withSecondary);
+  assert.equal(primary.count, 1);
+
+  const secondary = await findTool('get_findings').handler({ control_id: 'ctl.appsec.ci-cd.branch-protection' }, withSecondary);
+  assert.equal(secondary.count, 1, 'the secondary control must find this finding');
+
+  const unrelated = await findTool('get_findings').handler({ control_id: 'ctl.bcdr.prod.restore-test' }, withSecondary);
+  assert.equal(unrelated.count, 0);
+});

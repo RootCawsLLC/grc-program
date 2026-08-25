@@ -152,3 +152,72 @@ test('a closed finding raises nothing, however weak its mapping', () => {
     assert.equal(dirs(r, 'remediation').length, 0, disposition);
   }
 });
+
+// ── a finding can implicate more than one control (issue #2) ─────────────────────────────────
+//
+// THE BUG THIS PINS. `control_id` was the only mapping the gap layer read. A real exception —
+// "access to the cloud platform AND the source repository was not revoked" — is one finding against
+// two controls, and the second survived only in notes prose: no gap query saw it, and it read as
+// clean while an auditor had already found otherwise.
+
+const two = (over = {}) => ({
+  finding_id: 'FND-M001', kind: 'exception', disposition: 'open', source: { document: 'doc' },
+  control_id: 'ctl.a.b.c', mapping_confidence: 'high', mapped_by: 'A Person',
+  also_implicates: [{ control_id: 'ctl.d.e.f', mapping_confidence: 'high', mapped_by: 'A Person' }],
+  ...over,
+});
+const other = (over = {}) => ({ ...ctl({ control_id: 'ctl.d.e.f' }), ...over });
+
+test('a secondary control that is not operating raises its own gap', () => {
+  const r = assessGaps({
+    controls: [ctl(), other({ status: 'building' })], scenarios: [], findings: [two()],
+  });
+  const g = dirs(r, 'remediation');
+  assert.equal(g.length, 1, 'the operating primary raises nothing; the building secondary raises one');
+  assert.match(g[0].statement, /ctl\.d\.e\.f \(also_implicates\)/);
+  assert.match(g[0].statement, /"building" rather than operating/);
+  assert.deepEqual(g[0].related, ['ctl.d.e.f']);
+});
+
+test('a secondary mapping carries its OWN confidence, not the primary\'s', () => {
+  // The reason also_implicates holds objects rather than bare ids. A single scalar on the finding
+  // would apply the primary's certainty to a secondary nobody checked as carefully.
+  const r = assessGaps({
+    controls: [ctl(), other()], scenarios: [],
+    findings: [two({ also_implicates: [{ control_id: 'ctl.d.e.f', mapping_confidence: 'low', mapped_by: 'Someone Else' }] })],
+  });
+  const g = dirs(r, 'remediation');
+  assert.equal(g.length, 1, 'primary is high and operating — only the secondary is unverified');
+  assert.match(g[0].statement, /mapped to ctl\.d\.e\.f \(also_implicates\) at "low" confidence by Someone Else/);
+});
+
+test('both controls raise gaps when both are weak, and each names itself', () => {
+  const r = assessGaps({
+    controls: [ctl({ status: 'building' }), other({ status: 'planned' })], scenarios: [],
+    findings: [two({ mapping_confidence: 'low', also_implicates: [{ control_id: 'ctl.d.e.f', mapping_confidence: null }] })],
+  });
+  const g = dirs(r, 'remediation');
+  // two status gaps + two unverified-mapping gaps
+  assert.equal(g.length, 4);
+  assert.equal(g.filter((x) => /ctl\.a\.b\.c/.test(x.statement)).length, 2);
+  assert.equal(g.filter((x) => /ctl\.d\.e\.f/.test(x.statement)).length, 2);
+  assert.ok(g.some((x) => /NO recorded confidence/.test(x.statement)));
+});
+
+test('an unmapped finding never reaches the per-mapping loop', () => {
+  // control_id null means there is no attribution to verify; also_implicates on an unmapped
+  // finding would be a contradiction, and the unmapped gap is the sharper signal anyway.
+  const r = assessGaps({
+    controls: [ctl(), other()], scenarios: [],
+    findings: [two({ control_id: null, also_implicates: [{ control_id: 'ctl.d.e.f' }] })],
+  });
+  const g = dirs(r, 'remediation');
+  assert.equal(g.length, 1);
+  assert.match(g[0].statement, /maps to no control in the inventory/);
+});
+
+test('a finding with no also_implicates behaves exactly as before', () => {
+  const withField = assessGaps({ controls: [ctl({ status: 'building' })], scenarios: [], findings: [two({ also_implicates: [] })] });
+  const without = assessGaps({ controls: [ctl({ status: 'building' })], scenarios: [], findings: [two({ also_implicates: undefined })] });
+  assert.deepEqual(dirs(withField, 'remediation').map((g) => g.statement), dirs(without, 'remediation').map((g) => g.statement));
+});

@@ -28,6 +28,7 @@ import { loadAssertions, isFixtureSet, FIXTURE_STAMP } from '../lib/load.mjs';
 import { loadFindings, loadRequirementIndex, reconcile } from '../intake.mjs';
 import { assessAll, DEFICIENCIES, BANDS } from '../health.mjs';
 import { assessGaps } from '../gap.mjs';
+import { touches } from '../lib/finding.mjs';
 
 /**
  * Refuses a root that is not this repository.
@@ -406,7 +407,10 @@ export const TOOLS = [
       // point of the `unmapped_open` count, so it must not be filtered into invisibility.
       const rows = ctx.findings
         .filter((f) => (!args.disposition || f.disposition === args.disposition))
-        .filter((f) => (!args.control_id || f.control_id === args.control_id));
+        // Matches a control named ANYWHERE on the finding — primary or also_implicates.
+        // Filtering on the primary alone would hide exactly the findings this repo added
+        // also_implicates to stop hiding.
+        .filter((f) => (!args.control_id || touches(f, args.control_id)));
 
       return {
         count: rows.length,

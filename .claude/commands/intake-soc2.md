@@ -23,7 +23,18 @@ reports are NDA-gated and watermarked to the recipient.
   finding cannot be defended in the next audit.
 - `control_id: null` is a legitimate answer and often the most important one — it means the finding
   has no home in the inventory, which is a gap in the control model, not in the extraction.
+- **`control_id` is the PRIMARY mapping — the control whose owner is accountable. Where the finding
+  reaches further, add the others to `also_implicates`, do not pick one and mention the rest in
+  prose.** "Access to the cloud platform AND the source repository was not revoked" is one finding
+  against two controls. A control named only in `notes` appears in no gap query and reads as clean
+  while the auditor has already found otherwise.
+- **Every mapping carries its own `mapping_confidence` and `mapped_by`, including secondaries.** A
+  single confidence on the finding would apply the certainty of the primary to a mapping nobody
+  checked as carefully.
 - `mapped_by` is me, by name. Mapping is a judgement and carries a name.
+- Only `high` counts as verified. Leaving `mapping_confidence` unset is **weaker** than writing
+  `low` — it means nobody recorded how sure they were — and `npm run intake` counts it in
+  `unverified_mapping_open` either way.
 
 **Order within the report.** Exceptions and deviations first. Then the control descriptions — the
 description of each control the auditor tested is the closest thing to an existing control

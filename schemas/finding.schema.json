@@ -4,54 +4,211 @@
   "title": "Audit finding",
   "description": "One record per exception, deviation, nonconformity, observation or recommendation raised by any assurance activity. The auditor's words are preserved verbatim in severity_as_stated and description; our interpretation lives only in control_id, mapping_confidence and disposition. Never re-grade someone else's finding and present it as theirs.",
   "type": "object",
-  "required": ["finding_id", "source", "kind", "description", "disposition"],
+  "required": [
+    "finding_id",
+    "source",
+    "kind",
+    "description",
+    "disposition"
+  ],
   "additionalProperties": false,
   "properties": {
-    "finding_id": { "type": "string", "pattern": "^FND-[0-9]{4}$" },
+    "finding_id": {
+      "type": "string",
+      "pattern": "^FND-[0-9]{4}$"
+    },
     "source": {
       "type": "object",
-      "required": ["document", "document_type"],
+      "required": [
+        "document",
+        "document_type"
+      ],
       "additionalProperties": false,
       "properties": {
-        "document": { "type": "string", "description": "Stable short name, e.g. soc2-type2-fy2026" },
+        "document": {
+          "type": "string",
+          "description": "Stable short name, e.g. soc2-type2-fy2026"
+        },
         "document_type": {
           "type": "string",
-          "enum": ["soc2-type1", "soc2-type2", "iso27001-audit", "iso27001-soa", "iso42001-audit", "pentest", "internal-audit", "customer-audit", "vulnerability-assessment", "self-identified"]
+          "enum": [
+            "soc2-type1",
+            "soc2-type2",
+            "iso27001-audit",
+            "iso27001-soa",
+            "iso42001-audit",
+            "pentest",
+            "internal-audit",
+            "customer-audit",
+            "vulnerability-assessment",
+            "self-identified"
+          ]
         },
-        "period_start": { "type": "string", "format": "date" },
-        "period_end": { "type": "string", "format": "date" },
-        "issued_on": { "type": "string", "format": "date" },
-        "auditor": { "type": "string" },
-        "locator": { "type": "string", "description": "Where in the document. Page, section, control reference. An unlocatable finding cannot be defended in the next audit." }
+        "period_start": {
+          "type": "string",
+          "format": "date"
+        },
+        "period_end": {
+          "type": "string",
+          "format": "date"
+        },
+        "issued_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "auditor": {
+          "type": "string"
+        },
+        "locator": {
+          "type": "string",
+          "description": "Where in the document. Page, section, control reference. An unlocatable finding cannot be defended in the next audit."
+        }
       }
     },
     "framework_ref": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "description": "Identifiers only — CC6.1, A.8.5. No framework text. ADR-0003."
     },
     "kind": {
       "type": "string",
-      "enum": ["exception", "deviation", "nonconformity-major", "nonconformity-minor", "observation", "opportunity-for-improvement", "recommendation", "vulnerability"],
+      "enum": [
+        "exception",
+        "deviation",
+        "nonconformity-major",
+        "nonconformity-minor",
+        "observation",
+        "opportunity-for-improvement",
+        "recommendation",
+        "vulnerability"
+      ],
       "description": "Use the word the source document used. A SOC 2 exception is not an ISO nonconformity and flattening them loses the thing that determines urgency."
     },
     "severity_as_stated": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "VERBATIM from the source. Null if the source stated none. Do not infer one and do not translate another scale into ours."
     },
-    "description": { "type": "string", "minLength": 10 },
-    "auditor_test_procedure": { "type": ["string", "null"] },
-    "management_response": { "type": ["string", "null"] },
-    "control_id": { "type": ["string", "null"], "description": "Our mapping. Null is a legitimate and important answer — it means the finding has no home in the inventory, which is itself the gap." },
-    "mapping_confidence": { "type": ["string", "null"], "enum": ["high", "medium", "low", null] },
-    "mapped_by": { "type": ["string", "null"], "description": "A named human. Mapping is a judgement and carries a name." },
+    "description": {
+      "type": "string",
+      "minLength": 10
+    },
+    "auditor_test_procedure": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "management_response": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "control_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Our PRIMARY mapping — the control this finding is attributed to and whose owner is accountable for it. Null is a legitimate and important answer: it means the finding has no home in the inventory, which is itself the gap. Where a finding also implicates other controls, they go in also_implicates rather than replacing this one; a finding has one owner."
+    },
+    "mapping_confidence": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        null
+      ]
+    },
+    "mapped_by": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A named human. Mapping is a judgement and carries a name."
+    },
     "disposition": {
       "type": "string",
-      "enum": ["open", "in-remediation", "remediated", "risk-accepted", "superseded", "disputed"]
+      "enum": [
+        "open",
+        "in-remediation",
+        "remediated",
+        "risk-accepted",
+        "superseded",
+        "disputed"
+      ]
     },
-    "remediated_on": { "type": ["string", "null"], "format": "date" },
-    "accepted_by": { "type": ["string", "null"], "description": "Required when disposition is risk-accepted. Acceptance carries a name, never a team." },
-    "accepted_until": { "type": ["string", "null"], "format": "date" },
-    "notes": { "type": "string" }
+    "remediated_on": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "accepted_by": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Required when disposition is risk-accepted. Acceptance carries a name, never a team."
+    },
+    "accepted_until": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "also_implicates": {
+      "type": "array",
+      "default": [],
+      "description": "Other controls this finding implicates, beyond the primary. A real exception routinely spans several: \"access to the cloud platform AND the source repository was not revoked\" is one finding against two controls. Before this field the second control survived only in notes prose, appeared in no gap query, and read as clean while an auditor had already found otherwise. Each entry carries its OWN confidence and attribution — a single scalar mapping_confidence on the finding would silently apply the certainty of the primary mapping to secondaries nobody checked as carefully.",
+      "items": {
+        "type": "object",
+        "required": [
+          "control_id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "control_id": {
+            "type": "string"
+          },
+          "mapping_confidence": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              null
+            ]
+          },
+          "mapped_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A named human. Mapping is a judgement and carries a name, per mapping."
+          },
+          "basis": {
+            "type": "string",
+            "description": "Why this control is implicated. What in the finding reaches it."
+          }
+        }
+      }
+    }
   }
 }

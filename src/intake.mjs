@@ -2,6 +2,8 @@ import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 
+import { mappingsOf, needsVerification } from './lib/finding.mjs';
+
 /**
  * Audit intake.
  *
@@ -55,11 +57,25 @@ export function reconcile({ findings, controls }) {
     if (seen.has(f.finding_id)) problems.push({ severity: 'error', ...at, rule: 'F1-duplicate', message: `${f.finding_id} appears more than once` });
     seen.add(f.finding_id);
 
-    if (f.control_id && !ids.has(f.control_id)) {
-      problems.push({ severity: 'error', ...at, rule: 'F2-dangling-control', message: `maps to ${f.control_id}, which is not in the inventory` });
+    // F2 and F3 run over EVERY mapping, primary and secondary. A dangling secondary is exactly as
+    // broken as a dangling primary, and an unattributed one is exactly as much of a judgement —
+    // checking only the primary would let a whole class of mapping in unexamined.
+    for (const m of mappingsOf(f)) {
+      const which = m.primary ? 'primary mapping' : 'also_implicates';
+      if (!ids.has(m.control_id)) {
+        problems.push({ severity: 'error', ...at, rule: 'F2-dangling-control', message: `${which} names ${m.control_id}, which is not in the inventory` });
+      }
+      if (!m.mapped_by) {
+        problems.push({ severity: 'warning', ...at, rule: 'F3-unattributed-mapping', message: `${which} to ${m.control_id} has no mapped_by. Mapping is a judgement and carries a name.` });
+      }
     }
-    if (f.control_id && !f.mapped_by) {
-      problems.push({ severity: 'warning', ...at, rule: 'F3-unattributed-mapping', message: 'has a control mapping with no mapped_by. Mapping is a judgement and carries a name.' });
+
+    // A control named twice is a record that disagrees with itself: two confidences and two
+    // attributions for one attribution, and no way to say which governs.
+    const named = mappingsOf(f).map((m) => m.control_id);
+    const duplicated = [...new Set(named.filter((c, i) => named.indexOf(c) !== i))];
+    for (const c of duplicated) {
+      problems.push({ severity: 'error', ...at, rule: 'F8-duplicate-mapping', message: `names ${c} more than once across control_id and also_implicates. One control, one mapping.` });
     }
     if (f.disposition === 'risk-accepted') {
       if (!f.accepted_by) problems.push({ severity: 'error', ...at, rule: 'F4-unnamed-acceptance', message: 'risk-accepted with no accepted_by. Acceptance carries a person, never a team and never a blank.' });
@@ -84,7 +100,7 @@ export function reconcile({ findings, controls }) {
       // a soft signal visible. A mapping is a judgement with a name on it, so anything not recorded
       // as `high` is unverified — including `null`, which is weaker than `low` because nobody even
       // said how sure they were.
-      unverified_mapping_open: open.filter((f) => f.control_id && f.mapping_confidence !== 'high').length,
+      unverified_mapping_open: open.filter((f) => mappingsOf(f).some(needsVerification)).length,
       by_kind: tally(findings, (f) => f.kind),
       by_document: tally(findings, (f) => f.source?.document ?? 'unknown'),
       by_disposition: tally(findings, (f) => f.disposition),

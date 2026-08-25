@@ -78,3 +78,46 @@ test('the summary counts open findings whose mapping is unverified', () => {
   const closed = reconcile({ findings: [f({ disposition: 'remediated', mapping_confidence: 'low' })], controls });
   assert.equal(closed.summary.unverified_mapping_open, 0);
 });
+
+// ── guards run over every mapping, not just the primary (issue #2) ───────────────────────────
+
+test('F2 and F3 check secondary mappings, and F8 catches a control named twice', () => {
+  const controls = [{ control_id: 'ctl.a.b.c', status: 'operating' }, { control_id: 'ctl.d.e.f', status: 'operating' }];
+  const f = (over) => ({
+    finding_id: 'F', kind: 'exception', disposition: 'open', source: { document: 'd' },
+    description: 'd', control_id: 'ctl.a.b.c', mapped_by: 'A Person', mapping_confidence: 'high', ...over,
+  });
+  const rules = (r) => r.problems.map((p) => p.rule);
+
+  // A dangling SECONDARY is exactly as broken as a dangling primary.
+  const dangling = reconcile({ findings: [f({ also_implicates: [{ control_id: 'ctl.nope.nope.nope', mapped_by: 'X' }] })], controls });
+  assert.ok(rules(dangling).includes('F2-dangling-control'));
+  assert.match(dangling.problems.find((p) => p.rule === 'F2-dangling-control').message, /also_implicates names ctl\.nope\.nope\.nope/);
+
+  // A secondary with no mapped_by is exactly as much of an unattributed judgement.
+  const unattributed = reconcile({ findings: [f({ also_implicates: [{ control_id: 'ctl.d.e.f' }] })], controls });
+  assert.ok(rules(unattributed).includes('F3-unattributed-mapping'));
+  assert.match(unattributed.problems.find((p) => p.rule === 'F3-unattributed-mapping').message, /also_implicates to ctl\.d\.e\.f/);
+
+  // The same control named twice is a record disagreeing with itself.
+  const dupe = reconcile({ findings: [f({ also_implicates: [{ control_id: 'ctl.a.b.c', mapped_by: 'X' }] })], controls });
+  assert.ok(rules(dupe).includes('F8-duplicate-mapping'));
+  assert.equal(dupe.problems.find((p) => p.rule === 'F8-duplicate-mapping').severity, 'error');
+
+  // A clean multi-control finding raises nothing.
+  const clean = reconcile({ findings: [f({ also_implicates: [{ control_id: 'ctl.d.e.f', mapped_by: 'A Person', mapping_confidence: 'high' }] })], controls });
+  assert.deepEqual(clean.problems, []);
+});
+
+test('the unverified count fires on a weak SECONDARY even when the primary is high', () => {
+  const controls = [{ control_id: 'ctl.a.b.c', status: 'operating' }, { control_id: 'ctl.d.e.f', status: 'operating' }];
+  const base = {
+    finding_id: 'F', kind: 'exception', disposition: 'open', source: { document: 'd' },
+    description: 'd', control_id: 'ctl.a.b.c', mapped_by: 'A Person', mapping_confidence: 'high',
+  };
+  const strong = reconcile({ findings: [{ ...base, also_implicates: [{ control_id: 'ctl.d.e.f', mapping_confidence: 'high', mapped_by: 'A' }] }], controls });
+  assert.equal(strong.summary.unverified_mapping_open, 0);
+
+  const weak = reconcile({ findings: [{ ...base, also_implicates: [{ control_id: 'ctl.d.e.f', mapping_confidence: 'low', mapped_by: 'A' }] }], controls });
+  assert.equal(weak.summary.unverified_mapping_open, 1, 'a weak secondary makes the finding unverified');
+});
