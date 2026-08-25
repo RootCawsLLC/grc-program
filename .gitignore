@@ -13,3 +13,4 @@ out-synthetic/
 # the oscal-cli npm wrapper drops a SARIF log per invocation into the working directory
 oscal-cli-sarif-log-*.json
 out-probe/
+out-simulation/

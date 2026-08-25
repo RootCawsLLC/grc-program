@@ -111,7 +111,7 @@ src/
   health.mjs  control health classification
   gap.mjs     four-direction gap assessment
   intake.mjs  audit finding reconciliation
-docs/         SOP, setup, day one, operating model, discovery questions, agent topology, probes, MCP, ADRs
+docs/         SOP, setup, day one, operating model, discovery questions, agent topology, probes, MCP, simulation, ADRs
 .claude/      agents, commands, skills and the validation hook. CLAUDE.md is in the root.
 ```
 

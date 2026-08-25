@@ -1,0 +1,35 @@
+scenario_id: scn.fixture.tail-driven
+statement: >
+  NOT REAL EVIDENCE — SYNTHETIC FIXTURE. Invented scenario used to exercise the Monte Carlo engine.
+  Every number below is made up and describes no real system. A tail-driven loss: rare, but an
+  order of magnitude larger when it happens, so most simulated years are quiet and the mean sits
+  well above the median. Paired with scn.fixture.frequency-driven precisely so the summary has to
+  report quiet_years and percentiles rather than a bare expected value, which would make these two
+  scenarios look interchangeable when they are nothing of the kind.
+asset: "FIXTURE — an invented asset"
+threat_actor: "FIXTURE — an invented actor"
+effect: integrity
+estimation_level: lef
+estimation_rationale: >
+  NOT REAL EVIDENCE. Estimated at LEF for the same reason as its pair: this fixture tests the
+  engine and models nothing.
+parameters:
+  loss_event_frequency:
+    min: 0.02
+    most_likely: 0.15
+    max: 0.8
+    unit: events_per_year
+    provenance:
+      derivation_level: calibrated-estimate
+      source: "FIXTURE — invented for tests. No workshop, no dataset, no human. Never cite this."
+      confidence_tier: 2
+  primary_loss_magnitude:
+    min: 500000
+    most_likely: 2000000
+    max: 9000000
+    unit: usd
+    provenance:
+      derivation_level: calibrated-estimate
+      source: "FIXTURE — invented for tests. No workshop, no dataset, no human. Never cite this."
+      confidence_tier: 2
+controls: [ctl.ai.agent.tool-allowlist]

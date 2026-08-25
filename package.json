@@ -23,7 +23,8 @@
     "emit": "node src/cli.mjs oscal",
     "probe": "node src/cli.mjs probe",
     "probe:check": "node scripts/check-probe-evidence.mjs",
-    "mcp": "node src/mcp/server.mjs"
+    "mcp": "node src/mcp/server.mjs",
+    "simulate": "node src/cli.mjs simulate"
   },
   "dependencies": {
     "@duckdb/node-api": "^1.5.5-r.4",

@@ -181,6 +181,66 @@ const commands = {
     return chain.intact ? 0 : 1;
   },
 
+  // FAIR Monte Carlo. Runs against fixtures/scenarios/ by default and REFUSES scenarios/, which
+  // is the point of the unit rather than a limitation of it.
+  async simulate() {
+    const { simulate, rankByRosi, DEFAULT_TRIALS, DEFAULT_SEED } = await import('./simulate.mjs');
+    const dir = opt('scenarios') ?? 'fixtures/scenarios';
+    const trials = Number(opt('trials') ?? DEFAULT_TRIALS);
+    const seed = Number(opt('seed') ?? DEFAULT_SEED);
+
+    const scenarios = await loadYamlDir(dir);
+    if (!scenarios.length) { console.log(`no scenarios in ${dir}`); return 1; }
+    const controls = await loadYamlDir('controls');
+
+    let result;
+    try {
+      result = simulate({ scenarios, trials, seed });
+    } catch (err) {
+      // The refusal IS the deliverable when pointed at scenarios/. Print it and exit non-zero.
+      console.log(`\n${err.message}\n`);
+      return 1;
+    }
+
+    const money = (n) => `$${Math.round(n).toLocaleString('en-US')}`;
+    console.log(`\nFAIR SIMULATION — ${scenarios.length} scenario(s), ${trials.toLocaleString('en-US')} trials, seed ${seed}\n`);
+    console.log(`  source: ${dir}${dir.startsWith('fixtures') ? '   ** NOT REAL EVIDENCE — synthetic fixtures **' : ''}\n`);
+
+    for (const s of result.scenarios) {
+      console.log(`  ${s.scenario_id}   confidence tier ${s.confidence_tier}`);
+      const y = s.summary;
+      console.log(`    mean ${money(y.mean).padStart(12)}   p50 ${money(y.p50).padStart(12)}   p90 ${money(y.p90).padStart(12)}   p99 ${money(y.p99).padStart(13)}`);
+      console.log(`    ${(y.quiet_years * 100).toFixed(1)}% of simulated years had no loss at all\n`);
+    }
+
+    const a = result.aggregate.summary;
+    console.log('  AGGREGATE');
+    console.log(`    mean ${money(a.mean).padStart(12)}   p50 ${money(a.p50).padStart(12)}   p90 ${money(a.p90).padStart(12)}   p99 ${money(a.p99).padStart(13)}`);
+    console.log(`    worst simulated year ${money(a.max)}   confidence tier ${result.aggregate.confidence_tier}`);
+    console.log(`\n    ${result.aggregate.independence_assumption.replace(/\n/g, '\n    ')}\n`);
+
+    console.log('  LOSS EXCEEDANCE (aggregate)');
+    for (const p of result.aggregate.exceedance_curve.filter((_, i) => i % 4 === 0)) {
+      console.log(`    P(annual loss > ${money(p.loss).padStart(12)}) = ${(p.probability_of_exceeding * 100).toFixed(1)}%`);
+    }
+
+    const ranking = rankByRosi({ result, controls });
+    console.log(`\n  ROSI — ${ranking.ranked.length} rankable, ${ranking.unrankable.length} not`);
+    for (const r of ranking.ranked) console.log(`    ${r.rosi.toFixed(2)}x  ${r.control_id}`);
+    for (const r of ranking.unrankable.slice(0, 3)) console.log(`    —      ${r.control_id}: ${r.reason}`);
+    if (ranking.unrankable.length > 3) console.log(`    …and ${ranking.unrankable.length - 3} more`);
+    if (ranking.note) console.log(`\n    ${ranking.note}`);
+
+    if (flag('json')) {
+      const { serialize } = await import('./oscal/common.mjs');
+      const out = opt('out') ?? 'out-simulation';
+      await mkdir(out, { recursive: true });
+      await writeFile(`${out}/simulation.json`, serialize({ ...result, rosi: ranking }));
+      console.log(`\n  wrote ${out}/simulation.json`);
+    }
+    console.log('');
+  },
+
   async baseline() {
     // The day-1 command. Everything at once, in the order you should read it.
     //

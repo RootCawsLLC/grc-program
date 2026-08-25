@@ -39,6 +39,22 @@ jobs:
       - name: Test
         run: npm test
 
+      # Smoke-tests the CLI path the unit tests do not reach, and pins the behaviour that IS the
+      # deliverable: the engine runs on calibrated fixtures and REFUSES the real register.
+      #
+      # If someone calibrates scenarios/ at the workshop, this step starts failing — deliberately.
+      # That is the moment to delete it, not to work around it.
+      - name: FAIR engine runs on fixtures and refuses the uncalibrated register
+        run: |
+          npm run simulate > /dev/null
+          if npm run simulate --silent -- --scenarios scenarios > /tmp/refusal.txt 2>&1; then
+            echo "::error::the engine simulated scenarios/ — every parameter there is derivation_level: assumed"
+            exit 1
+          fi
+          grep -q "refusing to simulate" /tmp/refusal.txt \
+            || { echo "::error::refused, but not with the expected message"; cat /tmp/refusal.txt; exit 1; }
+          echo "OK  fixtures simulate; scenarios/ refused with $(grep -c 'assumed, tier' /tmp/refusal.txt) named parameters"
+
       # Determinism gate, over the WHOLE package rather than one document. If an unchanged
       # inventory produces a different OSCAL package, the deterministic-UUID contract is broken and
       # every downstream diff becomes unreviewable.
