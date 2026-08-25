@@ -9,8 +9,15 @@ Help me extract structured findings from the audit report I have open, into
 Read `intake/README.md` and `schemas/finding.schema.json` first.
 
 **How this works.** I read the report and paste or describe sections to you. You draft the YAML.
-I check it. You do not read `intake/source/` — the settings deny it, deliberately, because audit
-reports are NDA-gated and watermarked to the recipient.
+I check it. **You do not read `intake/source/`.** Audit reports are NDA-gated and watermarked to the
+recipient, so the source document never reaches you and never reaches git.
+
+The protection is layered, and it is worth knowing which layer carries the weight: `.gitignore`
+stops a watermarked report ever reaching a commit; `tests/intake-source-guard.test.mjs` stops any
+repository code reading the directory; `Read(intake/source/**)` is denied in settings. The Bash
+deny entries are defence in depth and are **known incomplete** — see
+`docs/adr/0008-intake-source-is-not-readable.md`, which exists because this instruction previously
+claimed the settings prevented it outright, and a rehearsal showed they bind the Read tool only.
 
 **The discipline that keeps the record defensible:**
 

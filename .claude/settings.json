@@ -1,5 +1,5 @@
 {
-  "permissions": {
+    "permissions": {
     "allow": [
       "Bash(npm run:*)",
       "Bash(npm test:*)",
@@ -29,7 +29,11 @@
       "Bash(git push --force:*)",
       "Bash(git commit:*)",
       "Bash(curl:*)",
-      "Bash(wget:*)"
+      "Bash(wget:*)",
+      "Bash(cat intake/source*)",
+      "Bash(head intake/source*)",
+      "Bash(tail intake/source*)",
+      "Bash(cp intake/source*)"
     ]
   },
   "hooks": {
