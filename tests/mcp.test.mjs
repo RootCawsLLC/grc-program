@@ -1,6 +1,9 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { TOOLS, findTool, loadContext } from '../src/mcp/tools.mjs';
 import { assertReadOnly, buildServer } from '../src/mcp/server.mjs';
 
@@ -229,4 +232,46 @@ test('the server runs as a subprocess and answers over stdio', async () => {
   } finally {
     await client.close();
   }
+});
+
+// ── refusing a root that is not this repo ────────────────────────────────────────────────────
+//
+// THE BUG THESE PIN. Every loader degrades gracefully to an empty result, so pointed at the wrong
+// directory the server used to start cleanly, report "0 controls", and answer list_failing with
+// zero failing subjects — indistinguishable from good news. It shipped that way: registered at
+// local scope with no RECO_GRC_ROOT, it launched with cwd set to the parent workspace directory
+// and showed "✔ Connected" while knowing about nothing at all.
+
+test('loadContext REFUSES a directory that is not the reco-grc repo', async () => {
+  const parent = join(process.cwd(), '..');
+  await assert.rejects(() => loadContext(parent), /is not the reco-grc repository/);
+});
+
+test('the refusal names the root and says how to fix it', async () => {
+  let err;
+  try { await loadContext(tmpdir()); } catch (e) { err = e; }
+  assert.ok(err, 'a temp directory must be refused');
+  assert.ok(err.message.includes(tmpdir()), 'must name the offending root');
+  assert.match(err.message, /RECO_GRC_ROOT/, 'must say how to point it at the repo');
+  assert.match(err.message, /claude mcp add/, 'must give the actual command');
+  // The reasoning travels with the refusal, or it reads as a bug to route around.
+  assert.match(err.message, /indistinguishable\s+from good news/);
+});
+
+test('a directory with the right shape but the wrong package name is still refused', async () => {
+  // Guards against a sibling checkout — cui-control-plane also has schemas/ and controls/.
+  const dir = mkdtempSync(join(tmpdir(), 'grc-fakeroot-'));
+  try {
+    mkdirSync(join(dir, 'schemas'), { recursive: true });
+    writeFileSync(join(dir, 'schemas', 'control.schema.json'), '{}');
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'cui-control-plane' }));
+    await assert.rejects(() => loadContext(dir), /is not the reco-grc repository/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('the real repo root is still accepted', async () => {
+  const c = await loadContext(process.cwd());
+  assert.ok(c.controls.length > 0, 'the repo root must load a non-empty inventory');
 });

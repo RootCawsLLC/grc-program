@@ -102,7 +102,7 @@ npm run demo       the whole synthetic pipeline, end to end, on stamped fixtures
 npm run probe      AI agent control probes, paired guarded/unguarded, against a local target
 npm run mcp        read-only MCP server over the control graph (8 tools)
 npm run simulate   FAIR Monte Carlo; refuses uncalibrated scenarios, which is the point
-npm test           186 tests
+npm test           190 tests
 ```
 
 ## Day one

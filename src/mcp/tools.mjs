@@ -20,6 +20,7 @@
  */
 
 import { readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { loadYamlDir } from '../validate.mjs';
@@ -28,8 +29,51 @@ import { loadFindings, loadRequirementIndex, reconcile } from '../intake.mjs';
 import { assessAll, DEFICIENCIES, BANDS } from '../health.mjs';
 import { assessGaps } from '../gap.mjs';
 
+/**
+ * Refuses a root that is not this repository.
+ *
+ * WHY THIS IS FATAL RATHER THAN A WARNING. Every loader below degrades gracefully to an empty
+ * result: loadYamlDir catches a missing directory and returns [], loadAssertions returns [] on
+ * ENOENT. Pointed at the wrong directory the server therefore STARTS CLEANLY, reports
+ * "0 controls, 0 scenarios", and answers `list_failing` with zero failing subjects — which reads
+ * as good news rather than as a misconfiguration.
+ *
+ * That is not hypothetical. The server was registered with `claude mcp add` at local scope with no
+ * RECO_GRC_ROOT, so it launched with cwd set to the parent workspace directory and sat there
+ * showing "✔ Connected" while knowing about nothing at all. A healthy-looking server confidently
+ * reporting an empty inventory is the single worst output this repo can produce, and graceful
+ * degradation is what produced it.
+ *
+ * So the marker is checked before anything loads, and a bad root stops the process.
+ */
+async function assertRepoRoot(root) {
+  const marker = join(root, 'schemas', 'control.schema.json');
+  let name = null;
+  try {
+    name = JSON.parse(await readFile(join(root, 'package.json'), 'utf8')).name;
+  } catch { /* falls through to the same refusal */ }
+
+  if (!existsSync(marker) || name !== 'reco-grc') {
+    throw new Error(
+      `refusing to start: ${root} is not the reco-grc repository.\n` +
+      `  expected: schemas/control.schema.json and package.json name "reco-grc"\n` +
+      `  found:    marker ${existsSync(marker) ? 'present' : 'MISSING'}, package name ${JSON.stringify(name)}\n` +
+      '\n' +
+      '  Every loader here degrades to an empty result, so without this check the server would\n' +
+      '  start, report "0 controls", and answer "nothing is failing" — which is indistinguishable\n' +
+      '  from good news and is not true.\n' +
+      '\n' +
+      '  Set RECO_GRC_ROOT to an absolute path, which is required whenever the server is registered\n' +
+      '  outside the repo directory:\n' +
+      '    claude mcp add reco-grc -s user -e RECO_GRC_ROOT=<abs-path> -- node <abs-path>/src/mcp/server.mjs',
+    );
+  }
+  return root;
+}
+
 /** Loaded once per process and reused. The repo is a git checkout, not a live database. */
 export async function loadContext(root = process.cwd()) {
+  await assertRepoRoot(root);
   const [controls, scenarios, exceptions, findings, assertions] = await Promise.all([
     loadYamlDir(join(root, 'controls')),
     loadYamlDir(join(root, 'scenarios')),
