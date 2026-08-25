@@ -49,3 +49,32 @@ test('unmapped open findings are counted separately — that count is the headli
   assert.equal(summary.open, 2);
   assert.equal(summary.unmapped_open, 1);
 });
+
+// ── unverified mappings are counted in the summary (issue #3) ────────────────────────────────
+
+test('the summary counts open findings whose mapping is unverified', () => {
+  // Same shape as unmapped_open, and for the same reason: a count in the summary is what turns a
+  // soft signal into something somebody sees.
+  const f = (over) => ({
+    finding_id: 'F', kind: 'exception', disposition: 'open', source: { document: 'd' },
+    control_id: 'ctl.a.b.c', description: 'd', ...over,
+  });
+  const controls = [{ control_id: 'ctl.a.b.c', status: 'operating' }];
+
+  const high = reconcile({ findings: [f({ mapping_confidence: 'high' })], controls });
+  assert.equal(high.summary.unverified_mapping_open, 0);
+
+  for (const weak of ['low', 'medium', null]) {
+    const r = reconcile({ findings: [f({ mapping_confidence: weak })], controls });
+    assert.equal(r.summary.unverified_mapping_open, 1, `confidence ${weak} must count as unverified`);
+  }
+
+  // Unmapped is a different signal and must not be double-counted here.
+  const unmapped = reconcile({ findings: [f({ control_id: null, mapping_confidence: null })], controls });
+  assert.equal(unmapped.summary.unmapped_open, 1);
+  assert.equal(unmapped.summary.unverified_mapping_open, 0);
+
+  // A closed finding is not open, so it is in neither count.
+  const closed = reconcile({ findings: [f({ disposition: 'remediated', mapping_confidence: 'low' })], controls });
+  assert.equal(closed.summary.unverified_mapping_open, 0);
+});

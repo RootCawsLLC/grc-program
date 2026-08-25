@@ -80,6 +80,11 @@ export function reconcile({ findings, controls }) {
       total: findings.length,
       open: open.length,
       unmapped_open: open.filter((f) => !f.control_id).length,
+      // Same shape as unmapped_open, and for the same reason: a count in the summary is what makes
+      // a soft signal visible. A mapping is a judgement with a name on it, so anything not recorded
+      // as `high` is unverified — including `null`, which is weaker than `low` because nobody even
+      // said how sure they were.
+      unverified_mapping_open: open.filter((f) => f.control_id && f.mapping_confidence !== 'high').length,
       by_kind: tally(findings, (f) => f.kind),
       by_document: tally(findings, (f) => f.source?.document ?? 'unknown'),
       by_disposition: tally(findings, (f) => f.disposition),

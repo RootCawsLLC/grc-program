@@ -386,6 +386,11 @@ export const TOOLS = [
       'The number that matters most is `unmapped_open`: an open finding that maps to NO control in ' +
       'the inventory is the sharpest available signal that the control model has a hole, because ' +
       'an auditor found something the model has no place to put. ' +
+      'Read `unverified_mapping_open` alongside it: those findings ARE mapped, but at a confidence ' +
+      'below "high" or with none recorded, so the attribution is somebody\'s judgement and has not ' +
+      'been confirmed. A wrong mapping misdirects the remediation AND leaves the control that ' +
+      'should have been named reading clean, so these are not a softer version of unmapped — they ' +
+      'are the ones that hide. ' +
       'Source documents themselves are never in this repo — they are NDA-gated and watermarked. ' +
       'Only the structured extraction is committed.',
     inputSchema: {

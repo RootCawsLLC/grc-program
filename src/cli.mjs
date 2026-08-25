@@ -56,6 +56,11 @@ const commands = {
       console.log('  An unmapped open finding is the sharpest signal that the control model has a hole.');
       console.log('  Run `npm run gap -- --direction remediation` for the list.');
     }
+    if (summary.unverified_mapping_open) {
+      console.log(`\n  ${summary.unverified_mapping_open} open finding(s) carry an UNVERIFIED mapping — confidence below "high", or none recorded.`);
+      console.log('  Mapping is a judgement, not a lookup. An unverified one misdirects the remediation');
+      console.log('  and leaves the control that should have been named reading clean.');
+    }
     if (problems.length) {
       console.log('');
       for (const p of problems) console.log(`  ${p.severity.toUpperCase().padEnd(7)} ${p.rule.padEnd(26)} ${p.finding_id}\n          ${p.message}`);
