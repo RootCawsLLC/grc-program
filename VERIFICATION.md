@@ -151,3 +151,59 @@ Two categories of blank in this repo are decisions, not omissions:
   `scenarios/_CALIBRATION-STATUS.md`.
 
 Both get filled from Reco's own data, by a named human, in weeks 2 and 6.
+
+---
+
+# Re-verification — 25 August 2026 (S6)
+
+Every CONFIRMED claim above re-checked against primary sources: `trust.reco.ai`, `reco.ai/about-us`,
+`reco.ai/careers`, and the newsroom. Recorded here rather than quietly overwritten, for the same
+reason the corrections above are.
+
+## Corrected
+
+**3. The June 2026 leadership expansion — the count was wrong.**
+Recorded as a "seven-leader expansion". The 2026-06-08 release names **six**: Zoe Hillenmeyer (COO),
+Kristen Twining (SVP Americas Sales & Business Development), Dana Harduf (CHRO), Sandy Mathews
+(VP Product Marketing), Merav Keren Kindler (VP Marketing), Oliver Sears (UKI Sales Director). None
+is a security role, which is the part the original claim used the count to support — so the
+conclusion held while the number did not.
+
+## Added — not previously recorded
+
+**United Kingdom and Ireland.** The 2026-06-08 release says the company "has also placed a team on
+the ground in the United Kingdom and Ireland", and names a UKI Sales Director. Recorded with that
+wording intact: it is *personnel*, not a stated legal entity or office, and the careers page still
+lists only Florida, Tel Aviv and Chișinău. It reaches UK GDPR, and an Irish presence raises a
+lead-supervisory-authority question. Neither appears in the trust-center processing story — the same
+gap Moldova already had.
+
+**Dana Harduf, CHRO.** The counterpart for `ctl.people.workforce.security-training` and the likely
+owner of the HRIS the workforce collectors need. Previously there was no named person to ask.
+
+**Exela Pharma Sciences**, named customer, July 2026. Three named references now sit in regulated
+industries.
+
+## Confirmed unchanged
+
+All nine trust-center frameworks, with no HIPAA, PCI, FedRAMP or TX-RAMP anywhere · exactly five
+subprocessors, Bedrock and Anthropic still absent from the register · RTO 5 days, RPO 22 hours ·
+$85M total, $30M Series B · the SOC 2 bridge letter covering 1 Dec 2024 – 30 Nov 2025 is **still the
+most recent artifact**, so published coverage ends roughly nine months ago.
+
+## Inferences, re-tested
+
+**The CISO seat is vacant — strengthened.** No CISO on the leadership page, none among the six
+appointments, and **no CISO opening posted**. This is not a vacancy being filled at that level.
+
+**Reporting line likely CTO — strengthened, but the shape of the function changed.** There is no
+CISO requisition. What is posted is **two `Security & Trust Manager` roles, Dallas TX and Boston MA,
+both filed under R&D**, plus a Security Researcher. The function is being staffed at manager level
+and in plural, under engineering, rather than headed. `PROPOSAL.md` is written around a one-person
+programme; that assumption is now a day-one question rather than a premise.
+
+## Method correction
+
+**`reco.ai/about-us` is not a complete leadership source.** It lists four people and omits the COO,
+who is demonstrably in post. Reading absence there as departure would have produced a confident,
+wrong finding — it nearly did. Cross-check leadership against the releases.
