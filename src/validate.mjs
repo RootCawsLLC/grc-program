@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import Ajv from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
+import { loadRoster, authorityScopes, heldScopeOn, uncoveredScopes } from './lib/authority.mjs';
 
 /**
  * Schema validation plus the guards.
@@ -35,6 +36,8 @@ export async function validateAll({ root = '.' } = {}) {
   const controls   = await loadYamlDir(join(root, 'controls'));
   const exceptions = await loadYamlDir(join(root, 'exceptions'));
   const scenarios  = await loadYamlDir(join(root, 'scenarios'));
+  const roster     = await loadRoster(root);
+  const scopes     = await authorityScopes(root);
 
   const check = (schema, records, label) => {
     const v = ajv.compile(schema);
@@ -50,11 +53,21 @@ export async function validateAll({ root = '.' } = {}) {
   check(await loadSchema('exception.schema.json', root), exceptions, 'exception');
   check(await loadSchema('scenario.schema.json',  root), scenarios,  'scenario');
 
-  problems.push(...guards({ controls, exceptions, scenarios }));
-  return { problems, counts: { controls: controls.length, exceptions: exceptions.length, scenarios: scenarios.length } };
+  // The roster files are single documents, not a directory of records, so they are checked here
+  // rather than through check(). An absent file is not a schema failure — G10/G11/G12 report it.
+  for (const [key, schemaName] of [['people', 'person.schema.json'], ['teams', 'team.schema.json']]) {
+    if (!roster[key].present) continue;
+    const v = ajv.compile(await loadSchema(schemaName, root));
+    if (!v({ [key]: roster[key].records })) {
+      for (const e of v.errors) problems.push({ severity: 'error', file: roster[key]._file, rule: `${key}-schema`, message: `${e.instancePath || '/'} ${e.message}` });
+    }
+  }
+
+  problems.push(...guards({ controls, exceptions, scenarios, roster, scopes }));
+  return { problems, counts: { controls: controls.length, exceptions: exceptions.length, scenarios: scenarios.length, people: roster.people.records.length, teams: roster.teams.records.length } };
 }
 
-export function guards({ controls, exceptions, scenarios }) {
+export function guards({ controls, exceptions, scenarios, roster, scopes }) {
   const p = [];
   const scenarioIds = new Set(scenarios.map((s) => s.scenario_id));
   const controlIds  = new Set(controls.map((c) => c.control_id));
@@ -125,6 +138,74 @@ export function guards({ controls, exceptions, scenarios }) {
       }
       if (param.min > param.most_likely || param.most_likely > param.max) {
         p.push({ severity: 'error', file: s._file, rule: 'G9-inverted-range', message: `${s.scenario_id}.${name} range is inverted (${param.min}/${param.most_likely}/${param.max})` });
+      }
+    }
+  }
+
+
+  // ---- Authority model (G10-G12) --------------------------------------------------------
+  // Skipped entirely when no roster is passed, which is the unit-test path. validateAll always
+  // passes one, so a real build always runs these — including when the files are absent.
+  if (roster) {
+    const teams  = roster.teams.records ?? [];
+    const people = roster.people.records ?? [];
+    const liveTeams = new Set(teams.filter((t) => !t.dissolved_on).map((t) => t.team_id));
+
+    // G10 - control.owner resolves to a team that exists. Until now the slug pointed at nothing:
+    // "owner: ml-platform" validated whether or not such a team had ever existed, so a team
+    // reorganised out from under its controls left them orphaned with no signal anywhere.
+    if (roster.teams.present) {
+      for (const c of controls) {
+        if (!c.owner) continue;
+        if (!liveTeams.has(c.owner)) {
+          p.push({ severity: 'error', file: c._file, control_id: c.control_id, rule: 'G10-unknown-owner',
+            message: `owner "${c.owner}" is not a live team in roster/teams.yaml. An orphaned control has accountability on paper and none in fact.` });
+        }
+      }
+    } else {
+      p.push({ severity: 'warning', file: roster.teams._file, rule: 'G10-no-team-roster',
+        message: 'roster/teams.yaml is absent — every control owner is currently unverifiable.' });
+    }
+
+    // G11 - every authority scope has an eligible non-principal approver. A scope that only the
+    // principal can approve is an undelegated control: it will be approved by whoever is available
+    // rather than whoever is entitled, and that is invisible until someone audits the approvals.
+    // Warning rather than error because early in a programme it is TRUE and blocking the build
+    // over an unfinished delegation would just teach people to skip validation.
+    if (scopes?.length) {
+      const uncovered = uncoveredScopes(people, scopes, today);
+      if (uncovered.length) {
+        p.push({ severity: 'warning', file: roster.people._file, rule: 'G11-undelegated-scope',
+          message: `${uncovered.length} of ${scopes.length - 1} authority scopes have no non-principal approver as of ${today}: ${uncovered.join(', ')}` });
+      }
+    }
+
+    // G12 - the approver on an exception was entitled to approve it ON THE DAY THEY DID.
+    // This is the guard that catches EX-0001. "approved_by" has always been required, but nothing
+    // resolved it, so a placeholder string passed CI. Entitlement is checked against approved_on
+    // rather than today because authority is a fact about a moment - an approval signed before a
+    // delegation began, or after the approver left, was never authorised, and that stops being
+    // reconstructable the moment the org chart is overwritten.
+    const REASON = {
+      'unknown-person': () => 'no such person_id in roster/people.yaml',
+      'departed': (v) => `that person had already left (${v.detail})`,
+      'no-grant': () => 'that person holds no exception.approve grant',
+      'grant-not-yet-effective': (v) => `the delegation did not exist yet (${v.detail})`,
+      'grant-expired': (v) => `the delegation had ended (${v.detail})`,
+    };
+    for (const ex of exceptions) {
+      if (!ex.approved_by) continue;
+      const at = { file: ex._file, control_id: ex.control_id };
+      if (!roster.people.present || !people.length) {
+        p.push({ severity: 'warning', ...at, rule: 'G12-unverifiable-approval',
+          message: `${ex.exception_id} names approver "${ex.approved_by}", but roster/people.yaml holds no people - the approval cannot be checked against any delegation.` });
+        continue;
+      }
+      const person = people.find((x) => x.person_id === ex.approved_by);
+      const verdict = heldScopeOn(person, 'exception.approve', ex.approved_on);
+      if (!verdict.held) {
+        p.push({ severity: 'error', ...at, rule: 'G12-unentitled-approval',
+          message: `${ex.exception_id} was approved by "${ex.approved_by}" on ${ex.approved_on}: ${(REASON[verdict.reason] ?? (() => verdict.reason))(verdict)}` });
       }
     }
   }

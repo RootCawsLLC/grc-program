@@ -1,0 +1,33 @@
+# The referent for control.owner. Every slug here is DERIVED from the owners already
+# declared across controls/ — nothing invented. Names and missions are placeholders
+# where the real team name is not established; the team_id is the part that must be
+# right, because it is what the controls point at.
+#
+# lead_person_id is null throughout on purpose. Who leads these teams is an open
+# discovery item (see docs/DISCOVERY.md), and a guessed name in the system of record
+# is worse than an honest null.
+teams:
+  - team_id: grc
+    name: GRC
+    lead_person_id: null
+    mission: Owns the control inventory, the evidence pipeline, and the assertion record.
+
+  - team_id: it-identity
+    name: IT / Identity
+    lead_person_id: null
+    mission: Owns enterprise identity, SSO, and workforce access lifecycle.
+
+  - team_id: ml-platform
+    name: ML Platform
+    lead_person_id: null
+    mission: Owns model serving, inference infrastructure, and the model inventory.
+
+  - team_id: platform-engineering
+    name: Platform Engineering
+    lead_person_id: null
+    mission: Owns cloud infrastructure, deployment, and platform-layer controls.
+
+  - team_id: product-engineering
+    name: Product Engineering
+    lead_person_id: null
+    mission: Owns the product codebase and application-layer controls.

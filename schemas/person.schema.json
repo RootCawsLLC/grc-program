@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reco.ai/ns/grc/person.schema.json",
+  "title": "Roster person",
+  "description": "A named human who can approve things. Controls are owned by TEAMS (see control.schema.json owner) because person-owned controls die when the person leaves. But an approval is an ACT, and an act has a person behind it — so approved_by resolves here. This file exists to make 'who was entitled to approve that' answerable from the repo rather than from memory.",
+  "type": "object",
+  "required": ["people"],
+  "additionalProperties": false,
+  "properties": {
+    "people": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/person" }
+    }
+  },
+  "$defs": {
+    "scope": {
+      "type": "string",
+      "description": "What a person is entitled to approve. Tiering on risk.accept is by QUANTIFIED loss against the materiality threshold, not by H/M/L — this is the join between the CRQ output and who is allowed to sign.",
+      "enum": [
+        "risk.accept.lt_materiality",
+        "risk.accept.ge_materiality",
+        "exception.approve",
+        "exception.extend",
+        "control.owner.reassign",
+        "control.retire",
+        "soa.approve",
+        "policy.issue",
+        "access.review.signoff",
+        "incident.declare",
+        "breach.determine",
+        "data.classification.change",
+        "vendor.security.approve",
+        "subprocessor.publish",
+        "ai.system.determination",
+        "customer.security.commit",
+        "wildcard"
+      ]
+    },
+    "grant": {
+      "type": "object",
+      "required": ["scope", "from"],
+      "additionalProperties": false,
+      "description": "A scope held over a date range. Grants are dated because entitlement is a fact about a moment: an approval signed before the grant began, or after it ended, was not authorised — and that is only checkable if the range is on the record.",
+      "properties": {
+        "scope": { "$ref": "#/$defs/scope" },
+        "from": { "type": "string", "format": "date", "description": "First date the grant is effective, inclusive." },
+        "until": { "type": "string", "format": "date", "description": "Last date the grant is effective, inclusive. Absent = still held." },
+        "basis": { "type": "string", "description": "Where the delegation comes from — a board resolution, a signed delegation of authority, an offer letter. Free text, but an empty basis is a delegation nobody can produce." }
+      }
+    },
+    "person": {
+      "type": "object",
+      "required": ["person_id", "full_name", "role"],
+      "additionalProperties": false,
+      "properties": {
+        "person_id": {
+          "type": "string",
+          "pattern": "^per\\.[a-z0-9-]+$",
+          "description": "per.<slug>. Stable forever, never reused — approvals in already-issued artifacts point here."
+        },
+        "full_name": { "type": "string", "minLength": 2 },
+        "role": { "type": "string", "minLength": 2 },
+        "teams": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "team_ids from roster/teams.yaml. Advisory: team membership does not confer authority, grants do."
+        },
+        "is_principal": {
+          "type": "boolean",
+          "default": false,
+          "description": "The fallback approver of last resort. Exactly one person should carry this. A programme where the principal is the only approver for a scope is a programme with an undelegated control — see G11."
+        },
+        "started_on": { "type": "string", "format": "date" },
+        "departed_on": {
+          "type": "string",
+          "format": "date",
+          "description": "Last date employed. An approval dated after this is not valid however the grant reads."
+        },
+        "authority": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/grant" },
+          "description": "Dated scope grants. Empty means this person approves nothing."
+        }
+      }
+    }
+  }
+}
