@@ -10,9 +10,24 @@ name: continuous-controls-monitoring
 # Note the ordering: Scytale is LAST and it is a push. This repo produces the evidence; Scytale
 # renders it for the auditor. See docs/adr/0001-scytale-is-a-sink.md.
 
+# SCHEDULE DISABLED until the pipeline this file describes actually exists. See issue #5.
+#
+# Four of the five commands below are not implemented: `collect`, `assert`, `drift` and `route` are
+# absent from src/cli.mjs, which defines only validate, intake, health, gap, oscal, push, probe,
+# simulate, baseline and help. The collectors are written against injected clients and have never
+# run against a live tenant (BUILD-ORDER B2 is "Blocked on: the OIDC role"; B5's IdP is still the
+# placeholder <IdP>). Every scheduled run since 2026-08-23 has failed, and every one of them would
+# still fail with the credentials restored — just at a later step.
+#
+# It is switched off rather than left red because a monitor that cries wolf daily from before it
+# was built is worse than one that is off: the first real failure looks identical to the thirty
+# fake ones preceding it, and by then nobody opens the mail. `workflow_dispatch` stays so the job
+# can still be exercised deliberately.
+#
+# Restore the schedule when `collect` exists and a manual dispatch has run green once:
+#   schedule:
+#     - cron: '0 6 * * *'   # 06:00 UTC daily, ahead of the US working day
 on:
-  schedule:
-    - cron: '0 6 * * *'   # 06:00 UTC daily, ahead of the US working day
   workflow_dispatch:
 
 permissions:
