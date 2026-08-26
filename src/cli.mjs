@@ -273,5 +273,29 @@ The control repo is the system of record. Everything else is a projection of it.
   },
 };
 
-const code = await (commands[cmd] ?? commands.help)();
+/**
+ * An unknown command is a failure, not a request for help.
+ *
+ * This used to be `commands[cmd] ?? commands.help`, and `help()` returns undefined, so
+ * `node src/cli.mjs collect --all` printed the help text and exited 0. `ccm.yml` invokes four
+ * commands that do not exist - collect, assert, drift, route - and every one of them therefore
+ * SUCCEEDED. Restoring that workflow's credentials would have produced a green
+ * continuous-controls-monitoring run that collected no evidence at all, emitted OSCAL over stale
+ * state, and committed nothing, with a check mark against it.
+ *
+ * Same shape as the regression recorded at the top of tests/cli.test.mjs, where `baseline` stopped
+ * after `intake` and reported success having run a third of the assessment. Reporting success for
+ * work that did not happen is the failure mode this repository exists to make impossible; a CLI
+ * that does it to its own operator is not exempt.
+ *
+ * A BARE invocation is different and stays exit 0: `node src/cli.mjs` with no argument is someone
+ * asking what this thing does, and answering that is not an error.
+ */
+const handler = commands[cmd];
+if (!handler) {
+  if (cmd) console.error(`grc: unknown command "${cmd}"\n`);
+  await commands.help();
+  process.exit(cmd ? 1 : 0);
+}
+const code = await handler();
 process.exit(code ?? 0);
