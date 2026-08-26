@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reco.ai/ns/grc/team.schema.json",
+  "title": "Roster team",
+  "description": "The referent for control.owner. Today an owner slug points at nothing — 'owner: ml-platform' is a string that validates whether or not such a team exists. This file makes the slug resolvable, so an owner that has been reorganised out of existence becomes a build failure instead of a control nobody notices is orphaned.",
+  "type": "object",
+  "required": ["teams"],
+  "additionalProperties": false,
+  "properties": {
+    "teams": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["team_id", "name"],
+        "additionalProperties": false,
+        "properties": {
+          "team_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Matches the control.owner slug exactly. Stable — renaming a team is a migration across every control that names it, not an edit here."
+          },
+          "name": { "type": "string", "minLength": 2 },
+          "lead_person_id": {
+            "type": ["string", "null"],
+            "description": "person_id of the team lead, or null where genuinely unknown. Null is honest; a guessed name is not."
+          },
+          "mission": { "type": "string" },
+          "dissolved_on": {
+            "type": "string",
+            "format": "date",
+            "description": "Set when a team stops existing. Controls still owned by a dissolved team are orphaned — that is the finding."
+          }
+        }
+      }
+    }
+  }
+}

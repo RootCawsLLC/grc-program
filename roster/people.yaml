@@ -1,0 +1,29 @@
+# DELIBERATELY EMPTY.
+#
+# Populating this needs two things this repo does not yet have: the real roster, and
+# a resolved answer to who owns the ISMS after the CISO transition. EX-0001 already
+# carries that as a placeholder approver with a note saying a human will not accept
+# it in an audit.
+#
+# The empty list is not inert. G11 reports every authority scope with no eligible
+# approver, and G12 reports every approval that cannot be verified against a grant.
+# Both fire on this file as it stands — which is the correct reading of the situation,
+# rather than a green build over an unanswerable question.
+#
+# Shape, for when it is filled in:
+#
+#   people:
+#     - person_id: per.example
+#       full_name: A Real Person
+#       role: Head of Security
+#       teams: [grc]
+#       is_principal: false
+#       started_on: '2026-09-08'
+#       authority:
+#         - scope: exception.approve
+#           from: '2026-09-08'
+#           basis: Delegation of authority, signed 2026-09-08
+#         - scope: risk.accept.lt_materiality
+#           from: '2026-09-08'
+#           basis: Delegation of authority, signed 2026-09-08
+people: []
