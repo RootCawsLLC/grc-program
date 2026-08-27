@@ -83,10 +83,25 @@ jobs:
         # strictly worse than no evidence. src/push/scytale.mjs refuses to send until then.
         run: node src/cli.mjs push
 
-      - name: Commit the evidence record
-        run: |
-          git config user.name  "ccm-bot"
-          git config user.email "ccm-bot@reco.ai"
-          git add out/ evidence/
-          git diff --staged --quiet || git commit -m "ccm: $(date -u +%Y-%m-%d)"
-          git push
+      # NOTHING IS COMMITTED BACK, DELIBERATELY. There used to be a "Commit the evidence record"
+      # step here that ran `git add out/ evidence/`, committed as ccm-bot, and pushed. It could
+      # never have worked — `out/` is gitignored, `evidence/` has never existed, and the job holds
+      # a read-only token — so it staged nothing, short-circuited on `git diff --staged --quiet`,
+      # and exited 0 every time. See #7.
+      #
+      # It was removed rather than repaired, because making it work would have broken two things
+      # this repository decided on purpose:
+      #
+      #   1. A bot pushing to main bypasses the control. "A pull request is the only path to
+      #      normative. A human merges. The merge is the control." A scheduled job committing
+      #      auditor-facing artifacts straight to the default branch is exactly what that rule
+      #      exists to prevent, and it would need contents: write to do it.
+      #   2. Git is not the evidence store. Control definitions, exceptions and scenarios are
+      #      normative and live here. Evidence is a time-indexed, snapshotted warehouse (B1/B22);
+      #      `out/` is a build product and gitignored on purpose. Committing it would duplicate
+      #      the warehouse in a medium that cannot answer "what was true on 14 March".
+      #
+      # Where a run's evidence goes instead: OSCAL assessment results to `out/` for this job, and
+      # onward to Scytale by push, per ADR-0001. Making that survive the runner is warehouse work
+      # (B1/B22), not a git push from CI — and it is still open. Do not solve it by re-adding a
+      # commit step.
