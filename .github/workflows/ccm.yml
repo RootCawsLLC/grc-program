@@ -2,7 +2,7 @@ name: continuous-controls-monitoring
 
 # The operating heartbeat. A one-person program does not survive a manual collection step.
 #
-# Action pins verified 2026-08-21 — see the note in ci.yml.
+# Action pins verified 2026-08-27 — see the note in ci.yml.
 #
 # Sequence: collect full state -> load time-indexed -> build assertions -> compute variance ->
 # route exceptions -> emit OSCAL -> push to Scytale.
@@ -43,12 +43,12 @@ jobs:
   collect:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with: { node-version: '22', cache: 'npm' }
       - run: npm ci
 
-      - uses: aws-actions/configure-aws-credentials@5579c002bb4778aa43395ef1df492868a9a1c83f # v4.0.2
+      - uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: ${{ secrets.CCM_READONLY_ROLE_ARN }}
           aws-region: us-east-1
