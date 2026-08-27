@@ -144,7 +144,7 @@ export async function collect({
   }
 
   const manifest = {
-    schema: 'reco-grc.collection/v1',
+    schema: 'grc-program.collection/v1',
     run_at: new Date().toISOString().replace(/\.\d+Z$/, 'Z'),
     mode: 'fixture',
     fixture: true,                       // the stamp, carried into everything derived from this run

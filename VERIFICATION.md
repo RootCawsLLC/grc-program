@@ -79,12 +79,12 @@ derivative SCF content. This is the entire basis of ADR-0003.
 [Terms](https://securecontrolsframework.com/terms-and-conditions) ·
 [Commercial licence](https://securecontrolsframework.com/commercial-license)
 
-**Reco on Amazon Bedrock** — confirmed, and stronger than the draft claimed. The
+**The organization on Amazon Bedrock** — confirmed, and stronger than the draft claimed. The
 [AWS ML blog post](https://aws.amazon.com/blogs/machine-learning/how-reco-transforms-security-alerts-using-amazon-bedrock/)
 of **23 March 2026** is co-authored by **Tal Shapira (Co-founder & CTO)** and Tamir Friedman of
-Reco. It states the Alert Story Generator runs on **Anthropic Claude Sonnet in Amazon Bedrock**,
+the organization. It states the Alert Story Generator runs on **Anthropic Claude Sonnet in Amazon Bedrock**,
 on EKS with RDS for PostgreSQL, CloudFront and WAF, using Bedrock prompt caching. Friedman's
-biography describes him leading "Reco's generative-AI solutions, built on Amazon Bedrock and
+biography describes him leading "the organization's generative-AI solutions, built on Amazon Bedrock and
 Anthropic Claude, **including multiple production AI agents**."
 
 Two things follow. The AI agent control work is not speculative — production agents are processing
@@ -124,9 +124,9 @@ deliberately in `PROPOSAL.md` and `docs/DISCOVERY.md`.
 | SOC 2 observation window runs 1 Dec – 30 Nov | **Inferred** from the published bridge letter (1 Dec 2024 – 30 Nov 2025). The report period is behind the NDA gate. **This drives the entire phasing — confirm first.** |
 | SOC 2 audit firm | Not named on any public surface |
 | ISO 27001 / 42001 certification body, certificate numbers, expiry dates | Not published; certificates are NDA-gated |
-| Whether the ISO certificates appear in an accreditation registry | IAF CertSearch is JS-rendered and account-gated; UKAS and ANAB directories returned nothing for "Recolabs"/"Reco". **Could not query — not a finding of non-accreditation.** |
+| Whether the ISO certificates appear in an accreditation registry | IAF CertSearch is JS-rendered and account-gated; UKAS and ANAB directories returned nothing for "Recolabs"/"the organization". **Could not query — not a finding of non-accreditation.** |
 | CISO seat currently vacant | **Inferred.** The June 2024 CISO announcement is live; that person is no longer on the leadership page and holds a role elsewhere; the June 2026 seven-leader expansion named no CISO. No successor announced. |
-| Reco headcount (~141–170) | Aggregator sources only (PitchBook, Unify). No company-published figure. Not used in the proposal. |
+| The organization headcount (~141–170) | Aggregator sources only (PitchBook, Unify). No company-published figure. Not used in the proposal. |
 | Whether Scytale has any read API at all | One undocumented pricing line. Genuinely unknown. |
 | Scytale API tier gating | Pricing-table checkmarks render as images; three extraction methods failed |
 | Scytale first-party endpoint agent | Absent from the site, from 710 G2 reviews, and from every review blog. Probably absent; not provably so. |
@@ -150,7 +150,7 @@ Two categories of blank in this repo are decisions, not omissions:
   confident-looking min/most-likely/max is the exact failure mode FAIR exists to prevent. See
   `scenarios/_CALIBRATION-STATUS.md`.
 
-Both get filled from Reco's own data, by a named human, in weeks 2 and 6.
+Both get filled from the organization's own data, by a named human, in weeks 2 and 6.
 
 ---
 

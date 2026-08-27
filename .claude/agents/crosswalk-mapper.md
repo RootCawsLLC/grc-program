@@ -44,5 +44,5 @@ the build. That grep is the enforcement; `docs/adr/0003-no-framework-text.md` is
 
 - Do not assert a mapping to make a coverage gap disappear. A false mapping is worse than an open
   gap, because the gap is visible and the false mapping is not.
-- Do not map to a framework Reco has not committed to. Ask first.
+- Do not map to a framework the organization has not committed to. Ask first.
 - Say which mappings you were unsure about. Every time.

@@ -11,7 +11,7 @@ import { createHash } from 'node:crypto';
  * The namespace is committed and never rotated. Rotating it orphans every previously issued
  * identifier in every artifact an auditor already holds.
  */
-export const RECO_GRC_NAMESPACE = 'a2f1c0e4-8b3d-5f7a-9c21-6d4e8b0f13a7';
+export const GRC_PROGRAM_NAMESPACE = 'a2f1c0e4-8b3d-5f7a-9c21-6d4e8b0f13a7';
 
 function uuidToBytes(uuid) {
   const hex = uuid.replace(/-/g, '');
@@ -19,7 +19,7 @@ function uuidToBytes(uuid) {
   return Buffer.from(hex, 'hex');
 }
 
-export function uuid5(name, namespace = RECO_GRC_NAMESPACE) {
+export function uuid5(name, namespace = GRC_PROGRAM_NAMESPACE) {
   if (typeof name !== 'string' || name.length === 0) {
     throw new TypeError('uuid5 requires a non-empty name');
   }

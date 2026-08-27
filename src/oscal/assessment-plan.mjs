@@ -21,7 +21,7 @@ export function emitAssessmentPlan({ controls, assertions = [] }) {
   return {
     'assessment-plan': {
       uuid: ids.document('assessment-plan'),
-      metadata: metadata({ title: 'Reco continuous control assessment plan', assertions }),
+      metadata: metadata({ title: 'GRC Program continuous control assessment plan', assertions }),
       'import-ssp': { href: ref('ssp') },
       'reviewed-controls': {
         description:
@@ -47,8 +47,8 @@ export function emitAssessmentPlan({ controls, assertions = [] }) {
       tasks: sorted.map(collectionTask),
       'back-matter': {
         resources: [
-          resource('ssp', 'Reco system security plan (generated)', FILENAMES.ssp),
-          resource('catalog', 'Reco house control catalog', FILENAMES.catalog),
+          resource('ssp', 'GRC Program system security plan (generated)', FILENAMES.ssp),
+          resource('catalog', 'GRC Program house control catalog', FILENAMES.catalog),
         ],
       },
     },

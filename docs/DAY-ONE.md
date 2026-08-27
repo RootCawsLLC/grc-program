@@ -33,14 +33,14 @@ paths, line endings, Node version — and skipping any of them costs you an hour
 Linux it is one command.
 
 ```bash
-git clone <your-reco-repo> reco-grc && cd reco-grc
+git clone <your-repo> grc-program && cd grc-program
 npm ci
 npm test           # 75 tests. If these do not pass, stop and fix that first.
 npm run validate   # 0 errors, 0 warnings
 npm run baseline   # intake + health + gap against the seed inventory
 ```
 
-That last command runs against nine seed controls and ten seed scenarios, none of which are Reco's
+That last command runs against nine seed controls and ten seed scenarios, none of which are the organization's
 yet. It will look bleak — that is correct. It is showing you the shape of the output, not the state
 of the company.
 
@@ -59,7 +59,7 @@ anything you will do this week and nothing in Hour 4 onward works without them.
 | Identity provider | `ctl.iam.enterprise-sso.mfa` | read-only: users, factors |
 | GitHub org | `ctl.appsec.ci-cd.branch-protection` | read-only: repo + org admin read |
 | HRIS | `ctl.people.workforce.security-training` | read-only roster, **all three entities** |
-| Reco tenant (the product) | ADR-0005 dogfooding | admin on an internal tenant |
+| the organization tenant (the product) | ADR-0005 dogfooding | admin on an internal tenant |
 
 Ask for read-only everywhere and say why unprompted: the pipeline that measures
 `ctl.iam.cloud-platform.mfa` does not get to violate it. That sentence buys you more credibility
@@ -80,7 +80,7 @@ Load the `soc2-report-anatomy` skill (`/intake-soc2` pulls it in) and work in th
    sizes as you go — every `n=25` against a population of several hundred is a line in your business
    case, stated in the auditor's own words rather than yours.
 3. **Section 3.** The system description. This is the closest thing to an existing control inventory
-   Reco has. Read it to learn what the current control model actually is, and flag every narrative
+   the organization has. Read it to learn what the current control model actually is, and flag every narrative
    that reads as layer-munged. Those are your split candidates for day 91 — **not before**.
 4. **Subservice organisations.** Compare carve-outs against the five published subprocessors. A
    mismatch is a real finding and it is one you can raise in week one without stepping on anyone.
@@ -118,7 +118,7 @@ references — keep them; `F7-unclaused-nonconformity` will tell you when you ha
 
 Ask, plainly and early: **who owns the ISMS and AIMS management review today?**
 
-ISO 27001 Clause 9.3 and ISO 42001 Clause 9.3 both require top-management review. Reco announced its
+ISO 27001 Clause 9.3 and ISO 42001 Clause 9.3 both require top-management review. The organization announced its
 first CISO in June 2024; that person is no longer on the leadership page and holds a role elsewhere,
 and the June 2026 seven-leader expansion named no successor. If nobody currently owns it, that is a
 nonconformity waiting to be raised at the next surveillance audit.

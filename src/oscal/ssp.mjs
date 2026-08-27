@@ -40,7 +40,7 @@ export function emitSsp({ controls, assertions = [], baseline = null }) {
     'system-security-plan': {
       uuid: ids.document('ssp'),
       metadata: {
-        ...metadata({ title: 'Reco system security plan (generated)', assertions }),
+        ...metadata({ title: 'GRC Program system security plan (generated)', assertions }),
         // A role-id used anywhere in the document must be DECLARED here. OSCAL indexes role ids
         // and reports an unresolved key reference, not a missing-field error, so the failure shows
         // up as `oscal-index-metadata-role-id: Key reference [control-owner] not found` at the use
@@ -70,9 +70,9 @@ export function emitSsp({ controls, assertions = [], baseline = null }) {
       },
       'back-matter': {
         resources: [
-          resource('catalog', 'Reco house control catalog', FILENAMES.catalog),
-          resource(`profile|${framework}`, `Reco baseline — ${framework}`, profileFilename(framework)),
-          resource('component-definition', 'Reco control components', FILENAMES['component-definition']),
+          resource('catalog', 'GRC Program house control catalog', FILENAMES.catalog),
+          resource(`profile|${framework}`, `GRC Program baseline — ${framework}`, profileFilename(framework)),
+          resource('component-definition', 'GRC Program control components', FILENAMES['component-definition']),
         ],
       },
     },
@@ -82,8 +82,8 @@ export function emitSsp({ controls, assertions = [], baseline = null }) {
 function systemCharacteristics(framework, controls, assertions) {
   const measured = assertions.length;
   return {
-    'system-ids': [{ id: 'reco-grc', 'identifier-type': 'https://reco.ai/ns/grc/system-id' }],
-    'system-name': 'Reco',
+    'system-ids': [{ id: 'grc-program', 'identifier-type': 'https://reco.ai/ns/grc/system-id' }],
+    'system-name': 'GRC Program',
     description:
       `The system as described by ${controls.length} controls in the house catalog, tailored to the ` +
       `${framework} baseline. ${measured} of them carry an assertion record; the remainder are ` +

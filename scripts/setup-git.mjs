@@ -34,7 +34,7 @@ const topLevel = gitValue('rev-parse', '--show-toplevel');
 if (topLevel === null) process.exit(0);
 
 /**
- * Only arm the repo we are actually the root of. If reco-grc has been vendored into some larger
+ * Only arm the repo we are actually the root of. If grc-program has been vendored into some larger
  * checkout, the enclosing repo has its own identity rules and none of this applies.
  *
  * COMPARE REAL PATHS, NOT STRINGS. `packageRoot` comes from import.meta.url and reflects how node
@@ -109,7 +109,7 @@ if (!hookPresent) {
   //
   // Non-fatal on purpose. An extracted tarball or a vendored copy must still be able to
   // `npm install`, and breaking that would be a worse failure than the one this warns about.
-  console.warn(`reco-grc: WARNING - the commit-identity guard is NOT armed in this tree.`);
+  console.warn(`grc-program: WARNING - the commit-identity guard is NOT armed in this tree.`);
   console.warn(`  tree:    ${packageRoot}`);
   console.warn(`  missing: ${HOOKS_PATH}/pre-commit`);
   console.warn('');
@@ -122,15 +122,15 @@ if (!hookPresent) {
   console.warn('    Committing in the primary checkout is not refused here either.');
   console.warn('');
   console.warn('  Fix: work in a tree that contains .githooks/, which every checkout of main does:');
-  console.warn('    node ~/.claude/scripts/worktree.mjs add ~/agent-workspace/reco-grc <branch>');
+  console.warn('    node ~/.claude/scripts/worktree.mjs add ~/agent-workspace/grc-program <branch>');
   process.exit(0);
 }
 
 // Report only when something moved: a silent no-op on every `npm install` is noise, but a
 // silent *change* to how commits are authored is worse.
 if (changed.length > 0) {
-  console.log(`reco-grc: armed the commit-identity guard (${changed.join(', ')}).`);
+  console.log(`grc-program: armed the commit-identity guard (${changed.join(', ')}).`);
   console.log(`  commits are now authored ${AUTHOR_NAME} <${AUTHOR_EMAIL}>, enforced by ${HOOKS_PATH}/pre-commit`);
   console.log('  that hook also refuses commits in the primary checkout - work belongs in a worktree:');
-  console.log('    node ~/.claude/scripts/worktree.mjs add ~/agent-workspace/reco-grc <branch>');
+  console.log('    node ~/.claude/scripts/worktree.mjs add ~/agent-workspace/grc-program <branch>');
 }

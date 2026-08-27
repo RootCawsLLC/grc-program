@@ -4,7 +4,7 @@ What is already built, what still has to be built, and — for each thing that h
 prompt to paste into Claude Code.
 
 **22 units across five phases.** Phase 0 is buildable **right now**, before day one — five units of
-pure machinery that need no Reco credentials, documents or decisions. Everything from Phase 1 on is
+pure machinery that need no credentials, documents or decisions from the organization. Everything from Phase 1 on is
 gated on one of those three, which means the fastest way to move the rest of this roadmap is the
 access-request table in `docs/SOP-DAY-ONE.md`, not an editor.
 
@@ -14,11 +14,11 @@ in a commit message beats a tidy sequence. Read by phase, not by number.*
 
 ## Why any of this is unbuilt
 
-Everything in this repo that could be built without Reco's credentials, Reco's data, or a decision
-only Reco can make **is built and tested**. What remains falls into exactly three categories:
+Everything in this repo that could be built without the organization's credentials, the organization's data, or a decision
+only the organization can make **is built and tested**. What remains falls into exactly three categories:
 
 **Phase 0 is the exception** — see below. It is everything that consumes a control inventory without
-needing Reco's. What remains after that falls into exactly three categories:
+needing the organization's. What remains after that falls into exactly three categories:
 
 1. **Needs credentials.** Collectors are written against the API shapes with injected clients, but
    have never run against a live tenant. A collector that has not seen real data is a hypothesis.
@@ -61,25 +61,25 @@ so in the "What is real here and what is scaffolding" section.
 > **Sequencing, effort and session-by-session deliverables: [`docs/PREP-PLAN.md`](docs/PREP-PLAN.md).**
 > This section holds the full prompts; that one holds the order to run them in.
 
-Everything here is buildable **today**, with no Reco credentials, no Reco documents, and no
-decisions only Reco can make. That is the entry criterion: if a unit needs any of those three, it
+Everything here is buildable **today**, with no credentials from the organization, no internal documents, and no
+decisions only the organization can make. That is the entry criterion: if a unit needs any of those three, it
 belongs in Phase 1 or later.
 
 **The organising principle: build machinery, not content.**
 
 Machinery — OSCAL emitters, the MCP server, the simulation engine, the probe harness — is portable.
-It survives contact with whatever you actually find inside Reco, because it operates on whatever
+It survives contact with whatever you actually find inside the organization, because it operates on whatever
 control records exist rather than on assumptions about which ones will.
 
-Content is the opposite. Writing Reco-specific controls, crosswalks or scenarios before reading the
+Content is the opposite. Writing the organization-specific controls, crosswalks or scenarios before reading the
 SOC 2 report produces work you throw away, and it does something worse than waste time: it anchors
-you. You will have spent a weekend deciding what Reco's control model looks like, and you will then
+you. You will have spent a weekend deciding what the organization's control model looks like, and you will then
 read the auditor's system description looking for confirmation rather than looking at what is there.
 
 So: build the things that consume a control inventory. Do not build the inventory.
 
 **What Phase 0 buys you.** Roughly half of Phase 3 lands before you start, so days 61–90 open up
-for the work that actually needs Reco context — the reconciliation pack, the attestation surface,
+for the work that actually needs the organization context — the reconciliation pack, the attestation surface,
 the management review pack.
 
 ---
@@ -90,7 +90,7 @@ the management review pack.
 
 Only `assessment-results` (O3) exists. The other four models are generated entirely from control
 records — the shape of the records, not their content — so they can be built against the nine seed
-controls and will work unchanged against Reco's real inventory.
+controls and will work unchanged against the organization's real inventory.
 
 ```
 Read src/oscal/assessment-results.mjs and docs/adr/ for the conventions, then build the rest:
@@ -121,7 +121,7 @@ the inventory, it does not shape it.
 **Done when:** all five models emit, validate against `oscal-cli` in CI, and re-export
 byte-identically on unchanged input.
 
-**Why it is safe to do early:** none of it encodes an assumption about Reco. It encodes the OSCAL
+**Why it is safe to do early:** none of it encodes an assumption about the organization. It encodes the OSCAL
 spec, which is not going to change based on what you find in the SOC 2 report.
 
 ---
@@ -162,12 +162,12 @@ conversation and get an answer traceable to a file in this repo.
 
 ## B20. Port the proofplane probe harness
 
-**Blocked on:** nothing for the harness. Only *which Reco agents are in scope* is blocked, and that
+**Blocked on:** nothing for the harness. Only *which of the organization's agents are in scope* is blocked, and that
 is a Phase 2 conversation.
 
 **This is the highest-differentiation work in the whole roadmap and you already own the source.**
 
-Reco publicly states it runs "multiple production AI agents" on Bedrock and Anthropic Claude — an
+The organization publicly states it runs "multiple production AI agents" on Bedrock and Anthropic Claude — an
 AWS ML blog post of 23 March 2026 co-authored by the CTO. Walking in with a working AI-agent control
 assurance harness, on day one, at a company whose ISO 42001 certificate is its clearest competitive
 edge, is a different conversation from walking in with a plan to build one.
@@ -183,7 +183,7 @@ schemas/assertion.schema.json.
 
 Start with the three probes that map to controls already scoped here: tool allowlist, indirect
 prompt injection, egress destination. Run them against proofplane's own instrumented target agent,
-which is what it is for. Do NOT point anything at a Reco system — I do not work there yet.
+which is what it is for. Do NOT point anything at a production system — I do not work there yet.
 
 The control passes ONLY on an executed denial recorded in the audit chain. An allowlist present in
 configuration but never exercised does not pass. Active testing, not attestation.
@@ -199,7 +199,7 @@ See docs/adr/0004-agents-do-not-evaluate-efficacy.md.
 **Done when:** three probes run against the proofplane target and emit valid assertion records, with
 paired evidence, in CI.
 
-**What stays blocked:** which Reco agents are in scope, and whether product-engineering will run
+**What stays blocked:** which of the organization's agents are in scope, and whether product-engineering will run
 these against them. Both are conversations, not code.
 
 ---
@@ -232,7 +232,7 @@ Hard requirements:
 
 Test it against a FIXTURE scenario with calibrated parameters, stamped NOT REAL DATA and stored in
 fixtures/. Do NOT calibrate anything in scenarios/ — those stay at derivation_level: assumed until
-a named human calibrates them with Reco's own data.
+a named human calibrates them with the organization's own data.
 
 I have a working 10,000-trial engine in RootCawsLLC/u-dont-grc-me. Read it before writing from
 scratch.
@@ -275,7 +275,7 @@ Requirements:
   denominator-stability test.
 
 Every control record stays at its current status. This unit builds the plumbing; it does not
-instrument anything. Nothing here is evidence about Reco.
+instrument anything. Nothing here is evidence about the organization.
 
 Add an `npm run demo` that runs the whole synthetic pipeline and prints the result, so the shape is
 demonstrable to a CTO in ninety seconds without touching a production system.
@@ -285,18 +285,18 @@ demonstrable to a CTO in ninety seconds without touching a production system.
 real segment numbers from fixture history, and no control's `status` changed.
 
 **The side benefit is the point.** `npm run demo` is the single most useful artifact you can walk
-in with. It shows what the finished thing does, on data that is unambiguously not Reco's, in under
+in with. It shows what the finished thing does, on data that is unambiguously not the organization's, in under
 two minutes.
 
 ---
 
 ## Also worth doing, and not a build
 
-**Refresh `reco-context` before you start.** The skill carries facts verified on 21 August 2026.
+**Refresh `client-context` before you start.** The skill carries facts verified on 21 August 2026.
 Certifications, leadership and funding move. A week before your start date:
 
 ```
-Read .claude/skills/reco-context/SKILL.md, then re-verify every CONFIRMED fact against primary
+Read .claude/skills/client-context/SKILL.md, then re-verify every CONFIRMED fact against primary
 sources — trust.reco.ai, reco.ai/about-us, reco.ai/careers, the newsroom.
 
 Report only what CHANGED. Keep confirmed and inferred separate; do not promote an inference to a
@@ -311,15 +311,15 @@ on the trust center, and whether the subprocessor register has changed.
 **Rehearse the intake workflow.** Find a publicly available SOC 2 Type 2 report — some vendors
 publish redacted versions, and the AICPA publishes illustrative examples — and run `/intake-soc2`
 against it end to end. Not for the content, which is irrelevant, but to shake out the extraction
-schema and learn where the workflow is awkward *before* you are doing it against Reco's real report
+schema and learn where the workflow is awkward *before* you are doing it against the organization's real report
 with a calendar full of introductions.
 
 **What NOT to do before day one**, and each is genuinely tempting:
 
-- **Do not write Reco-specific control records.** You have not read the system description. Whatever
+- **Do not write the organization-specific control records.** You have not read the system description. Whatever
   you write will be wrong in ways you cannot see, and you will defend it because you wrote it.
 - **Do not populate any crosswalk.** Same reason, plus it is the SCF licensing surface.
-- **Do not calibrate a scenario.** Calibration is a workshop with named humans and Reco's data.
+- **Do not calibrate a scenario.** Calibration is a workshop with named humans and the organization's data.
 - **Do not draft policies.** Policy comes after controls operate. That is guard G2 and it is not
   advisory.
 - **Do not build collectors against guessed API shapes.** The IdP, HRIS and training platform are
@@ -335,7 +335,7 @@ with a calendar full of introductions.
 
 **Blocked on:** read access to AWS, the IdP, and GitHub.
 **Why Claude Code and not me:** the staging models have to match the actual shape the collectors
-return from Reco's actual tenants, which nobody can know from outside.
+return from the organization's actual tenants, which nobody can know from outside.
 
 ```
 Read models/README.md, models/controls/ctl_iam_cloud_platform_mfa.sql, and
@@ -444,16 +444,16 @@ show me the denominator before we trust it. Exclude service principals by type a
 
 ---
 
-## B6. The Reco-on-Reco collector — the differentiated one
+## B6. The self-dogfooding collector — the differentiated one
 
 **Blocked on:** product agreement on an internal tenant (ADR-0005).
 **Why Claude Code:** it needs the product's actual API surface.
 
 ```
-Read docs/adr/0005-dogfood-reco-on-reco.md.
+Read docs/adr/0005-self-dogfooding.md.
 
-Build src/collectors/reco-graph.mjs — a collector that reads Reco's own knowledge graph for the
-Reco tenant and returns the standard row shape.
+Build src/collectors/product-graph.mjs — a collector that reads the organization's own knowledge graph for the
+product tenant and returns the standard row shape.
 
 Three controls take it first:
 - ctl.vendor.procurement.subprocessor-register — observed OAuth grants and SaaS-to-SaaS connections
@@ -461,11 +461,11 @@ Three controls take it first:
 - ctl.ai.inference.model-inventory — shadow AI discovery gives the model and endpoint inventory
 - SaaS configuration drift generally, once those two are proven
 
-Hard boundary from the ADR: Reco supplies OBSERVED STATE ONLY. Never import a Reco risk score, a
-Reco compliance mapping, or a Reco severity into an assertion record. We use the product's
+Hard boundary from the ADR: the organization supplies OBSERVED STATE ONLY. Never import a product risk score, a
+product compliance mapping, or a product severity into an assertion record. We use the product's
 collection, not the product's judgement — which is exactly what we would tell a customer.
 
-Where reco-graph overlaps a primary API collector, reconcile the two and report divergence. That
+Where product-graph overlaps a primary API collector, reconcile the two and report divergence. That
 reconciliation is the honesty mechanism for the circularity the auditor will ask about.
 ```
 
@@ -531,7 +531,7 @@ it before writing this from scratch.
 **Blocked on:** product-engineering capacity, and an answer on which agents are in scope.
 **Highest differentiation in the whole plan.**
 
-Reco publicly states it runs "multiple production AI agents" on Bedrock and Anthropic Claude — an
+The organization publicly states it runs "multiple production AI agents" on Bedrock and Anthropic Claude — an
 AWS ML blog post of 23 March 2026 co-authored by the CTO. These agents exist today.
 
 ```
@@ -575,7 +575,7 @@ else in this unit matters as much as preserving that.
 training, and connects to KnowBe4 and Phished. Its native *phishing simulation* capability is
 unconfirmed — their own content describes phishing tests as run by "the organization's
 cybersecurity team or a designated third-party service", which reads as absent. Confirm in a demo
-rather than assuming. If Reco already pays for KnowBe4, the question is whether Scytale's native
+rather than assuming. If the organization already pays for KnowBe4, the question is whether Scytale's native
 module is duplicate spend; if it does not, the question is whether native training plus no
 simulation is sufficient for the ISO 27001 A.6.3 and SOC 2 CC1.4 expectations you will be tested
 against.
@@ -788,7 +788,7 @@ replaces them, control by control, as each one starts operating.
 **Why it is separate from B6:** B6 answers "who is actually processing our data". This answers
 "and what are we doing about it", which is a different and larger question.
 
-**The consolidation question, stated fairly.** Reco runs ProcessUnity for TPRM alongside Scytale,
+**The consolidation question, stated fairly.** The organization runs ProcessUnity for TPRM alongside Scytale,
 which has its own vendor risk module. That is overlapping spend. But Scytale's vendor module is
 qualitative — a CIA risk calculator and an ordinal score — and if ProcessUnity is doing real
 assessment workflow, replacing it with the thinner tool is a downgrade dressed as a saving. Get
@@ -797,7 +797,7 @@ double-entering vendors."
 
 ```
 Read controls/ctl.vendor.procurement.subprocessor-register.yaml and
-docs/adr/0005-dogfood-reco-on-reco.md.
+docs/adr/0005-self-dogfooding.md.
 
 Build the third-party control layer above the subprocessor register:
 
@@ -806,8 +806,8 @@ Build the third-party control layer above the subprocessor register:
   ctl.vendor.monitoring.continuous          posture is monitored between reviews, not annually
   ctl.vendor.offboarding.access-revoked     OAuth grants and access removed at termination
 
-The last one is the one nobody instruments and Reco's own product makes trivial: observed
-SaaS-to-SaaS OAuth grants from the reco-graph collector, diffed against the vendor register's
+The last one is the one nobody instruments and the organization's own product makes trivial: observed
+SaaS-to-SaaS OAuth grants from the product-graph collector, diffed against the vendor register's
 terminated set. A live OAuth grant to a vendor you stopped paying eighteen months ago is a real
 finding and it is sitting in the graph right now.
 
@@ -837,19 +837,19 @@ architecture built in Phases 1–3 does not have to be reworked to accommodate t
 **Why it is not earlier:** an incident cost model built before the scenarios are calibrated
 produces numbers with the same provenance problem as an uncalibrated loss exceedance curve.
 
-**Get the framing right, because it is easy to overclaim.** Reco is privately held and is **not an
+**Get the framing right, because it is easy to overclaim.** The organization is privately held and is **not an
 SEC registrant**, so SEC Item 1.05 and its four-business-day disclosure clock do **not** apply to
-Reco directly. What does apply, and what actually drives the work:
+the organization directly. What does apply, and what actually drives the work:
 
 1. **Contractual notification clocks.** Customer MSAs and DPAs carry notification obligations —
-   often 24, 48 or 72 hours — and they run from Reco's determination, not from the customer's.
+   often 24, 48 or 72 hours — and they run from the organization's determination, not from the customer's.
    Those clocks are the real constraint and they are knowable today from the CLM.
-2. **Reco's customers who ARE registrants.** Their materiality clock runs through Reco as a
-   processor. A slow or vague notification from Reco directly impairs a customer's ability to meet
+2. **The organization's customers who ARE registrants.** Their materiality clock runs through the organization as a
+   processor. A slow or vague notification from the organization directly impairs a customer's ability to meet
    its own obligation, which is a contract problem and a renewal problem.
-3. **GDPR Article 33.** 72 hours to the supervisory authority where Reco is a controller, and
-   without undue delay to the controller where Reco is a processor — which is the usual case.
-4. **Cyber insurance sizing**, which currently rests on a broker benchmark rather than on Reco's
+3. **GDPR Article 33.** 72 hours to the supervisory authority where the organization is a controller, and
+   without undue delay to the controller where the organization is a processor — which is the usual case.
+4. **Cyber insurance sizing**, which currently rests on a broker benchmark rather than on the organization's
    own loss modelling.
 
 ```
@@ -869,7 +869,7 @@ defence, customer churn and contractual penalties, replacement technology, busin
 public relations, and post-breach security improvement.
 
 Requirements:
-- Costs derive from Reco's own contracts and headcount where possible; industry benchmarks only
+- Costs derive from the organization's own contracts and headcount where possible; industry benchmarks only
   where nothing internal exists, and LABELLED as such with the source.
 - Contractual penalty and churn modules come from the actual customer contract set, not from a
   benchmark. This is the module where a generic figure is most wrong and most consequential.
@@ -881,7 +881,7 @@ model itself.
 ```
 
 **Done when:** the notification register answers "who do we owe what, by when" as a query, and at
-least one scenario carries a magnitude estimate whose parameters trace to Reco's own contracts.
+least one scenario carries a magnitude estimate whose parameters trace to the organization's own contracts.
 
 **The incident-response runbook is earlier and cheaper than this.** It needs no modelling and
 should exist well before Phase 4 — if there is no current IR plan naming who declares an incident

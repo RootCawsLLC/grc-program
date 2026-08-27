@@ -1,7 +1,7 @@
 scenario_id: scn.ai.undisclosed-subprocessor
 statement: >
   Customer data is processed by a model provider or third party that does not appear in the published subprocessor register, and a customer or supervisory authority identifies the discrepancy.
-asset: "customer personal data and the accuracy of Reco's published disclosures"
+asset: "customer personal data and the accuracy of the organization's published disclosures"
 threat_actor: "regulator or customer exercising audit rights"
 effect: confidentiality
 estimation_level: lef

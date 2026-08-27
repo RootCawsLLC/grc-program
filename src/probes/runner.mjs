@@ -18,7 +18,7 @@ import { createHash } from 'node:crypto';
 import { PROBES } from './catalog.mjs';
 import { reset, chat, audit, createTicket, describeTarget, reachable } from './target.mjs';
 
-export const EVIDENCE_SCHEMA = 'reco-grc.probe-evidence/v1';
+export const EVIDENCE_SCHEMA = 'grc-program.probe-evidence/v1';
 
 /** Wilson score interval. Small n is the norm here, and a naive p ± z·√(p(1-p)/n) is wrong at the ends. */
 export function wilson95(breached, n) {

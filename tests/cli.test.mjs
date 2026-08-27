@@ -58,10 +58,10 @@ test('an unknown command exits non-zero rather than printing help and succeeding
 test('a bare invocation still prints help and exits 0', async () => {
   // Asking what the tool does is not a failure. Only a NAMED command that does not exist is.
   const { stdout } = await run('node', ['src/cli.mjs']);
-  assert.match(stdout, /grc — Reco control inventory/);
+  assert.match(stdout, /grc — the organization control inventory/);
 });
 
 test('help is a real command and exits 0', async () => {
   const { stdout } = await run('node', ['src/cli.mjs', 'help']);
-  assert.match(stdout, /grc — Reco control inventory/);
+  assert.match(stdout, /grc — the organization control inventory/);
 });

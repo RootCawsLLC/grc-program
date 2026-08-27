@@ -10,7 +10,7 @@ npm run mcp
 ## Wiring it into Claude Code
 
 ```bash
-claude mcp add reco-grc -- node C:/Users/Administrator/agent-workspace/reco-grc/src/mcp/server.mjs
+claude mcp add grc-program -- node C:/Users/Administrator/agent-workspace/grc-program/src/mcp/server.mjs
 ```
 
 The path must be absolute. The server reads the repo it is run from, or `RECO_GRC_ROOT` if set.
@@ -64,7 +64,7 @@ Three distinctions the descriptions are built around:
 
 ```json
 "_source": {
-  "repo": "C:\\Users\\Administrator\\agent-workspace\\reco-grc",
+  "repo": "C:\\Users\\Administrator\\agent-workspace\\grc-program",
   "files": ["fixtures/assertions.json", "controls/"],
   "evidence_is_fixture": true,
   "warning": "NOT REAL EVIDENCE. The assertion set loaded here is synthetic..."

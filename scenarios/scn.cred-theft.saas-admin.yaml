@@ -1,7 +1,7 @@
 scenario_id: scn.cred-theft.saas-admin
 statement: >
-  A financially motivated external actor obtains valid credentials for a Reco workforce identity holding administrative rights in a business SaaS application, and uses them to access data held in that application.
-asset: "Reco corporate SaaS data"
+  A financially motivated external actor obtains valid credentials for a workforce identity holding administrative rights in a business SaaS application, and uses them to access data held in that application.
+asset: "the organization corporate SaaS data"
 threat_actor: "external financially-motivated actor"
 effect: confidentiality
 estimation_level: lef

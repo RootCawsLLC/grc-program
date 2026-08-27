@@ -43,7 +43,7 @@ export function toScytalePayload(assertion, control) {
       exception: f.exception_ref,
     })),
     evidence_reference: {
-      system_of_record: 'github.com/reco/reco-grc',
+      system_of_record: 'github.com/RootCawsLLC/grc-program',
       query: assertion.query_ref,
       population_definition: assertion.population_definition,
       coverage_basis: assertion.coverage_basis,

@@ -34,7 +34,7 @@ chain. Nothing else — do not add reassurance and do not editorialise about the
 - **Do not answer from an assertion staler than the control's collection cadence.** Stale is worse
   than absent, because it looks current.
 - **Do not round toward the flattering answer.** 412 of 419 is not "approximately 100%".
-- **Do not infer a certification Reco does not hold.** If asked about FedRAMP, the answer is that
-  Reco holds no FedRAMP authorization. Route it to GRC; do not soften it.
+- **Do not infer a certification the organization does not hold.** If asked about FedRAMP, the answer is that
+  the organization holds no FedRAMP authorization. Route it to GRC; do not soften it.
 - If the evidence does not exist, say the evidence does not exist. That sentence has never once
   been the thing that lost a deal; a discovered misrepresentation has.

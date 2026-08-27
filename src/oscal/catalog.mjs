@@ -24,7 +24,7 @@ export function emitCatalog({ controls, assertions = [] }) {
   return {
     catalog: {
       uuid: ids.document('catalog'),
-      metadata: metadata({ title: 'Reco house control catalog', assertions }),
+      metadata: metadata({ title: 'GRC Program house control catalog', assertions }),
       groups: groupsByDomain(controls),
     },
   };
@@ -109,7 +109,7 @@ function profile({ framework, included, excluded, assertions }) {
   return {
     profile: {
       uuid: ids.document(`profile|${framework}`),
-      metadata: metadata({ title: `Reco baseline — ${framework}`, assertions }),
+      metadata: metadata({ title: `GRC Program baseline — ${framework}`, assertions }),
       imports: [
         {
           href: ref('catalog'),
@@ -122,7 +122,7 @@ function profile({ framework, included, excluded, assertions }) {
           // The import href is a UUID fragment, so it needs something in back-matter to land on.
           // Without this the profile references a catalog the validator cannot resolve — the same
           // class of failure as the dangling import-ap this repo shipped before B18.
-          resource('catalog', 'Reco house control catalog', FILENAMES.catalog),
+          resource('catalog', 'GRC Program house control catalog', FILENAMES.catalog),
           {
             uuid: ids.document(`profile-tailoring|${framework}`),
             title: 'Tailoring statement',

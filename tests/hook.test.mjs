@@ -79,13 +79,13 @@ test('a broken inventory BLOCKS with exit 2 — relative path', () => {
 
 test('a broken inventory BLOCKS with exit 2 — absolute POSIX path', () => {
   withFixture({ broken: true }, (dir) => {
-    assert.equal(runHook('/home/x/reco-grc/controls/anything.yaml', dir).code, 2);
+    assert.equal(runHook('/home/x/grc-program/controls/anything.yaml', dir).code, 2);
   });
 });
 
 test('a broken inventory BLOCKS with exit 2 — Windows path with backslashes', () => {
   withFixture({ broken: true }, (dir) => {
-    assert.equal(runHook('C:\\Users\\x\\reco-grc\\controls\\anything.yaml', dir).code, 2,
+    assert.equal(runHook('C:\\Users\\x\\grc-program\\controls\\anything.yaml', dir).code, 2,
       'hook failed open on a Windows path — separators were not normalised');
   });
 });

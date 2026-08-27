@@ -7,7 +7,7 @@
  * document disagree about what a component is.
  *
  * This is where the FAIR-CAM props extension earns its keep: OSCAL has nowhere to carry control
- * measurement, so the function tagging rides in a namespace Reco controls. A tool that does not
+ * measurement, so the function tagging rides in a namespace the organization controls. A tool that does not
  * know the namespace ignores it; a tool that does gets the risk layer along with the compliance
  * layer.
  */
@@ -20,13 +20,13 @@ export function emitComponentDefinition({ controls, assertions = [] }) {
   return {
     'component-definition': {
       uuid: ids.document('component-definition'),
-      metadata: metadata({ title: 'Reco control components', assertions }),
+      metadata: metadata({ title: 'GRC Program control components', assertions }),
       components: controls
         .slice()
         .sort((a, b) => a.control_id.localeCompare(b.control_id))
         .map((c) => component(c, byControl.get(c.control_id))),
       'back-matter': {
-        resources: [resource('catalog', 'Reco house control catalog', FILENAMES.catalog)],
+        resources: [resource('catalog', 'GRC Program house control catalog', FILENAMES.catalog)],
       },
     },
   };

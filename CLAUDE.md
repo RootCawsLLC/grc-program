@@ -1,6 +1,6 @@
-# reco-grc — working agreement
+# grc-program — working agreement
 
-This repository is the **system of record** for Reco's control inventory, evidence and risk layer.
+This repository is the **system of record** for the organization's control inventory, evidence and risk layer.
 Scytale, the trust center, every framework baseline and every OSCAL package are projections of what
 is here. Read `PROPOSAL.md` for why, and `docs/adr/` for the decisions.
 

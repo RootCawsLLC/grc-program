@@ -9,7 +9,7 @@ faircam:
   - { function: preventing-misaligned-decisions, primary: false }
 
 population_definition: >
-  Every active worker across all Reco entities — employees and contractors, US, Israel and Moldova —
+  Every active worker across all the organization entities — employees and contractors, US, Israel and Moldova —
   sourced from HRIS as the authoritative roster, NOT from the training platform's own user list.
   A worker absent from the training platform is a failure, not an exclusion. Engineers additionally
   require secure-development training; anyone with production model or agent access additionally

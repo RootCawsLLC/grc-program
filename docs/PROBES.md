@@ -36,7 +36,7 @@ Writes `out-probe/{evidence,assertions,gaps}.json`.
 layer so no probe can opt out of it. A probe is an attack; the difference between running one
 against a test agent and running one against a live agent is an incident and possibly a crime.
 
-B20 is explicit: do not point anything at a Reco system. She does not work there yet.
+B20 is explicit: do not point anything at a production system. She does not work there yet.
 
 ## Why every run is paired
 
@@ -77,11 +77,11 @@ read, not before: see the do-not table in [PREP-PLAN.md](PREP-PLAN.md).
 
 Assertions from a probe run are marked `fixture: true`.
 
-`ctl.ai.agent.tool-allowlist` defines its population as *every agent runtime in a Reco production
+`ctl.ai.agent.tool-allowlist` defines its population as *every agent runtime in a production
 workload*. These probes run against a reference target, which is not one. An assertion reading
 "3 of 3 passing" against that control would be a true sentence about the wrong population, and it
 would travel into OSCAL, into control health, and eventually in front of somebody who read it as a
-measurement of Reco.
+measurement of the organization.
 
 So the same stamp the fixture pipeline uses applies here, for the same reason: the mark travels into
 every derived artifact, and `src/lib/load.mjs` refuses to mix these records with real ones.

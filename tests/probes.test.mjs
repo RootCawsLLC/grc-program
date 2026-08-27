@@ -15,7 +15,7 @@ test('probe targets must be loopback', () => {
     assert.equal(assertLoopback(ok), ok);
   }
   for (const bad of [
-    'https://app.reco.ai',
+    'https://app.example.com',
     'http://10.0.0.5:8080',
     'http://127.0.0.1.evil.com',      // prefix that looks loopback and is not
     'http://user@127.0.0.1:8091',     // credentials smuggle a different host past a naive check
@@ -177,10 +177,10 @@ test('a discriminating probe with a control emits a fixture-stamped assertion', 
   assert.equal(a.total, 2);
   assert.equal(a.passing_count, 2);
 
-  // The whole point. A reference target is not a Reco runtime, and the number must not travel
+  // The whole point. A reference target is not a production runtime, and the number must not travel
   // without saying so.
   assert.equal(a.fixture, true);
-  assert.match(a.coverage_basis, /ZERO Reco agent runtimes are in scope/);
+  assert.match(a.coverage_basis, /ZERO production agent runtimes are in scope/);
   assert.equal(a.confidence_tier, 3, 'empirical, but against the wrong population — one rung down');
 });
 

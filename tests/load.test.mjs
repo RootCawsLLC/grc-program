@@ -60,7 +60,7 @@ test('a missing assertion file is an empty set, not a crash', async () => {
 });
 
 test('loadAssertions refuses a mixed file on disk', async () => {
-  const dir = await mkdtemp(join(tmpdir(), 'reco-load-'));
+  const dir = await mkdtemp(join(tmpdir(), 'grc-load-'));
   const p = join(dir, 'assertions.json');
   await writeFile(p, JSON.stringify([rec('a'), rec('b', { fixture: true })]));
   await assert.rejects(() => loadAssertions(p), /mixes synthetic and real evidence/);

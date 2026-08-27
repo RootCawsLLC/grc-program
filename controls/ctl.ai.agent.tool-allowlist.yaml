@@ -9,7 +9,7 @@ faircam:
   - { function: event-detection, primary: false }
 
 population_definition: >
-  Every agent runtime in a Reco production workload, including internal automation agents and any
+  Every agent runtime in a production workload, including internal automation agents and any
   MCP server exposed to them. Passing requires a probe that attempts to invoke a tool outside the
   declared allowlist and is denied, with the denial recorded in the audit chain. An allowlist
   present in configuration but never exercised does not pass.
@@ -40,15 +40,15 @@ applicability_note: >
   from 2026-07-27 — deferred the Annex III standalone high-risk obligations to 2027-12-02
   (Annex I embedded-product high-risk to 2028-08-02). Article 50 transparency obligations were
   NOT deferred and applied from 2026-08-02.
-  Consequence: this mapping is correct IF a Reco system classifies as high-risk, and that
+  Consequence: this mapping is correct IF the organization's system classifies as high-risk, and that
   classification is itself an open determination (see docs/DISCOVERY.md item 15). The control is
   worth building regardless — ISO 42001 Annex A and the Art.50 transparency obligations both
   reach it, and the deferral is runway, not a reprieve.
 
 notes: >
-  Not a hypothetical control. Reco publicly states it runs "multiple production AI agents" built
+  Not a hypothetical control. The organization publicly states it runs "multiple production AI agents" built
   on Amazon Bedrock and Anthropic Claude — from an AWS ML blog post of 2026-03-23 co-authored by
-  Reco's CTO. There are agents in production processing customer security alerts today.
+  the organization's CTO. There are agents in production processing customer security alerts today.
 
   This is the control that makes the ISO 42001 surveillance audit interesting rather than
   survivable. Most certified organisations bring documentation to an AIMS audit. Bringing executed

@@ -9,7 +9,7 @@ faircam:
   - { function: preventing-misaligned-decisions, primary: false }
 
 population_definition: >
-  Every model endpoint invocable from a Reco production workload — Amazon Bedrock model IDs,
+  Every model endpoint invocable from a production workload — Amazon Bedrock model IDs,
   first-party OpenAI and Anthropic API keys, and any self-hosted inference service. Discovered
   from egress telemetry and IaC, NOT from a spreadsheet anyone maintains. Passing requires a
   matching inventory record carrying provider, model identifier and version, data classes sent,
@@ -34,9 +34,9 @@ policy_ref: null
 cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER" }
 
 notes: >
-  OPEN ITEM, and a real one. In an AWS ML blog post of 2026-03-23 co-authored by Reco's CTO,
-  Reco states its Alert Story Generator runs on Anthropic Claude Sonnet via Amazon Bedrock, and
-  describes a team leading Reco's generative-AI solutions "including multiple production AI
+  OPEN ITEM, and a real one. In an AWS ML blog post of 2026-03-23 co-authored by the organization's CTO,
+  the organization states its Alert Story Generator runs on Anthropic Claude Sonnet via Amazon Bedrock, and
+  describes a team leading the organization's generative-AI solutions "including multiple production AI
   agents." The trust-center subprocessor register lists five entities — ClickHouse, Amplitude,
   Segment, Datadog, AWS — and names neither Bedrock nor Anthropic. Bedrock is plausibly in-scope
   under the AWS entry; Anthropic as a model provider is a separate question.

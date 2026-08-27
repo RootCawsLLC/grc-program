@@ -37,7 +37,7 @@ keep, and `scn.tenant-boundary.cross-customer-read.yaml` for one that deliberate
 
 **Leave every parameter at `derivation_level: assumed`, `confidence_tier: 1`, zeros throughout.**
 
-You do not calibrate. Calibration is a workshop with named humans and Reco's own data. Writing a
+You do not calibrate. Calibration is a workshop with named humans and the organization's own data. Writing a
 plausible min/most-likely/max produces a range that looks authoritative and is invented — which is
 the exact failure mode FAIR exists to prevent, and it is worse than an obvious zero because a zero
 prompts the workshop and a plausible number ends it. Guard G9 requires provenance on every

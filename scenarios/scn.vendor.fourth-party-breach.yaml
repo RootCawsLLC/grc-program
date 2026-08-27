@@ -1,12 +1,12 @@
 scenario_id: scn.vendor.fourth-party-breach
 statement: >
-  A subprocessor in the Reco processing chain suffers a breach exposing Reco customer data, triggering Reco's own notification obligations to its customers.
+  A subprocessor in the organization's processing chain suffers a breach exposing customer data, triggering the organization's own notification obligations to its customers.
 asset: "customer data held by subprocessors"
 threat_actor: "external actor against a third party"
 effect: confidentiality
 estimation_level: lef
 estimation_rationale: >
-  Reco is the notifying party regardless of where the failure occurred. Magnitude is driven by the number of affected customer contracts and their notification clocks, which is knowable from the CLM once vendor and contract data are joined.
+  The organization is the notifying party regardless of where the failure occurred. Magnitude is driven by the number of affected customer contracts and their notification clocks, which is knowable from the CLM once vendor and contract data are joined.
 parameters:
   loss_event_frequency:
     min: 0.0

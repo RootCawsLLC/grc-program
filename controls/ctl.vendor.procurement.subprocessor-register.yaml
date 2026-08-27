@@ -11,15 +11,15 @@ faircam:
 population_definition: >
   Every third party that processes customer personal data or customer SaaS configuration data,
   derived from three independent sources and reconciled: (1) SaaS spend in the finance system,
-  (2) OAuth grants and SaaS-to-SaaS connections observed by Reco's own product on the Reco tenant,
+  (2) OAuth grants and SaaS-to-SaaS connections observed by the organization's own product on its own tenant,
   (3) the DPA repository. Passing requires presence in the published register with processing
   purpose, location, and a current DPA.
-source_system: reco-graph
+source_system: product-graph
 query_ref: models/controls/ctl_vendor_procurement_subprocessor_register.sql
 
 collection:
   cadence: weekly
-  mechanism: reco-graph
+  mechanism: product-graph
   variance_started_at_quality: interpolated
 
 crosswalk:
@@ -35,8 +35,8 @@ policy_ref: null
 cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER" }
 
 notes: >
-  This is the flagship dogfooding control. Reco's product discovers shadow SaaS and SaaS-to-SaaS
-  OAuth connections across 260+ applications. Pointed at Reco's own tenant it produces the
+  This is the flagship dogfooding control. The organization's product discovers shadow SaaS and SaaS-to-SaaS
+  OAuth connections across 260+ applications. Pointed at the organization's own tenant it produces the
   subprocessor denominator directly from observed connections rather than from a spreadsheet
   someone remembers to update. The register currently publishes five entities; the reconciliation
   is expected to find more, which is the point — GDPR Art.30 and Art.28 obligations attach to what

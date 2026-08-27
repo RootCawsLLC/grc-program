@@ -43,8 +43,8 @@ if [ -n "$git_dir" ] && [ "$git_dir" = "$common_dir" ] && [ "$ALLOW_PRIMARY_COMM
 	echo "pre-commit: refusing to commit in the primary checkout." >&2
 	echo "  Work belongs in a worktree, one per session, so two sessions cannot share an index." >&2
 	echo "" >&2
-	echo "  Make one:  node ~/.claude/scripts/worktree.mjs add ~/agent-workspace/reco-grc <branch>" >&2
-	echo "             (reco-grc is not in that script's REPOS list, so pass the path.)" >&2
+	echo "  Make one:  node ~/.claude/scripts/worktree.mjs add ~/agent-workspace/grc-program <branch>" >&2
+	echo "             (grc-program is not in that script's REPOS list, so pass the path.)" >&2
 	echo "" >&2
 	echo "  Your staged changes are untouched and still here. Nothing was lost." >&2
 	echo "" >&2

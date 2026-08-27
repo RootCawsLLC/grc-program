@@ -5,7 +5,7 @@ live in [`BUILD-ORDER.md`](../BUILD-ORDER.md) Phase 0 — this document is the s
 and what you get at the end of each one.
 
 **The rule that governs all of it: build machinery, not content.** Machinery consumes a control
-inventory; it works unchanged against whatever Reco's turns out to be. Content — controls,
+inventory; it works unchanged against whatever the organization's turns out to be. Content — controls,
 crosswalks, scenarios, policies — encodes assumptions you cannot check yet, and writing it early
 does something worse than waste a weekend: you will read the auditor's system description looking
 for confirmation of what you already wrote.
@@ -21,7 +21,7 @@ for confirmation of what you already wrote.
 | **S3** | AI agent probes | B20 | ½–1 day | Three executed probes emitting assertion records |
 | **S4** | MCP server | B19 | ½ day | Control graph queryable from any Claude conversation |
 | **S5** | Simulation engine | B21 | ½ day | Monte Carlo + ROSI, refusing uncalibrated inputs |
-| **S6** | Context refresh | — | 2 hrs | `reco-context` re-verified; intake workflow rehearsed |
+| **S6** | Context refresh | — | 2 hrs | `client-context` re-verified; intake workflow rehearsed |
 
 **Do S1 first** — it makes everything else demonstrable. **Do S6 last**, within a week of your
 start date, because the facts move.
@@ -47,7 +47,7 @@ DATA are fine. The test: **did any control's `status` change?** If yes, you cros
 > Read BUILD-ORDER.md unit B22 and follow it. Start with the fixture design — I want to see the
 > fixture shape and the NOT REAL DATA convention before you write any SQL.
 
-**Walk-in value.** Ninety seconds, on data that is unambiguously not Reco's, showing a CTO exactly
+**Walk-in value.** Ninety seconds, on data that is unambiguously not the organization's, showing a CTO exactly
 what the finished thing does. That is worth more in your first week than any slide.
 
 ---
@@ -55,7 +55,7 @@ what the finished thing does. That is worth more in your first week than any sli
 ## S2 — Complete the OSCAL package
 
 **Why.** It is the largest unblocked unit and it is pure spec implementation. Nothing about it
-encodes an assumption about Reco — it encodes OSCAL, which will not change based on what the SOC 2
+encodes an assumption about the organization — it encodes OSCAL, which will not change based on what the SOC 2
 report says.
 
 **Deliverable:** component-definition, catalog, profile, POA&M and a generated SSP, all validating
@@ -64,7 +64,7 @@ byte-identically on unchanged input.
 
 **The part that matters most** is the profile. It records *why* each control is in or out of a
 baseline — which is what a Statement of Applicability is supposed to prove and almost never does.
-When you populate `in_scope` from Reco's real SoA on day two, the defensible SoA generates itself.
+When you populate `in_scope` from the organization's real SoA on day two, the defensible SoA generates itself.
 
 > Read BUILD-ORDER.md unit B18. Read RootCawsLLC/cui-control-plane first — all eight OSCAL artifacts
 > already validate against oscal-cli there as a CI gate. Do not add or modify any control record;
@@ -74,7 +74,7 @@ When you populate `in_scope` from Reco's real SoA on day two, the defensible SoA
 
 ## S3 — Port the proofplane probe harness
 
-**Why this one matters most strategically.** Reco publicly states it runs "multiple production AI
+**Why this one matters most strategically.** the organization publicly states it runs "multiple production AI
 agents" on Bedrock and Anthropic Claude — an AWS ML blog post of 23 March 2026 co-authored by their
 CTO. Their ISO 42001 certificate is their clearest competitive edge, and among pure-play SSPM
 vendors only Obsidian also holds it.
@@ -86,7 +86,7 @@ walking in with a plan to build one. You already own the source.
 running against proofplane's own instrumented target, emitting valid assertion records with paired
 guarded/unguarded evidence, in CI.
 
-**Point nothing at a Reco system.** You do not work there yet.
+**Point nothing at a production system.** You do not work there yet.
 
 > Read BUILD-ORDER.md unit B20. Port the harness from RootCawsLLC/proofplane — the runner, the
 > evidence format, the paired-run structure — so probe results become assertion records conforming
@@ -134,16 +134,16 @@ a build.
 
 **Two deliverables.**
 
-First, re-verify `.claude/skills/reco-context/SKILL.md` against primary sources and report only what
+First, re-verify `.claude/skills/client-context/SKILL.md` against primary sources and report only what
 changed. Watch particularly for: whether a CISO has been named, whether any new certification
 appears on the trust center, and whether the subprocessor register has grown.
 
 Second, rehearse `/intake-soc2` against a publicly available SOC 2 report — some vendors publish
 redacted versions, and the AICPA publishes illustrative examples. Not for the content, which is
 irrelevant. For finding out where the extraction workflow is awkward *before* you are doing it
-against Reco's real report with a calendar full of introductions.
+against the organization's real report with a calendar full of introductions.
 
-> Read .claude/skills/reco-context/SKILL.md and re-verify every CONFIRMED fact against primary
+> Read .claude/skills/client-context/SKILL.md and re-verify every CONFIRMED fact against primary
 > sources — trust.reco.ai, reco.ai/about-us, reco.ai/careers, the newsroom. Report only what
 > CHANGED. Keep confirmed and inferred separate. If something can no longer be verified, mark it
 > unverified rather than deleting it.
@@ -156,9 +156,9 @@ Each is tempting and each costs you more than it gains.
 
 | | Why not |
 |---|---|
-| Write Reco-specific control records | You have not read the system description. What you write will be wrong in ways you cannot see, and you will defend it because you wrote it. |
+| Write the organization-specific control records | You have not read the system description. What you write will be wrong in ways you cannot see, and you will defend it because you wrote it. |
 | Populate any crosswalk | Same anchoring problem, plus it is the SCF licensing surface. |
-| Calibrate a scenario | Calibration is a workshop with named humans and Reco's own data. |
+| Calibrate a scenario | Calibration is a workshop with named humans and the organization's own data. |
 | Draft policies | Policy comes after controls operate. Guard G2, not advisory. |
 | Build collectors against guessed API shapes | The IdP, HRIS and training platform are all unknown. A collector written against the wrong vendor looks like progress and is worse than nothing. |
 
@@ -167,7 +167,7 @@ Each is tempting and each costs you more than it gains.
 ## What Phase 0 buys you
 
 Roughly half of Phase 3 lands before you start. Days 61–90 then open up for the work that genuinely
-needs Reco context and cannot be done early: the reconciliation pack against the closing observation
+needs the organization context and cannot be done early: the reconciliation pack against the closing observation
 window, the attestation surface, and the management review pack.
 
 It also changes what day one looks like. Instead of "here is my plan," it is `npm run demo` — the

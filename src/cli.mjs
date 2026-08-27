@@ -181,7 +181,7 @@ const commands = {
     await writeFile(`${out}/assertions.json`, serialize(assertions));
     await writeFile(`${out}/gaps.json`, serialize(gaps));
     console.log(`\n  wrote ${out}/{evidence,assertions,gaps}.json`);
-    console.log('  Every assertion is marked fixture:true — a reference target is not a Reco runtime.\n');
+    console.log('  Every assertion is marked fixture:true — a reference target is not a production runtime.\n');
 
     return chain.intact ? 0 : 1;
   },
@@ -366,7 +366,7 @@ const commands = {
   },
 
   help() {
-    console.log(`grc — Reco control inventory, evidence pipeline and risk layer
+    console.log(`grc — the organization control inventory, evidence pipeline and risk layer
 
   validate     schema-check the inventory and run the guards
   intake       validate extracted audit findings and reconcile against the inventory

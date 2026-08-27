@@ -1,7 +1,7 @@
 scenario_id: scn.phish.bec
 statement: >
-  An external actor sends a pretexted message to a Reco worker who takes an action that discloses credentials or authorises a fraudulent payment.
-asset: "Reco workforce identities and payment authority"
+  An external actor sends a pretexted message to a worker who takes an action that discloses credentials or authorises a fraudulent payment.
+asset: "the organization workforce identities and payment authority"
 threat_actor: "external financially-motivated actor"
 effect: confidentiality
 estimation_level: lef

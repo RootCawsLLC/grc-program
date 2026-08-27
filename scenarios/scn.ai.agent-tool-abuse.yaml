@@ -1,7 +1,7 @@
 scenario_id: scn.ai.agent-tool-abuse
 statement: >
   A production AI agent is induced, via indirect prompt injection or a crafted input, to invoke a tool outside its intended scope and takes an action with security consequence.
-asset: "Reco production systems reachable by agent tooling"
+asset: "the organization production systems reachable by agent tooling"
 threat_actor: "external actor via indirect injection"
 effect: integrity
 estimation_level: lef

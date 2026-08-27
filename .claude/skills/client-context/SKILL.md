@@ -1,9 +1,9 @@
 ---
-name: reco-context
-description: Established facts about Reco — certifications, audit clocks, platforms, org, jurisdictions, known gaps — with confirmed and inferred kept separate. Load at the start of any task about Reco's program so context is not re-derived or re-guessed each session.
+name: client-context
+description: Established facts about the organization — certifications, audit clocks, platforms, org, jurisdictions, known gaps — with confirmed and inferred kept separate. Load at the start of any task about the organization's program so context is not re-derived or re-guessed each session.
 ---
 
-# Reco — established context
+# The organization — established context
 
 Compiled from public sources on 2026-08-21, **re-verified against primary sources 2026-08-25**.
 `VERIFICATION.md` in the repo root records what was checked and what was corrected. **Confirmed and
@@ -23,20 +23,20 @@ trust.reco.ai.
 **Platforms** — Compliance platform is **Scytale**. Trust center is **SafeBase**, which is a Drata
 product and therefore a Scytale competitor. TPRM is **ProcessUnity**, listed separately. Security
 ratings: SecurityScorecard (A), BitSight, Black Kite. That is four overlapping GRC surfaces, and
-Scytale includes a trust center in every pricing tier that Reco is not using.
+Scytale includes a trust center in every pricing tier that the organization is not using.
 
 **Subprocessors published** — exactly five: ClickHouse, Amplitude, Segment, Datadog, AWS.
 
 **Infrastructure and AI** — AWS: EKS, RDS for PostgreSQL, CloudFront, WAF. **Anthropic Claude
 Sonnet via Amazon Bedrock**, with Bedrock prompt caching. An AWS ML blog post of 2026-03-23,
-co-authored by CTO Tal Shapira, describes a team leading Reco's generative-AI solutions
+co-authored by CTO Tal Shapira, describes a team leading the organization's generative-AI solutions
 "including multiple production AI agents." **Neither Bedrock nor Anthropic appears in the
 subprocessor register.**
 
 **Published recovery objectives** — RTO 5 days, RPO 22 hours. Unusually long for a vendor selling
 to Fortune 500 and to a health system.
 
-**Jurisdictions** — US (RecoLabs, Inc., Florida registration; a physical Texas office "opening" per
+**Jurisdictions** — US (the company, Florida registration; a physical Texas office "opening" per
 the 2026-06-08 release), Israel (Tel Aviv), **Moldova (Chișinău)**, and **the United Kingdom and
 Ireland**. Moldova appears on the About page but not in the trust-center processing story.
 
@@ -79,7 +79,7 @@ system, pharma), which is the customer profile that makes a stale public audit a
 
 - **SOC 2 observation window runs 1 December – 30 November.** From the bridge letter. The report
   period is NDA-gated. **This drives all phasing in `PROPOSAL.md`. Confirm before relying on it.**
-- **The CISO seat is vacant.** Reco announced its first CISO in June 2024; that person is no longer
+- **The CISO seat is vacant.** The organization announced its first CISO in June 2024; that person is no longer
   on the leadership page and holds a role elsewhere. The June 2026 expansion named six leaders and
   none was a security role. **Strengthened 2026-08-25**: there is no CISO opening posted either, so
   this is not a vacancy being actively filled at that level.
@@ -103,7 +103,7 @@ queried, which is **not** evidence of non-accreditation) · whether Scytale has 
 
 Among pure-play SSPM vendors only **Obsidian** also holds ISO 42001 (certified February 2026 via
 A-LIGN). **AppOmni** holds a FedRAMP Moderate ATO and TX-RAMP and appears to be the only pure-play
-SSPM in the FedRAMP Marketplace at any status. Reco just opened a Texas office, which makes TX-RAMP
+SSPM in the FedRAMP Marketplace at any status. The organization just opened a Texas office, which makes TX-RAMP
 the cheaper near-term counter to AppOmni's federal lane than full FedRAMP.
 
 CrowdStrike's Falcon Shield inherits corporate FedRAMP High and IL5 — but there is **no per-module
@@ -118,4 +118,4 @@ deferred** and applied from 2026-08-02.
 
 Practical consequence: the obligations live *right now* are the transparency ones. Many vendors are
 currently publishing readiness language keyed to a high-risk regime that has been deferred. Do not
-add Reco to that list.
+add the organization to that list.

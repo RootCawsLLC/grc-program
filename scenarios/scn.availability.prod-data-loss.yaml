@@ -1,7 +1,7 @@
 scenario_id: scn.availability.prod-data-loss
 statement: >
   Production data becomes unavailable or is lost, and restoration exceeds the recovery time committed in customer agreements.
-asset: "Reco production data stores and contractual availability commitments"
+asset: "the organization production data stores and contractual availability commitments"
 threat_actor: "non-malicious operational failure"
 effect: availability
 estimation_level: lef

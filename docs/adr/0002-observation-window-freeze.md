@@ -4,7 +4,7 @@
 
 ## Context
 
-Reco's SOC 2 bridge letter covers **1 December 2024 – 30 November 2025**. Bridge letters
+the organization's SOC 2 bridge letter covers **1 December 2024 – 30 November 2025**. Bridge letters
 conventionally run forward from the report period end, so the Type 2 observation window almost
 certainly runs **1 December – 30 November**. *This is inferred, not confirmed — the report period
 itself is behind the trust-center NDA gate. Confirming it is a day-one task, and if the window is

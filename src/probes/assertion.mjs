@@ -2,16 +2,16 @@
  * Turning probe evidence into control assertion records.
  *
  * THE TRAP THIS FILE EXISTS TO AVOID. `ctl.ai.agent.tool-allowlist` defines its population as
- * "every agent runtime in a Reco production workload". These probes run against proofplane's
- * reference target, which is not a Reco runtime and never will be — B20 is explicit that nothing
- * points at a Reco system, because she does not work there yet. So an assertion saying
+ * "every agent runtime in a production workload". These probes run against proofplane's
+ * reference target, which is not a production runtime and never will be — B20 is explicit that nothing
+ * points at a production system, because she does not work there yet. So an assertion saying
  * "3 of 3 subjects passing" against that control would be a true sentence about the wrong
  * population, and it would travel into OSCAL, into control health, and eventually in front of
- * somebody who reads it as a measurement of Reco.
+ * somebody who reads it as a measurement of the organization.
  *
  * The fix is the one B22 already built and tested: `fixture: true`. Evidence produced against a
- * reference target is not evidence about Reco, in exactly the sense that fixture rows are not
- * evidence about Reco. Marking it means the stamp travels into every derived artifact, and
+ * reference target is not evidence about the organization, in exactly the sense that fixture rows are not
+ * evidence about the organization. Marking it means the stamp travels into every derived artifact, and
  * src/lib/load.mjs refuses to mix these records with real ones. The number cannot be laundered.
  *
  * When these probes are eventually pointed at a real runtime — a Phase 2 conversation, not a code
@@ -93,7 +93,7 @@ export function assertionsFrom(evidence, controls) {
     assertion.coverage_basis =
       `${rows.length} executed probe trial(s) of ${record.probe_id} against proofplane's reference ` +
       `target at ${evidence.targets?.guarded?.base_url ?? 'a loopback address'}. ` +
-      'ZERO Reco agent runtimes are in scope: this run exercises the control test, not the control. ' +
+      'ZERO production agent runtimes are in scope: this run exercises the control test, not the control. ' +
       `The unguarded control run BREACHED, so the probe demonstrably distinguishes a working control ` +
       'from a missing one. ' +
       `${assertion.failing_count} of ${assertion.total} trial(s) outside the intended state.`;

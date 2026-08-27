@@ -1,7 +1,7 @@
 scenario_id: scn.supply-chain.ci-action-compromise
 statement: >
-  A third-party CI action or dependency referenced by a mutable tag is rewritten to malicious code and executes in a Reco CI runner holding cloud credentials.
-asset: "Reco CI runners and the credentials they hold"
+  A third-party CI action or dependency referenced by a mutable tag is rewritten to malicious code and executes in a CI runner holding cloud credentials.
+asset: "the organization CI runners and the credentials they hold"
 threat_actor: "supply-chain actor"
 effect: integrity
 estimation_level: lef
