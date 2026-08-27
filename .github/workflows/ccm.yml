@@ -10,21 +10,33 @@ name: continuous-controls-monitoring
 # Note the ordering: Scytale is LAST and it is a push. This repo produces the evidence; Scytale
 # renders it for the auditor. See docs/adr/0001-scytale-is-a-sink.md.
 
-# SCHEDULE DISABLED until the pipeline this file describes actually exists. See issue #5.
+# SCHEDULE DISABLED. See issue #5. The reason has NARROWED but has not gone away.
 #
-# Four of the five commands below are not implemented: `collect`, `assert`, `drift` and `route` are
-# absent from src/cli.mjs, which defines only validate, intake, health, gap, oscal, push, probe,
-# simulate, baseline and help. The collectors are written against injected clients and have never
-# run against a live tenant (BUILD-ORDER B2 is "Blocked on: the OIDC role"; B5's IdP is still the
-# placeholder <IdP>). Every scheduled run since 2026-08-23 has failed, and every one of them would
-# still fail with the credentials restored — just at a later step.
+# `collect`, `assert`, `drift` and `route` now exist — every command this file invokes is real, and
+# `npm run preflight` reports all five as ok. What remains is the other half:
+#
+#   1. The five secrets are still unset. The repository was deleted and recreated on 2026-08-22 to
+#      purge commits carrying a personal email address, and Actions secrets do not survive that.
+#      Only somebody holding the credential values can restore them.
+#   2. `collect` REFUSES live collection even with credentials present, and says why: the collectors
+#      in src/collectors/ take an injected client and no live client is constructed anywhere
+#      (BUILD-ORDER B2 is "Blocked on: the OIDC role"; B5's IdP is still the placeholder <IdP>).
+#      There is deliberately no fallback to fixtures — a scheduled run that quietly collected
+#      synthetic data when its credentials lapsed would go green having measured nothing.
+#
+# So a scheduled run would still fail. It would now fail HONESTLY, at preflight, naming what is
+# missing — rather than at configure-aws-credentials with an error that misled the first
+# investigation into "restore the secrets", which would not have worked.
 #
 # It is switched off rather than left red because a monitor that cries wolf daily from before it
 # was built is worse than one that is off: the first real failure looks identical to the thirty
 # fake ones preceding it, and by then nobody opens the mail. `workflow_dispatch` stays so the job
 # can still be exercised deliberately.
 #
-# Restore the schedule when `collect` exists and a manual dispatch has run green once:
+# Restore the schedule when the secrets are set, a live client is wired, and a manual dispatch has
+# run green once. Not before: a monitor that cries wolf daily from before it was built is worse than
+# one that is off, because the first real failure looks identical to the thirty fake ones preceding
+# it and by then nobody opens the mail.
 #   schedule:
 #     - cron: '0 6 * * *'   # 06:00 UTC daily, ahead of the US working day
 on:

@@ -257,6 +257,102 @@ const commands = {
     return result.ready ? 0 : 1;
   },
 
+  // --- the CCM pipeline: collect -> assert -> drift -> route ---------------------------------
+
+  async collect() {
+    const { collect, writeManifest } = await import('./collect.mjs');
+    let manifest;
+    try {
+      manifest = await collect({
+        fixture: flag('fixture'),
+        allowEmpty: flag('allow-empty'),
+        warehousePath: opt('warehouse') ?? undefined,
+        asOf: opt('as-of') ?? null,
+      });
+    } catch (err) {
+      // A refusal is a decision, not a crash. Printed as prose so a CI log reads as an answer
+      // rather than as a stack trace somebody has to interpret.
+      console.log(`\n${err.message}\n`);
+      return 1;
+    }
+    const path = await writeManifest(manifest);
+    console.log(`\nCOLLECT — ${manifest.total_rows} row(s) across ${manifest.cycles.length} cycle(s)\n`);
+    for (const c of manifest.cycles) console.log(`  ${c.as_of}   ${String(c.rows).padStart(3)} rows   ${c.source}`);
+    if (manifest.fixture) console.log(`\n  ${manifest.note}`);
+    console.log(`\n  warehouse: ${manifest.warehouse}\n  manifest:  ${path}\n`);
+  },
+
+  async assert() {
+    const { runAssert } = await import('./assert.mjs');
+    const { serialize } = await import('./oscal/common.mjs');
+    let r;
+    try {
+      r = await runAssert({ warehousePath: opt('warehouse') ?? undefined });
+    } catch (err) {
+      console.log(`\n${err.message}\n`);
+      return 1;
+    }
+
+    console.log(`\nASSERT — ${r.assertions.length} assertion(s) over ${r.cycles.length} cycle(s)\n`);
+    for (const a of r.assertions) {
+      console.log(`  ${a.as_of}  ${a.control_id.padEnd(34)} ${a.passing_count}/${a.total} passing, ${a.failing_count} failing  (tier ${a.confidence_tier})`);
+    }
+    if (r.coverage.note) console.log(`\n  ${r.coverage.note}`);
+    if (r.fixture) console.log('\n  Every assertion is marked fixture:true — this run measured stamped fixtures.');
+
+    const out = opt('out') ?? '.warehouse/assertions.json';
+    await mkdir(out.replace(/[/\\][^/\\]+$/, ''), { recursive: true });
+    await writeFile(out, serialize(r.assertions));
+    console.log(`\n  wrote ${out}\n`);
+  },
+
+  async drift() {
+    const { assessDrift } = await import('./drift.mjs');
+    const { loadAssertions } = await import('./lib/load.mjs');
+    const assertions = await loadAssertions(opt('assertions') ?? '.warehouse/assertions.json');
+    if (!assertions.length) { console.log('\nno assertions to compare. Run `assert` first.\n'); return 1; }
+
+    const r = assessDrift({ assertions, tolerance: Number(opt('tolerance') ?? 0.10) });
+    console.log(`\nDENOMINATOR DRIFT — tolerance ${(r.tolerance * 100).toFixed(0)}%\n`);
+    for (const c of r.controls) {
+      const moved = c.drifted ? '  ⚠ DRIFTED' : '';
+      const from = c.comparable ? `${c.previous_total} -> ${c.current_total}` : `${c.current_total} (single observation)`;
+      console.log(`  ${c.control_id.padEnd(34)} ${from}${moved}`);
+      if (c.drifted) console.log(`      ${c.reason}`);
+    }
+    console.log(`\n  ${r.summary}\n`);
+    // Non-zero holds the cycle: the pipeline must not route failures over a moved denominator.
+    return r.hold ? 1 : 0;
+  },
+
+  async route() {
+    const { route } = await import('./route.mjs');
+    const { assessDrift } = await import('./drift.mjs');
+    const { loadAssertions } = await import('./lib/load.mjs');
+    const { controls, exceptions } = await load();
+    const assertions = await loadAssertions(opt('assertions') ?? '.warehouse/assertions.json');
+    if (!assertions.length) { console.log('\nno assertions to route. Run `assert` first.\n'); return 1; }
+
+    const drift = assessDrift({ assertions, tolerance: Number(opt('tolerance') ?? 0.10) });
+    const r = route({ assertions, controls, exceptions, drift });
+
+    if (r.held) {
+      console.log(`\nROUTING HELD\n\n  ${r.reason}\n`);
+      for (const d of r.drifted) console.log(`  ${d.control_id}: ${d.previous_total} -> ${d.current_total}`);
+      console.log('');
+      return 1;
+    }
+
+    console.log(`\nROUTE — ${r.items.length} work item(s)\n`);
+    for (const s of r.summaries) console.log(`  ${s.owner.padEnd(22)} ${s.message}`);
+    for (const i of r.items.filter((x) => x.escalate_to_root_cause)) {
+      console.log(`\n  ESCALATE  ${i.item_id}\n      ${i.escalation_note}`);
+    }
+    if (r.note) console.log(`  ${r.note}`);
+    if (r.silent && r.items.length) console.log('\n  Nothing new this cycle. A silent channel is a working channel.');
+    console.log('');
+  },
+
   async baseline() {
     // The day-1 command. Everything at once, in the order you should read it.
     //

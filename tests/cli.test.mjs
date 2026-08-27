@@ -31,9 +31,11 @@ test('gap can be filtered to one direction', async () => {
  * Second instance of the regression at the top of this file, and it reached production config.
  *
  * The dispatcher was `commands[cmd] ?? commands.help`. `help()` returns undefined, so an unknown
- * command printed the help text and exited 0. ccm.yml invokes four commands that do not exist —
- * collect, assert, drift, route — so every one of them SUCCEEDED. With that workflow's credentials
- * restored it would have gone green end to end having collected no evidence whatsoever.
+ * command printed the help text and exited 0. ccm.yml invoked four commands that did not exist at
+ * the time — collect, assert, drift, route — so every one of them SUCCEEDED. With that workflow's
+ * credentials restored it would have gone green end to end having collected no evidence whatsoever.
+ * Those four have since been built; the guard stays, because the next fictional step will not
+ * announce itself either.
  *
  * The asymmetry below is the whole point: a bare invocation is a question and answering it is not
  * an error; a named command that does not exist is a failure and must say so in the exit code,
@@ -41,10 +43,13 @@ test('gap can be filtered to one direction', async () => {
  */
 test('an unknown command exits non-zero rather than printing help and succeeding', async () => {
   await assert.rejects(
-    () => run('node', ['src/cli.mjs', 'collect', '--all']),
+    // NOT 'collect' any more — that landed, and it now exits 1 for an entirely different reason
+    // (refusing to collect without credentials). Left as it was, this test kept passing while
+    // checking nothing about unknown commands at all.
+    () => run('node', ['src/cli.mjs', 'no-such-command', '--all']),
     (err) => {
       assert.equal(err.code, 1, 'unknown command exited 0 — a fictional workflow step would pass');
-      assert.match(err.stderr, /unknown command "collect"/, 'did not name the command it rejected');
+      assert.match(err.stderr, /unknown command "no-such-command"/, 'did not name the command it rejected');
       return true;
     }
   );

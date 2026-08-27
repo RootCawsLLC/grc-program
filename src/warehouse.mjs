@@ -83,8 +83,20 @@ export class Warehouse {
     }
   }
 
+  /**
+   * Closes the connection AND the instance.
+   *
+   * Closing only the connection leaves the instance holding the database file. On a `:memory:`
+   * warehouse nothing notices; on a file-backed one — which `collect` needs, because `assert` runs
+   * in a separate process — Windows keeps the file locked and the next open fails with
+   * "The process cannot access the file because it is being used by another process."
+   *
+   * Found when a second `collect` in the same process could not reopen its own warehouse. It went
+   * unnoticed for as long as every caller used `:memory:`.
+   */
   async close() {
     this.conn.closeSync();
+    this.instance?.closeSync?.();
   }
 
   /** Creates every landing table declared in tables.mjs, plus the snapshot table. Empty. */

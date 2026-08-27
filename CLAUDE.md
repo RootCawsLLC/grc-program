@@ -102,7 +102,11 @@ npm run demo       the whole synthetic pipeline, end to end, on stamped fixtures
 npm run probe      AI agent control probes, paired guarded/unguarded, against a local target
 npm run mcp        read-only MCP server over the control graph (8 tools)
 npm run simulate   FAIR Monte Carlo; refuses uncalibrated scenarios, which is the point
-npm test           261 tests
+npm run collect    land source state, time-indexed, into the warehouse (--fixture for a dry run)
+npm run assert     build assertion records from what collect landed
+npm run drift      denominator movement, checked BEFORE failures are routed
+npm run route      failing subjects -> work items, deduplicated by subject
+npm test           282 tests
 ```
 
 ## Day one

@@ -106,8 +106,9 @@ test('a ready result says so plainly and claims nothing more', () => {
 // ── against the real repository ──────────────────────────────────────────────────────────────
 
 test('the real ccm.yml and cli.mjs parse, and today the answer is NOT READY', () => {
-  // Pins the actual state rather than describing it. When collect/assert/drift/route are built and
-  // the secrets are restored, this test starts failing — which is the correct moment to revisit it.
+  // Pins the actual state rather than describing it. It fired once already, when
+  // collect/assert/drift/route were built — which is exactly what it is for. It will fire again
+  // when the secrets are restored, and that is the moment CCM can actually run.
   const { workflowText, commandNames } = loadInputs(process.cwd());
 
   assert.ok(commandNames.includes('validate'), 'failed to parse commands out of src/cli.mjs');
@@ -118,6 +119,10 @@ test('the real ccm.yml and cli.mjs parse, and today the answer is NOT READY', ()
     'CCM_READONLY_ROLE_ARN', 'GRC_READONLY_TOKEN', 'IDP_READONLY_TOKEN',
     'SCYTALE_CUSTOM_INTEGRATION_URL', 'SCYTALE_TOKEN',
   ]);
-  assert.deepEqual(r.commands.missing, ['assert', 'collect', 'drift', 'route']);
-  assert.equal(r.ready, false);
+  // collect/assert/drift/route landed. NOT READY is now down to the secrets alone, which is a
+  // materially different answer and the report says so — it no longer prints the "restoring the
+  // secrets would not fix this" section, because now it would.
+  assert.deepEqual(r.commands.missing, []);
+  assert.equal(r.ready, false, 'still not ready: five secrets remain unset');
+  assert.deepEqual(r.secrets.missing, r.secrets.required, 'no secret is set in this environment');
 });

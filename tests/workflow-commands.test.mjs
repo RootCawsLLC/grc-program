@@ -91,12 +91,13 @@ const npmRefs = (run) => [...run.matchAll(/npm run\s+([a-z][a-z:-]*)/g)].map((m)
  * here is a deliberate act with a named owner, and the exactness test below deletes the excuse as
  * soon as the command lands.
  */
-const NOT_BUILT_YET = {
-  collect: 'BUILD-ORDER B2/B5 — collectors have never run against a live tenant',
-  assert: 'BUILD-ORDER B2 — needs a collection to assert over',
-  drift: 'BUILD-ORDER B2 — needs a denominator to drift against',
-  route: 'BUILD-ORDER B4 — exception routing',
-};
+//
+// EMPTY, as of the commit that built collect/assert/drift/route. Every command ccm.yml invokes now
+// exists. The exactness test below is what emptied it: it fails the build on any entry naming a
+// command that has landed, so this list cannot rot into a permanent exemption.
+//
+// Adding a line here is still a deliberate act with a named owner, not a way past a red build.
+const NOT_BUILT_YET = {};
 
 test('the guard actually scans something', () => {
   // Anti-vacuity. If the workflow parse or the reference extraction breaks, every test below

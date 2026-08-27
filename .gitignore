@@ -14,3 +14,4 @@ out-synthetic/
 oscal-cli-sarif-log-*.json
 out-probe/
 out-simulation/
+.warehouse/

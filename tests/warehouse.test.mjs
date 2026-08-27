@@ -119,3 +119,27 @@ test('as_of is validated before interpolation — it is the only value not bound
   assert.doesNotThrow(() => render('select 1', { asOf: '2026-08-15T00:00:00Z' }));
   assert.doesNotThrow(() => render('select 1', { asOf: '2026-08-15T00:00:00.123Z' }));
 });
+
+test('a file-backed warehouse can be reopened after close', async () => {
+  // close() used to shut the connection and leave the INSTANCE holding the file. On :memory:
+  // nothing notices; on a file — which collect needs, because assert runs in another process —
+  // Windows keeps it locked and the next open fails with "used by another process".
+  const { mkdtempSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+
+  const dir = mkdtempSync(join(tmpdir(), 'wh-lock-'));
+  const path = join(dir, 'w.duckdb');
+  try {
+    const first = await Warehouse.open(path);
+    await first.createTables();
+    await first.close();
+
+    const second = await Warehouse.open(path);   // threw before the fix
+    const [{ n }] = await second.all('select count(*) as n from landing_aws_org_accounts');
+    assert.equal(n, 0);
+    await second.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
