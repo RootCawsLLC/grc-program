@@ -6,7 +6,7 @@ name: ci
 # commits carrying an infostealer that harvested AWS, GCP and Azure credentials, SSH keys and
 # kubeconfigs from CI runners (GHSA-69fq-xp46-6x23, CVE-2026-33634). Tag immutability did not prevent it.
 #
-# Pins verified against the upstream repositories on 2026-08-21 via
+# Pins verified against the upstream repositories on 2026-08-27 via
 # `gh api repos/<owner>/<repo>/git/ref/tags/<tag> --jq '.object.sha'`.
 # One of the three was originally wrong — a plausible-looking SHA that pointed at nothing — which
 # is exactly the failure mode this practice exists to prevent. Re-verify on every version bump;
@@ -26,8 +26,8 @@ jobs:
   control-inventory:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with: { node-version: '22', cache: 'npm' }
       - run: npm ci
 
@@ -83,12 +83,12 @@ jobs:
   oscal-validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with: { node-version: '22', cache: 'npm' }
-      # Pin verified 2026-08-22 against actions/setup-java tag v4.7.1 via
-      # `gh api repos/actions/setup-java/git/ref/tags/v4.7.1 --jq '.object.sha'`.
-      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+      # Pin verified 2026-08-27 against actions/setup-java tag v6.0.0 via
+      # `gh api repos/actions/setup-java/git/ref/tags/v6.0.0 --jq '.object.sha'`.
+      - uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0
         with: { distribution: temurin, java-version: '17' }
       - run: npm ci
       - run: npm run emit
@@ -126,14 +126,14 @@ jobs:
   agent-probes:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with: { node-version: '22', cache: 'npm' }
       - run: npm ci
 
       # The target is a separate public repository and is NOT vendored here. Pinned by SHA like
       # every other action; see THIRD-PARTY-NOTICES.md for why the two repos are kept apart.
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: RootCawsLLC/proofplane
           path: .proofplane
@@ -166,7 +166,7 @@ jobs:
   policy-gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Refuse framework text in the repository
         # ADR-0003. SCF is CC BY-ND 4.0 and its terms explicitly prohibit AI-assisted generation of
         # derivative content. We carry identifiers and resolve text at runtime from a local release.
