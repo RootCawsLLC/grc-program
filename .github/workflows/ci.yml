@@ -8,9 +8,23 @@ name: ci
 #
 # Pins verified against the upstream repositories on 2026-08-27 via
 # `gh api repos/<owner>/<repo>/git/ref/tags/<tag> --jq '.object.sha'`.
-# One of the three was originally wrong — a plausible-looking SHA that pointed at nothing — which
+# One of the four was originally wrong — a plausible-looking SHA that pointed at nothing — which
 # is exactly the failure mode this practice exists to prevent. Re-verify on every version bump;
 # never take a pin on trust, including from this file's own history.
+#
+# USE THAT COMMAND EXACTLY, AND DO NOT DEREFERENCE THE RESULT. A tag ref points at either a commit
+# (lightweight tag) or a tag object (annotated tag), and both forms appear among these four pins.
+# Actions resolves whatever the ref points at, so that is what the pin must equal. A check that
+# dereferences annotated tags to their commit first will report a CORRECT pin as a mismatch — and
+# the SHA it is "missing" then 404s from `git/commits` and 422s from `commits`, because a tag object
+# is neither a commit nor reachable from a branch. That reads exactly like the historical failure
+# above, which is what makes it expensive: on 2026-08-26 it cost most of an investigation into a
+# supply-chain compromise that had not happened. `.object.type` tells you which form you have.
+#
+# A major-version bump is not evidence a runtime deprecation is fixed. Confirm at the target tag:
+#   gh api repos/<owner>/<repo>/contents/action.yml?ref=<tag> -H "Accept: application/vnd.github.raw"
+# and check `runs.using`. Then prove it on the run logs rather than on a green tick:
+#   gh run view <id> --log | grep -ci "Node.js 20 is deprecated"
 #
 # This pipeline holds read credentials to the identity provider, the cloud estate and the source
 # repositories. It is a higher-value target than the product build. Treat it accordingly.
