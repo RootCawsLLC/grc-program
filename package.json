@@ -24,7 +24,8 @@
     "probe": "node src/cli.mjs probe",
     "probe:check": "node scripts/check-probe-evidence.mjs",
     "mcp": "node src/mcp/server.mjs",
-    "simulate": "node src/cli.mjs simulate"
+    "simulate": "node src/cli.mjs simulate",
+    "preflight": "node src/cli.mjs preflight"
   },
   "dependencies": {
     "@duckdb/node-api": "^1.5.5-r.4",

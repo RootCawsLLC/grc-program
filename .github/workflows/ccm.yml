@@ -48,6 +48,26 @@ jobs:
         with: { node-version: '22', cache: 'npm' }
       - run: npm ci
 
+      # ASK THE WHOLE QUESTION FIRST.
+      #
+      # Every run between 2026-08-23 and 08-26 died at the next step with "Could not load
+      # credentials from any providers" — true, and useless. It named a symptom four steps before
+      # the real problem, said nothing about the five unset secrets behind it, and nothing at all
+      # about the four commands further down that do not exist. It sent the first investigation
+      # towards "restore the secrets", which would not have fixed anything: the run would have died
+      # one step later instead.
+      #
+      # This reports ALL of it, once, before anything tries to use any of it. It does not make
+      # collection work — it makes the failure accurate. See issue #5.
+      - name: Preflight — report every missing secret and command at once
+        env:
+          CCM_READONLY_ROLE_ARN: ${{ secrets.CCM_READONLY_ROLE_ARN }}
+          IDP_READONLY_TOKEN: ${{ secrets.IDP_READONLY_TOKEN }}
+          GRC_READONLY_TOKEN: ${{ secrets.GRC_READONLY_TOKEN }}
+          SCYTALE_TOKEN: ${{ secrets.SCYTALE_TOKEN }}
+          SCYTALE_CUSTOM_INTEGRATION_URL: ${{ secrets.SCYTALE_CUSTOM_INTEGRATION_URL }}
+        run: npm run preflight
+
       - uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3
         with:
           role-to-assume: ${{ secrets.CCM_READONLY_ROLE_ARN }}

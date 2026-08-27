@@ -246,6 +246,17 @@ const commands = {
     console.log('');
   },
 
+  // Asks the whole question before anything tries to use any of it. Runs first in ccm.yml so a
+  // dispatch answers "what is missing" in one run, instead of dying four steps later on a
+  // credentials error that names a symptom and hides the cause.
+  async preflight() {
+    const { preflight, report, loadInputs } = await import('./preflight.mjs');
+    const { workflowText, commandNames } = loadInputs(opt('root') ?? '.');
+    const result = preflight({ workflowText, commandNames });
+    console.log(`\n${report(result)}\n`);
+    return result.ready ? 0 : 1;
+  },
+
   async baseline() {
     // The day-1 command. Everything at once, in the order you should read it.
     //
