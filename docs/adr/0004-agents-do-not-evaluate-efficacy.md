@@ -14,9 +14,9 @@ fluent, confident, unfalsifiable answer — which is the most dangerous possible
 is indistinguishable in form from a correct one and it flows directly into an SSP, a trust-center
 claim and eventually a customer contract.
 
-There is a particular irony to get right here: Reco sells AI-driven security analytics. The same
+There is a particular irony to get right here: the organization sells AI-driven security analytics. The same
 skepticism applies to our own product when it is pointed at our own program. Dogfooding
-(ADR-0005) means using Reco to *collect state*, not to *conclude efficacy*.
+(ADR-0005) means using the organization to *collect state*, not to *conclude efficacy*.
 
 ## Decision
 

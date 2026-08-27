@@ -132,7 +132,7 @@
           "type": "string",
           "enum": [
             "api",
-            "reco-graph",
+            "product-graph",
             "csv-inbox",
             "manual-procedure"
           ]

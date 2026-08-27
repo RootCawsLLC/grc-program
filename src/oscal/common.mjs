@@ -97,7 +97,7 @@ export function metadata({ title, assertions = [], version = '0.1.0', subject = 
 
 /**
  * FAIR-CAM measurement on OSCAL props. OSCAL has nowhere to carry control measurement, so it rides
- * in a namespace Reco controls. Spec-legal, ignorable by tools that do not know the namespace, and
+ * in a namespace the organization controls. Spec-legal, ignorable by tools that do not know the namespace, and
  * it makes the package carry the risk layer rather than only the compliance layer.
  */
 export function faircamProps(control, asOf = null) {

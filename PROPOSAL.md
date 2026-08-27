@@ -1,4 +1,4 @@
-# Automating Reco's GRC program
+# Automating the organization's GRC program
 
 **A 30/60/90 build plan for a one-person function**
 Susan Shepard · 21 August 2026
@@ -7,17 +7,17 @@ Susan Shepard · 21 August 2026
 
 ## The shape of the problem
 
-Reco is already certified. SOC 2 Type 2, ISO/IEC 27001:2022 with a published Statement of Applicability, ISO/IEC 42001:2023, CSA STAR Level 1, GDPR, DPDPA and EU AI Act materials are live on the trust center today. The job is not to get Reco certified.
+The organization is already certified. SOC 2 Type 2, ISO/IEC 27001:2022 with a published Statement of Applicability, ISO/IEC 42001:2023, CSA STAR Level 1, GDPR, DPDPA and EU AI Act materials are live on the trust center today. The job is not to get the organization certified.
 
 The job is that the program behind those certificates is currently sized for a team, and it is about to be run by one person — across three legal jurisdictions, two audit regimes on separate clocks, an ISO 42001 AI management system, a growing enterprise customer base that sends security questionnaires, and a company that added roughly seventy people and a US office in the last year.
 
 There is exactly one way that works. Every control becomes a query against a system that already knows the answer, exceptions route to the team that owns them, and the only thing a human touches is the delta. The measure of success is not how many controls exist or what the pass rate is. It is **human-touch minutes per control per quarter**, and it has to fall by an order of magnitude.
 
-The secondary claim in this proposal is that doing it this way produces something Reco can sell. A compliance program whose evidence is collected continuously and whose attestations are generated from measured state — rather than from static PDFs — is exactly the thing Reco's product promises its customers. Running it internally makes the GRC function product proof rather than overhead.
+The secondary claim in this proposal is that doing it this way produces something the organization can sell. A compliance program whose evidence is collected continuously and whose attestations are generated from measured state — rather than from static PDFs — is exactly the thing the organization's product promises its customers. Running it internally makes the GRC function product proof rather than overhead.
 
 ---
 
-## Where Reco actually is
+## Where the organization actually is
 
 Everything below is from public sources. Items marked **inferred** need confirmation in week one; `docs/DISCOVERY.md` tracks all seventeen open questions with their consequences.
 
@@ -31,16 +31,16 @@ Everything below is from public sources. Items marked **inferred** need confirma
 | TPRM | ProcessUnity, listed separately |
 | Security ratings | SecurityScorecard (A), BitSight, Black Kite |
 | Subprocessors published | ClickHouse, Amplitude, Segment, Datadog, AWS — five entities |
-| Infrastructure | AWS (EKS, RDS for PostgreSQL, CloudFront, WAF). **Anthropic Claude Sonnet via Amazon Bedrock**, plus "multiple production AI agents" — stated in an AWS ML blog post of 23 March 2026 co-authored by Reco's CTO |
+| Infrastructure | AWS (EKS, RDS for PostgreSQL, CloudFront, WAF). **Anthropic Claude Sonnet via Amazon Bedrock**, plus "multiple production AI agents" — stated in an AWS ML blog post of 23 March 2026 co-authored by the organization's CTO |
 | Published recovery objectives | RTO 5 days · RPO 22 hours |
-| Jurisdictions | US (RecoLabs, Inc., FL registration; new Texas office) · Israel (Tel Aviv) · **Moldova (Chișinău)** |
+| Jurisdictions | US (the company, FL registration; new Texas office) · Israel (Tel Aviv) · **Moldova (Chișinău)** |
 | Funding | $85M total; $30M Series B, February 2026, led by Zeev Ventures, with Workday Ventures, TIAA Ventures, S Ventures and Quadrille Capital joining |
 | Latest audit artifact | SOC 2 bridge letter covering 1 Dec 2024 – 30 Nov 2025 |
 
 **Inferred, needs confirmation**
 
 - **The SOC 2 observation window runs 1 December – 30 November.** Bridge letters run forward from the report period end, so the underlying Type 2 period most likely ended 30 November. The report period itself is behind the NDA gate. This inference drives the entire phasing below; if it is wrong, the phasing moves with it.
-- **The CISO seat is vacant.** Reco announced its first CISO in June 2024. That person is no longer on the leadership page and now holds a security leadership role at another company. The June 2026 executive-expansion announcement named seven new leaders and did not name a CISO. No successor has been announced publicly.
+- **The CISO seat is vacant.** The organization announced its first CISO in June 2024. That person is no longer on the leadership page and now holds a security leadership role at another company. The June 2026 executive-expansion announcement named seven new leaders and did not name a CISO. No successor has been announced publicly.
 - **No FedRAMP, GovRAMP, HIPAA or PCI claim exists.** Absent from every public surface searched, including the FedRAMP Marketplace at any status.
 
 **Not verifiable from outside** — the audit firm, the ISO certification body, certificate numbers and expiry dates, and whether the ISO certificates appear in an accreditation registry. IAF CertSearch is account-gated and returned nothing queryable. This is an **open item, not a negative finding**: it means the certificates could not be verified externally, not that they are unaccredited. Week-one ask is the certificate PDFs plus the CB name, then independent verification in the CB's own registry.
@@ -59,7 +59,7 @@ A single line in the pricing feature matrix reads "Open API integration suite." 
 
 An independent audit firm — one that sells audits, not software — assesses the platform this way: *"The product is thinner than the service… If you want to hand compliance work to a vendor and receive outputs rather than operate a platform, Scytale fits that model. If you want control, it doesn't."* G2's own computed dislike themes corroborate it: 43 reviews citing integration difficulty, 32 citing limited integrations, 21 citing limited configuration options for evidence collection.
 
-**Consequence.** A system of record you cannot read from is a system of record you do not own. The control inventory and the evidence warehouse live in Git and in a time-indexed store that Reco controls. Scytale becomes a rendering and auditor-workflow layer, fed by push. Replacing it later becomes a rewrite of one adapter file rather than a program. This is ADR-0001, and `src/push/scytale.mjs` refuses to send until the JSON contract is confirmed against the UI — a guessed schema puts silently wrong evidence into the auditor-facing system, which is worse than no evidence.
+**Consequence.** A system of record you cannot read from is a system of record you do not own. The control inventory and the evidence warehouse live in Git and in a time-indexed store that the organization controls. Scytale becomes a rendering and auditor-workflow layer, fed by push. Replacing it later becomes a rewrite of one adapter file rather than a program. This is ADR-0001, and `src/push/scytale.mjs` refuses to send until the JSON contract is confirmed against the UI — a guessed schema puts silently wrong evidence into the auditor-facing system, which is worse than no evidence.
 
 ### 2. The observation window closes at roughly day 90. Do not re-cut controls inside it.
 
@@ -71,26 +71,26 @@ The failure mode is specific. Split one control into four mid-window and the aud
 
 The ISO 27001 and ISO 42001 surveillance cycles sit on their own certificate dates and are **not** governed by this freeze. Confirming those dates is a week-one task, because they may permit earlier movement on exactly the AI governance work that is most differentiated.
 
-### 3. Reco already built most of the collection layer. It is called Reco.
+### 3. The organization already built most of the collection layer. It is the product itself.
 
-Reco's product discovers SaaS applications, maps identities and permissions across roughly 260 integrations, detects SaaS-to-SaaS OAuth connections and shadow AI, and continuously monitors configuration state against framework mappings.
+The organization's product discovers SaaS applications, maps identities and permissions across roughly 260 integrations, detects SaaS-to-SaaS OAuth connections and shadow AI, and continuously monitors configuration state against framework mappings.
 
 That is, substantially, an evidence pipeline for the SaaS half of a GRC program. It exists, it is maintained by a product team, and the GRC function is not using it.
 
-**Consequence.** Point Reco at Reco. The knowledge graph becomes a collector — `mechanism: reco-graph` — sitting alongside the AWS, IdP and GitHub collectors under the same assertion schema and the same guardrails. Three controls take it first: the subprocessor register, the AI model inventory, and SaaS configuration drift.
+**Consequence.** Point the product at itself. The knowledge graph becomes a collector — `mechanism: product-graph` — sitting alongside the AWS, IdP and GitHub collectors under the same assertion schema and the same guardrails. Three controls take it first: the subprocessor register, the AI model inventory, and SaaS configuration drift.
 
-The boundary matters and is stated explicitly in ADR-0005: **Reco supplies observed state; efficacy conclusions and mapping decisions stay under human authorship.** We use the product's collection, not the product's judgement — which is precisely what we would tell a customer to do.
+The boundary matters and is stated explicitly in ADR-0005: **The organization supplies observed state; efficacy conclusions and mapping decisions stay under human authorship.** We use the product's collection, not the product's judgement — which is precisely what we would tell a customer to do.
 
-Two things fall out of this that are worth more than the engineering saved. First, "our SOC 2 evidence is collected by our own product" is a claim almost no security vendor can make, and it belongs in the sales motion. Second, every gap found while instrumenting Reco's own controls is a real customer-workflow gap found before a customer finds it — the GRC lead becomes design partner zero.
+Two things fall out of this that are worth more than the engineering saved. First, "our SOC 2 evidence is collected by our own product" is a claim almost no security vendor can make, and it belongs in the sales motion. Second, every gap found while instrumenting the organization's own controls is a real customer-workflow gap found before a customer finds it — the GRC lead becomes design partner zero.
 
-There is a circularity to be honest with the auditor about: if the product collects the evidence, a product defect is an evidence defect. The mitigation is that the highest-consequence controls — cloud IAM, CI/CD, tenant isolation — are collected from primary APIs independently, and the reco-graph collector is reconciled against them where they overlap. Say this before the auditor asks.
+There is a circularity to be honest with the auditor about: if the product collects the evidence, a product defect is an evidence defect. The mitigation is that the highest-consequence controls — cloud IAM, CI/CD, tenant isolation — are collected from primary APIs independently, and the product-graph collector is reconciled against them where they overlap. Say this before the auditor asks.
 
 ---
 
 ## The architecture
 
 ```
-EXTRACT    AWS APIs · IdP · GitHub · HRIS · Reco knowledge graph · CSV inbox fallback
+EXTRACT    AWS APIs · IdP · GitHub · HRIS · the organization knowledge graph · CSV inbox fallback
    │       full state, never samples; scheduled, never triggered
    ▼
 LAND       time-indexed store — must answer "what was true on 14 March",
@@ -146,13 +146,13 @@ Three properties do the work.
 
 **Ten to fifteen controls producing assertions daily**, chosen in scenario-weight order rather than framework order. Cloud IAM, enterprise SSO, CI/CD branch protection and third-party action pinning, workforce training, and the subprocessor register.
 
-**Two of those run on Reco.** The subprocessor register and the AI model inventory, via the reco-graph collector. This is where the dogfooding case gets made with evidence rather than with a pitch.
+**Two of those run on the organization.** The subprocessor register and the AI model inventory, via the product-graph collector. This is where the dogfooding case gets made with evidence rather than with a pitch.
 
-**The subprocessor reconciliation is a real deliverable, not a formality.** Three independent sources — SaaS spend from finance, observed OAuth grants and SaaS-to-SaaS connections from Reco's own product pointed at the Reco tenant, and the DPA repository — reconciled against a register that currently publishes five entities. GDPR Article 28 and Article 30 obligations attach to what is actually processing, not to what is listed. The register is expected to grow; that is the point.
+**The subprocessor reconciliation is a real deliverable, not a formality.** Three independent sources — SaaS spend from finance, observed OAuth grants and SaaS-to-SaaS connections from the organization's own product pointed at the product tenant, and the DPA repository — reconciled against a register that currently publishes five entities. GDPR Article 28 and Article 30 obligations attach to what is actually processing, not to what is listed. The register is expected to grow; that is the point.
 
 **Model and endpoint inventory.** Every model endpoint invocable from production, discovered from egress telemetry and infrastructure-as-code rather than from a spreadsheet.
 
-This one has more behind it than a documentation gap. In an AWS ML blog post of 23 March 2026, co-authored by Reco's own CTO, Reco states that its Alert Story Generator runs on **Anthropic Claude Sonnet via Amazon Bedrock**, and the author biography describes a team leading "Reco's generative-AI solutions, built on Amazon Bedrock and Anthropic Claude, **including multiple production AI agents**." The published subprocessor register names AWS and four others; it does not name Bedrock, Anthropic, or any model provider.
+This one has more behind it than a documentation gap. In an AWS ML blog post of 23 March 2026, co-authored by the organization's own CTO, the organization states that its Alert Story Generator runs on **Anthropic Claude Sonnet via Amazon Bedrock**, and the author biography describes a team leading "the organization's generative-AI solutions, built on Amazon Bedrock and Anthropic Claude, **including multiple production AI agents**." The published subprocessor register names AWS and four others; it does not name Bedrock, Anthropic, or any model provider.
 
 That is not a nitpick. It means the AI governance work below is not speculative — there are production AI agents processing customer security alerts today — and it means the model-provider disclosure question is live for ISO 42001 and for AI Act transparency, where disclosure is normally expected to be explicit rather than inherited under a cloud entry. Whether the AWS entry is legally sufficient is a real question with a real answer, and the inventory produces the facts to answer it instead of arguing about it.
 
@@ -160,13 +160,13 @@ That is not a nitpick. It means the AI governance work below is not speculative 
 
 The dates moved recently and it matters. **Regulation (EU) 2026/1744 — the Digital Omnibus on AI — was published in the Official Journal on 24 July 2026 and entered into force on 27 July, six days before the original deadline.** It defers the Annex III standalone high-risk obligations from 2 August 2026 to **2 December 2027**, and Annex I embedded-product high-risk to 2 August 2028. It did **not** defer the Article 50 transparency obligations, which applied from 2 August 2026 as originally scheduled.
 
-Two consequences. First, if any Reco system would classify as Annex III high-risk, there is now eighteen months of runway rather than a deadline that has already passed — which changes the sequencing but not the work. Second, the obligations that are live *right now* are the transparency ones, and those are the ones a customer or a supervisory authority can ask about today. Most vendors are currently overclaiming in the opposite direction — publishing AI Act readiness language keyed to a high-risk regime that has been deferred. An overclaim in a published AI Act statement is worse than silence. This determination stays under human authorship and is the first AI governance deliverable.
+Two consequences. First, if any the organization system would classify as Annex III high-risk, there is now eighteen months of runway rather than a deadline that has already passed — which changes the sequencing but not the work. Second, the obligations that are live *right now* are the transparency ones, and those are the ones a customer or a supervisory authority can ask about today. Most vendors are currently overclaiming in the opposite direction — publishing AI Act readiness language keyed to a high-risk regime that has been deferred. An overclaim in a published AI Act statement is worse than silence. This determination stays under human authorship and is the first AI governance deliverable.
 
 **Calibration workshop.** Ten scenarios are already scoped in taxonomy grammar in `scenarios/`, and every parameter currently carries `derivation_level: assumed` with a confidence tier of 1. That is the accurate state of an estimate before calibration — not a placeholder anyone forgot. The workshop moves them to `calibrated-estimate` or `measured`, with named sources.
 
 **Variance layer live.** The four timestamps — started, detected, remediation started, remediation completed — decomposed into their FAIR-CAM segments. This is the piece almost nobody emits and it is the whole point: it means the pipeline that satisfies the auditor also produces the inputs to control reliability, which is an input to loss event frequency. Knowing mean time to remediate is 30 days is not actionable. Knowing that 26 of those 30 days were detection latency is, because it says "remediate faster" was the wrong instruction.
 
-> **Day 60 deliverables** — 10–15 controls asserting daily · reco-graph collector in production · subprocessor register reconciled · model inventory complete · EU AI Act role determination · variance layer producing VF/VD · scenarios calibrated
+> **Day 60 deliverables** — 10–15 controls asserting daily · product-graph collector in production · subprocessor register reconciled · model inventory complete · EU AI Act role determination · variance layer producing VF/VD · scenarios calibrated
 
 ---
 
@@ -214,7 +214,7 @@ Three commitments about how the numbers are handled:
 
 **Usefully precise beats precise.** A \$10M–\$500M range means the research was skipped. A \$748K–\$752K range is false precision. An estimate is usefully precise when more precision would not change the decision.
 
-The reporting output is a loss exceedance curve and a ROSI-ranked backlog, not a heat map. Reco is private and has no 8-K obligation of its own — but its enterprise customers do, and their contractual notification clocks run through Reco as a processor. That is where loss magnitude modelling attaches commercially: sizing notification exposure across the customer base, and sizing cyber insurance against something other than a broker's benchmark.
+The reporting output is a loss exceedance curve and a ROSI-ranked backlog, not a heat map. The organization is private and has no 8-K obligation of its own — but its enterprise customers do, and their contractual notification clocks run through the organization as a processor. That is where loss magnitude modelling attaches commercially: sizing notification exposure across the customer base, and sizing cyber insurance against something other than a broker's benchmark.
 
 ---
 
@@ -240,10 +240,10 @@ The SCF licensing problem is already solved in that work. SCF is CC BY-ND 4.0, a
 | Layer | Choice | Note |
 |---|---|---|
 | Control inventory | Git, YAML, JSON Schema | Already owned |
-| Extract | Node collectors + Reco knowledge graph | Reco is already paid for |
+| Extract | Node collectors + the organization knowledge graph | the organization is already paid for |
 | Cloud posture | **Prowler** (Apache-2.0, ~14.6k stars, weekly releases) and **Cloud Custodian** (CNCF Incubating) | Deliberately **not** Steampipe. Steampipe v1.0 removed `check` and `mod`; the compliance mods are Powerpipe-only, the AWS mod's last release was December 2025, and AGPL plus a trademark policy makes hosting dashboards for customers legally expensive. |
 | Transform | **dbt** | Non-negotiable if the lineage argument is wanted |
-| Warehouse | DuckDB locally; whatever Reco already runs in production | Time-indexing is the only hard requirement |
+| Warehouse | DuckDB locally; whatever the organization already runs in production | Time-indexing is the only hard requirement |
 | Policy-as-code | **OPA / Conftest** (CNCF Graduated) | Preventive gates in CI |
 | OSCAL | **metaschema-framework/oscal-cli** v3.2.0 | Not `usnistgov/oscal-cli`, whose newest tag is still v1.0.3 from February 2024 |
 | Crosswalk spine | SCF 2026.2, resolved at runtime | Never vendored. See ADR-0003 |
@@ -253,7 +253,7 @@ The SCF licensing problem is already solved in that work. SCF is CC BY-ND 4.0, a
 
 **On SHA-pinning.** In March 2026 an attacker force-pushed 76 of 77 tags in `aquasecurity/trivy-action` to malicious commits carrying an infostealer that harvested AWS, GCP and Azure credentials, SSH keys and kubeconfigs from CI runners. Tag immutability did not prevent it. An evidence pipeline is a higher-value target than a product build, because it holds read credentials to every system it collects from. The pipeline that measures `ctl.iam.cloud-platform.mfa` does not get to violate it — collection runs on OIDC, not on long-lived keys.
 
-**Two consolidation questions worth raising, not resolving, in the first quarter.** Scytale includes a trust center in every pricing tier and Reco is not using it, paying separately for SafeBase — a Drata product. ProcessUnity overlaps Scytale's own vendor risk module. Both are real duplication. The honest caveat is that SafeBase is materially more capable than Scytale's trust center, so the finding is *"Reco is paying twice,"* not necessarily *"switch."* Migrating would likely be a downgrade.
+**Two consolidation questions worth raising, not resolving, in the first quarter.** Scytale includes a trust center in every pricing tier and the organization is not using it, paying separately for SafeBase — a Drata product. ProcessUnity overlaps Scytale's own vendor risk module. Both are real duplication. The honest caveat is that SafeBase is materially more capable than Scytale's trust center, so the finding is *"the organization is paying twice,"* not necessarily *"switch."* Migrating would likely be a downgrade.
 
 ---
 
@@ -294,18 +294,18 @@ Stated up front rather than discovered later.
 2. **Scytale turns out to have a usable read API.** Reconciliation gets much cheaper and ADR-0001 is revisited — though the system-of-record decision holds regardless, on lock-in grounds.
 3. **A FedRAMP or TX-RAMP mandate appears.** This becomes a different job. AppOmni holds a FedRAMP Moderate ATO and TX-RAMP and appears to be the only pure-play SSPM in the marketplace at any status; given the new Texas office, TX-RAMP is the cheaper near-term counter and the OSCAL work above is the substrate either way. FedRAMP RFC-0024 puts machine-readable packages on a clock, which is an argument for building OSCAL correctly now rather than later.
 4. **A CISO is hired in the first 90 days.** Good outcome. The ISMS/AIMS ownership question resolves itself and this plan reports into it rather than around it.
-5. **Product declines a Reco-on-Reco tenant.** The dogfooding controls fall back to primary APIs. More collector work, and the reference story is lost.
+5. **Product declines a self-dogfooding tenant.** The dogfooding controls fall back to primary APIs. More collector work, and the reference story is lost.
 
 ---
 
 ## The one-paragraph version
 
-Reco holds the certificates; what it does not yet have is a program that runs itself. The build is a Git-housed control inventory as the system of record, a time-indexed evidence warehouse producing populations rather than samples, Scytale demoted to a rendering layer because it has no read path, Reco's own product pointed at Reco as a collector, and the variance data that satisfies the auditor reused as the input to quantified risk so that remediation is sequenced by loss reduction per dollar. The first 90 days deliberately change nothing normative, because the SOC 2 observation window closes at day 90 and re-cutting controls inside it is how audits get qualified. What ships instead is a parallel program with real evidence, a reconciliation that proves it, an AI governance layer that gives ISO 42001 something to look at beyond documentation, and an attestation surface that turns security review latency — the one GRC number the revenue side already cares about — into a metric that goes down.
+The organization holds the certificates; what it does not yet have is a program that runs itself. The build is a Git-housed control inventory as the system of record, a time-indexed evidence warehouse producing populations rather than samples, Scytale demoted to a rendering layer because it has no read path, the organization's own product pointed at the organization as a collector, and the variance data that satisfies the auditor reused as the input to quantified risk so that remediation is sequenced by loss reduction per dollar. The first 90 days deliberately change nothing normative, because the SOC 2 observation window closes at day 90 and re-cutting controls inside it is how audits get qualified. What ships instead is a parallel program with real evidence, a reconciliation that proves it, an AI governance layer that gives ISO 42001 something to look at beyond documentation, and an attestation surface that turns security review latency — the one GRC number the revenue side already cares about — into a metric that goes down.
 
 ---
 
 ### Sources
 
-Reco trust center: [trust.reco.ai](https://trust.reco.ai/) · Reco [about](https://www.reco.ai/about-us), [careers](https://www.reco.ai/careers), [Series B announcement](https://www.reco.ai/blog/reco-raises-30m-b-round-for-a-total-of-85m-to-meet-rapidly-growing-demand-for-saas-ai-security-among-enterprises), [executive expansion](https://www.reco.ai/blog/reco-expands-executive-team-in-enterprise-ai-agent-security), [first CISO announcement (2024)](https://www.reco.ai/blog/reco-names-merritt-baer-chief-information-security-officer) · [Reco on Amazon Bedrock, AWS ML blog](https://aws.amazon.com/blogs/machine-learning/how-reco-transforms-security-alerts-using-amazon-bedrock/) · Scytale [custom integrations](https://scytale.ai/resources/custom-integrations-update/), [integrations](https://scytale.ai/integrations/), [pricing](https://scytale.ai/pricing/), [trust center product](https://scytale.ai/trust-center/), [audit partners](https://scytale.ai/find-a-partner/audit-partners/), [open-source Claude skills](https://github.com/scytale-labs/GRC-Claude-Skills) · [GRSee platform comparison](https://grsee.com/resources/compliance/compliance-automation-platform-comparison-vanta-drata-secureframe-sprinto-scytale-anecdotes/) · [Scytale G2 reviews](https://www.g2.com/products/scytale-g2/reviews?qs=pros-and-cons) · [AppOmni FedRAMP package FR2431264500](https://www.fedramp.gov/marketplace/products/FR2431264500/) · [Obsidian ISO 42001 certification](https://www.obsidiansecurity.com/news/obsidian-security-achieves-iso-iec-42001-2023-certification-for-ai-governance) · trivy-action compromise [GHSA-69fq-xp46-6x23 / CVE-2026-33634](https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23), [Microsoft Security Blog analysis](https://www.microsoft.com/en-us/security/blog/2026/03/24/detecting-investigating-defending-against-trivy-supply-chain-compromise/) · SCF [terms and conditions](https://securecontrolsframework.com/terms-and-conditions), [commercial license](https://securecontrolsframework.com/commercial-license), [GitHub](https://github.com/securecontrolsframework/securecontrolsframework) · [NIST OSCAL](https://github.com/usnistgov/OSCAL) · EU AI Act deferral — Regulation (EU) 2026/1744, analysis by [Gibson Dunn](https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/) and [Jones Walker](https://www.joneswalker.com/en/insights/blogs/ai-law-blog/yes-august-2-still-matters-the-eu-approved-a-high-risk-ai-delay-but-most-trans.html)
+Trust center: [trust.reco.ai](https://trust.reco.ai/) · [About](https://www.reco.ai/about-us), [careers](https://www.reco.ai/careers), [Series B announcement](https://www.reco.ai/blog/reco-raises-30m-b-round-for-a-total-of-85m-to-meet-rapidly-growing-demand-for-saas-ai-security-among-enterprises), [executive expansion](https://www.reco.ai/blog/reco-expands-executive-team-in-enterprise-ai-agent-security), [first CISO announcement (2024)](https://www.reco.ai/blog/reco-names-merritt-baer-chief-information-security-officer) · [The organization on Amazon Bedrock, AWS ML blog](https://aws.amazon.com/blogs/machine-learning/how-reco-transforms-security-alerts-using-amazon-bedrock/) · Scytale [custom integrations](https://scytale.ai/resources/custom-integrations-update/), [integrations](https://scytale.ai/integrations/), [pricing](https://scytale.ai/pricing/), [trust center product](https://scytale.ai/trust-center/), [audit partners](https://scytale.ai/find-a-partner/audit-partners/), [open-source Claude skills](https://github.com/scytale-labs/GRC-Claude-Skills) · [GRSee platform comparison](https://grsee.com/resources/compliance/compliance-automation-platform-comparison-vanta-drata-secureframe-sprinto-scytale-anecdotes/) · [Scytale G2 reviews](https://www.g2.com/products/scytale-g2/reviews?qs=pros-and-cons) · [AppOmni FedRAMP package FR2431264500](https://www.fedramp.gov/marketplace/products/FR2431264500/) · [Obsidian ISO 42001 certification](https://www.obsidiansecurity.com/news/obsidian-security-achieves-iso-iec-42001-2023-certification-for-ai-governance) · trivy-action compromise [GHSA-69fq-xp46-6x23 / CVE-2026-33634](https://github.com/aquasecurity/trivy/security/advisories/GHSA-69fq-xp46-6x23), [Microsoft Security Blog analysis](https://www.microsoft.com/en-us/security/blog/2026/03/24/detecting-investigating-defending-against-trivy-supply-chain-compromise/) · SCF [terms and conditions](https://securecontrolsframework.com/terms-and-conditions), [commercial license](https://securecontrolsframework.com/commercial-license), [GitHub](https://github.com/securecontrolsframework/securecontrolsframework) · [NIST OSCAL](https://github.com/usnistgov/OSCAL) · EU AI Act deferral — Regulation (EU) 2026/1744, analysis by [Gibson Dunn](https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/) and [Jones Walker](https://www.joneswalker.com/en/insights/blogs/ai-law-blog/yes-august-2-still-matters-the-eu-approved-a-high-risk-ai-delay-but-most-trans.html)
 
 **Verification note.** Every URL above was fetched or search-confirmed on 21 August 2026, and `VERIFICATION.md` records what was checked, what was corrected, and what remains unverifiable. Two claims in an earlier draft were wrong and have been fixed: the Trivy advisory identifier, and the EU AI Act high-risk applicability date. Both corrections are recorded rather than quietly overwritten.

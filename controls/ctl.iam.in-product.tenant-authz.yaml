@@ -8,7 +8,7 @@ faircam:
   - { function: resistance, primary: true }
 
 population_definition: >
-  Every authenticated route exposed by the Reco product API. Passing requires an executed
+  Every authenticated route exposed by the product API. Passing requires an executed
   cross-tenant access attempt returning deny, captured in CI — not the presence of an authz
   middleware declaration. Routes added without a corresponding cross-tenant test fail by default.
 source_system: ci

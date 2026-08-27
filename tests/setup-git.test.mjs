@@ -143,7 +143,7 @@ test('vendored inside a larger checkout: touches nothing and says nothing', () =
   const outer = mkdtempSync(join(tmpdir(), 'grc-setup-outer-'));
   try {
     execFileSync('git', ['init', '-q', '-b', 'main'], { cwd: outer });
-    const inner = join(outer, 'vendor', 'reco-grc');
+    const inner = join(outer, 'vendor', 'grc-program');
     mkdirSync(join(inner, 'scripts'), { recursive: true });
     cpSync(join(REPO_ROOT, 'scripts/setup-git.mjs'), join(inner, 'scripts/setup-git.mjs'));
 

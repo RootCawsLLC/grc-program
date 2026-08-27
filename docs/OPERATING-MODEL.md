@@ -73,6 +73,6 @@ Automating these would be worse than doing them by hand:
 - **Instrumenting an inherited control nobody chose.** Ask whether the control should exist before
   automating it. Architecture before automation — you cannot automate a broken process, and
   automating chaos just makes faster chaos.
-- **Letting the certificate wall substitute for measurement.** Reco holds SOC 2 Type 2, ISO 27001,
+- **Letting the certificate wall substitute for measurement.** the organization holds SOC 2 Type 2, ISO 27001,
   ISO 42001, CSA STAR Level 1 and more. A certification claims full coverage; the auditor sampled
   a fraction of a percent. The certificates are the floor of this program, not its ceiling.

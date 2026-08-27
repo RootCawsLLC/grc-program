@@ -1,7 +1,7 @@
 scenario_id: scn.cred-theft.cloud-admin
 statement: >
   An external actor obtains a long-lived AWS access key or an unprotected console credential for a principal in the production organisation and acts within the production cloud environment.
-asset: "Reco AWS production environment"
+asset: "the organization AWS production environment"
 threat_actor: "external financially-motivated actor"
 effect: confidentiality
 estimation_level: tef-vuln

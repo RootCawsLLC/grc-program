@@ -118,7 +118,7 @@ test('every assertion the pipeline produces is marked as fixture-derived', () =>
 });
 
 test('an unstamped fixture file is refused at the door', async () => {
-  const dir = await mkdtemp(join(tmpdir(), 'reco-fx-'));
+  const dir = await mkdtemp(join(tmpdir(), 'grc-fx-'));
   try {
     await writeFile(join(dir, 'cycle.json'), JSON.stringify({ as_of: '2026-08-15T00:00:00Z', tables: {} }));
     await assert.rejects(() => loadCycles(dir), /missing the "NOT REAL EVIDENCE" stamp/);

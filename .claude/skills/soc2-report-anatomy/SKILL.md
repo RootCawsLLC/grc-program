@@ -55,7 +55,7 @@ Not everything adverse is labelled "exception":
 - **"Deviation"** — sometimes used interchangeably, sometimes graded lower. Preserve the word used.
 - **Emphasis-of-matter or explanatory paragraphs** in Section 1 — rare and serious.
 - **Complementary User Entity Controls (CUECs)** — obligations pushed onto customers. Not findings
-  about Reco, but each one is a commitment a customer may not know they have, and they belong in
+  about the organization, but each one is a commitment a customer may not know they have, and they belong in
   the record.
 - **Carved-out subservice organisations** — anything carved out is explicitly *not* covered by this
   opinion. Reconcile against the published subprocessor list.

@@ -62,7 +62,7 @@ test('variance-blind collection is flagged and demotes the band', () => {
 });
 
 test('a person-owned control is flagged — they leave and the control dies with them', () => {
-  for (const owner of ['Susan Shepard', 'susan@reco.ai', 'Platform']) {
+  for (const owner of ['Susan Shepard', 'user@example.com', 'Platform']) {
     const r = assessControl({ control: ctl({ owner }), assertions: [assertion()], asOf: AS_OF });
     assert.ok(r.deficiencies.includes('H6-owner-is-a-person'), `expected flag for owner "${owner}"`);
   }

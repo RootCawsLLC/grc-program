@@ -16,7 +16,7 @@
  * than a label.
  *
  * Run it:      npm run mcp
- * Wire it in:  claude mcp add reco-grc -- node C:/absolute/path/to/reco-grc/src/mcp/server.mjs
+ * Wire it in:  claude mcp add grc-program -- node C:/absolute/path/to/grc-program/src/mcp/server.mjs
  */
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
@@ -25,7 +25,7 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprot
 
 import { TOOLS, findTool, loadContext } from './tools.mjs';
 
-const NAME = 'reco-grc';
+const NAME = 'grc-program';
 const VERSION = '0.1.0';
 
 /**

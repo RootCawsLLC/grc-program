@@ -1,10 +1,10 @@
 {
-  "name": "reco-grc",
+  "name": "grc-program",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
-  "description": "Control inventory, evidence pipeline and risk layer for Reco's GRC program. This repo is the system of record.",
+  "description": "Control inventory, evidence pipeline and risk layer for the organization's GRC program. This repo is the system of record.",
   "engines": {
     "node": ">=22"
   },

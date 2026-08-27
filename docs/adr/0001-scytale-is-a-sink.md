@@ -4,7 +4,7 @@
 
 ## Context
 
-Reco runs Scytale as its compliance platform. The natural default — and what most one-person GRC
+The organization runs Scytale as its compliance platform. The natural default — and what most one-person GRC
 programs do — is to make the platform the system of record and work inside it.
 
 As of 2026-08-21, Scytale publishes **no API reference**. `docs.scytale.ai`,

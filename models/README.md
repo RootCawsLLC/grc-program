@@ -15,7 +15,7 @@ variance/    the four timestamps       <- the risk layer
 2. dbt lineage *is* the audit trail. "Where did this number come from" is answered by a generated graph rather than by an engineer's memory.
 3. Snapshots accumulate history, and history is where Variance Duration comes from. A pipeline that overwrites is a dashboard.
 
-**Warehouse choice is deliberately boring.** DuckDB locally, whatever Reco already runs in
+**Warehouse choice is deliberately boring.** DuckDB locally, whatever the organization already runs in
 production. Time-indexing is the only hard requirement: the landing layer must be able to answer
 "what was true on 14 March", not just "what is true now". If it overwrites, the entire risk layer
 is unreachable and the pipeline degrades to an expensive screenshot generator.

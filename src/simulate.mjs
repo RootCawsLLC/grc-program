@@ -174,7 +174,7 @@ export function assertCalibrated(scenarios) {
     '\n\n  A loss exceedance curve over assumed parameters looks identical to one over calibrated\n' +
     '  parameters and is fiction. That is worse than no curve, because a curve ends the conversation.\n' +
     '  These move to calibrated-estimate or measured at the calibration workshop, by a named human,\n' +
-    '  against Reco\'s own data. See scenarios/_CALIBRATION-STATUS.md.',
+    '  against the organization\'s own data. See scenarios/_CALIBRATION-STATUS.md.',
   );
   err.problems = problems;
   throw err;

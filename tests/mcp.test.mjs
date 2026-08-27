@@ -208,7 +208,7 @@ test('the server runs as a subprocess and answers over stdio', async () => {
     args: ['src/mcp/server.mjs'],
     cwd: process.cwd(),
   });
-  const client = new Client({ name: 'reco-grc-test', version: '0' }, { capabilities: {} });
+  const client = new Client({ name: 'grc-program-test', version: '0' }, { capabilities: {} });
 
   try {
     await client.connect(transport);
@@ -242,9 +242,9 @@ test('the server runs as a subprocess and answers over stdio', async () => {
 // local scope with no RECO_GRC_ROOT, it launched with cwd set to the parent workspace directory
 // and showed "✔ Connected" while knowing about nothing at all.
 
-test('loadContext REFUSES a directory that is not the reco-grc repo', async () => {
+test('loadContext REFUSES a directory that is not the grc-program repo', async () => {
   const parent = join(process.cwd(), '..');
-  await assert.rejects(() => loadContext(parent), /is not the reco-grc repository/);
+  await assert.rejects(() => loadContext(parent), /is not the grc-program repository/);
 });
 
 test('the refusal names the root and says how to fix it', async () => {
@@ -265,7 +265,7 @@ test('a directory with the right shape but the wrong package name is still refus
     mkdirSync(join(dir, 'schemas'), { recursive: true });
     writeFileSync(join(dir, 'schemas', 'control.schema.json'), '{}');
     writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'cui-control-plane' }));
-    await assert.rejects(() => loadContext(dir), /is not the reco-grc repository/);
+    await assert.rejects(() => loadContext(dir), /is not the grc-program repository/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

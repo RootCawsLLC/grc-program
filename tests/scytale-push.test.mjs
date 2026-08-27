@@ -15,7 +15,7 @@ test('the payload carries the population, not just a pass/fail flag', () => {
   assert.equal(p.status, 'fail');
   assert.equal(p.population_total, 47);
   assert.equal(p.failing_subjects.length, 1);
-  assert.equal(p.evidence_reference.system_of_record, 'github.com/reco/reco-grc');
+  assert.equal(p.evidence_reference.system_of_record, 'github.com/RootCawsLLC/grc-program');
 });
 
 test('dry run is the default and sends nothing', async () => {

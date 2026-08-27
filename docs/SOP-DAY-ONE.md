@@ -11,7 +11,7 @@ before, this one is for the day itself.
 fragmented time between onboarding sessions, IT setup and introductions.
 
 **Prerequisites.** Laptop issued. Corporate email working. GitHub account with access to
-`RootCawsLLC/reco-grc` (or the Reco-org copy, if that transfer already happened).
+`RootCawsLLC/grc-program` (or the organization's copy, if that transfer already happened).
 
 ---
 
@@ -47,8 +47,8 @@ Everything else can wait a day without cost.
 ### A2. Clone and verify
 
 ```
-git clone https://github.com/RootCawsLLC/reco-grc reco-grc
-cd reco-grc
+git clone https://github.com/RootCawsLLC/grc-program grc-program
+cd grc-program
 npm ci
 npm test
 npm run validate
@@ -61,7 +61,7 @@ npm run baseline
 
 **Expected result:** the baseline looks bleak — 9 controls, 1 instrumented, 117 gaps. That is
 correct. It is showing you the *shape of the output*, not the state of the company. None of those
-controls are Reco's yet.
+controls are the organization's yet.
 
 **If tests fail:** stop. Do not proceed to Block B. A failing suite on a clean clone means the
 environment is wrong, and everything downstream inherits the problem. Check Node version first.
@@ -69,12 +69,12 @@ environment is wrong, and everything downstream inherits the problem. Check Node
 ### A3. Set your git identity
 
 ```
-git config user.email "<your reco address>"
+git config user.email "<your corporate address>"
 git config user.name "<your name>"
 git config --get user.email
 ```
 
-- [ ] Confirms your real Reco address, not a placeholder
+- [ ] Confirms your real corporate address, not a placeholder
 
 **Why it matters:** `git log` on this repo is change-management evidence for
 `ctl.appsec.ci-cd.branch-protection`. An unresolvable author address reads badly in exactly the
@@ -121,7 +121,7 @@ Ask for **read-only everywhere**, and say why unprompted. Paste-ready:
 | ☐ | **Identity provider** | `ctl.iam.enterprise-sso.mfa` | read-only: users, factors | | |
 | ☐ | **GitHub org** | `ctl.appsec.ci-cd.branch-protection` | read-only: repo + org admin read | | |
 | ☐ | **HRIS** | `ctl.people.workforce.security-training` | read-only roster, **all three entities** | | |
-| ☐ | **Reco tenant (the product)** | ADR-0005 dogfooding | admin on an internal tenant | | |
+| ☐ | **Internal product tenant** | ADR-0005 dogfooding | admin on an internal tenant | | |
 | ☐ | **CLM / contract repository** | notification clocks, availability terms | read | | |
 
 Fill in the dates as they come. An empty "Granted" column three days in is itself a finding worth
@@ -132,7 +132,7 @@ more credibility with a platform team than anything else you will say in week on
 signals you understand you are asking for something that could become a liability.
 
 **On the HRIS ask:** confirm the roster covers **all three entities** — US, Israel, and **Moldova**.
-The Moldova entity appears on Reco's About page but not in the trust-center processing story, and
+The Moldova entity appears on the organization's About page but not in the trust-center processing story, and
 a roster missing an entity makes training coverage look better than it is.
 
 ### B2. Request the documents
@@ -177,7 +177,7 @@ Scytale or has to run fully parallel. Full reasoning in `docs/adr/0001-scytale-i
 - [ ] If the answer is "nobody" or "I'm not sure" — write it up as a finding the same day
 
 **Why now.** ISO 27001 Clause 9.3 and ISO/IEC 42001 Clause 9.3 both require top-management review.
-Reco announced its first CISO in June 2024; that person is no longer on the leadership page and
+The organization announced its first CISO in June 2024; that person is no longer on the leadership page and
 holds a role elsewhere, and the June 2026 announcement naming seven new leaders named no successor.
 If nobody currently owns it, that is a nonconformity waiting to be raised at the next surveillance
 audit.

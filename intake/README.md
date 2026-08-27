@@ -9,7 +9,7 @@ intake/extracted/   structured findings, one YAML per source document. Committed
 
 **`intake/source/` is gitignored and must stay that way.** Audit reports are the auditor's
 deliverable, are usually watermarked to the recipient, and are NDA-gated on the trust center. The
-structured extraction belongs in this repo — Reco's own private GRC repo — because that is the
+structured extraction belongs in this repo — the organization's own private GRC repo — because that is the
 whole point. The source PDF does not.
 
 ## Why this is not a PDF parser
@@ -43,7 +43,7 @@ inventory — which is not a gap in the extraction, it is a gap in the control m
 
 1. **SOC 2 Type 2 report.** Exceptions and deviations first, then the control descriptions — the
    description of each control the auditor tested is the closest thing to an existing control
-   inventory that Reco has, and reading it is how you learn what the current model actually is.
+   inventory that the organization has, and reading it is how you learn what the current model actually is.
 2. **ISO 27001 Statement of Applicability.** This populates `in_scope` in
    `reference/requirement-index.yaml`. Until it does, every coverage percentage in this repo is
    fiction, and `grc gap` says so out loud rather than quietly reporting zero.

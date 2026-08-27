@@ -45,7 +45,7 @@ claimed the settings prevented it outright, and a rehearsal showed they bind the
 
 **Order within the report.** Exceptions and deviations first. Then the control descriptions — the
 description of each control the auditor tested is the closest thing to an existing control
-inventory Reco has, and reading it is how I learn what the current model actually is. Flag any
+inventory the organization has, and reading it is how I learn what the current model actually is. Flag any
 control description that reads as layer-munged; those are the candidates for splitting after the
 observation window closes.
 

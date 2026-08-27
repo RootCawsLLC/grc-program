@@ -34,7 +34,7 @@ is a documented commitment rather than a measurement. The asymmetry is the value
   and give the date. A confident answer about a planned control is how a questionnaire response
   becomes a contractual misrepresentation.
 - **Do not round in the flattering direction.** 412 of 419 is not "approximately 100%".
-- **Do not infer a certification Reco does not hold.** FedRAMP: Reco holds no authorization. Route
+- **Do not infer a certification the organization does not hold.** FedRAMP: the organization holds no authorization. Route
   to GRC rather than softening.
 - **Do not answer from an assertion older than the control's collection cadence.** Stale is worse
   than absent because it looks current.

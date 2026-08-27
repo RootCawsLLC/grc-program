@@ -10,8 +10,8 @@ faircam:
   - { function: event-detection, primary: false }
 
 population_definition: >
-  All active human identities in the enterprise identity provider across all Reco entities
-  (US / RecoLabs Inc., Israel, Moldova), excluding service principals, excluding accounts in
+  All active human identities in the enterprise identity provider across all the organization entities
+  (US / the company Inc., Israel, Moldova), excluding service principals, excluding accounts in
   a pre-start or post-termination state. Contractors ARE in scope. Break-glass accounts are
   in scope and expected to fail; they are covered by EX-0001 with a compensating detective control.
 source_system: idp

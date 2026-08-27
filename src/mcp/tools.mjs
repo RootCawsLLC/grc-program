@@ -54,10 +54,10 @@ async function assertRepoRoot(root) {
     name = JSON.parse(await readFile(join(root, 'package.json'), 'utf8')).name;
   } catch { /* falls through to the same refusal */ }
 
-  if (!existsSync(marker) || name !== 'reco-grc') {
+  if (!existsSync(marker) || name !== 'grc-program') {
     throw new Error(
-      `refusing to start: ${root} is not the reco-grc repository.\n` +
-      `  expected: schemas/control.schema.json and package.json name "reco-grc"\n` +
+      `refusing to start: ${root} is not the grc-program repository.\n` +
+      `  expected: schemas/control.schema.json and package.json name "grc-program"\n` +
       `  found:    marker ${existsSync(marker) ? 'present' : 'MISSING'}, package name ${JSON.stringify(name)}\n` +
       '\n' +
       '  Every loader here degrades to an empty result, so without this check the server would\n' +
@@ -66,7 +66,7 @@ async function assertRepoRoot(root) {
       '\n' +
       '  Set RECO_GRC_ROOT to an absolute path, which is required whenever the server is registered\n' +
       '  outside the repo directory:\n' +
-      '    claude mcp add reco-grc -s user -e RECO_GRC_ROOT=<abs-path> -- node <abs-path>/src/mcp/server.mjs',
+      '    claude mcp add grc-program -s user -e RECO_GRC_ROOT=<abs-path> -- node <abs-path>/src/mcp/server.mjs',
     );
   }
   return root;

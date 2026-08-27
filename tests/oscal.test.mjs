@@ -35,7 +35,7 @@ test('an assertion against an unknown control is refused', async () => {
   }), /unknown control/);
 });
 
-test('FAIR-CAM props are namespaced to a domain Reco controls', async () => {
+test('FAIR-CAM props are namespaced to a domain the organization controls', async () => {
   const { controls, assertions } = await load();
   const doc = emitAssessmentResults({ assertions, controls, asOf: '2026-09-15T00:00:00Z' });
   const props = doc['assessment-results'].results[0].observations[0].props;

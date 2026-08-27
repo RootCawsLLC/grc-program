@@ -71,7 +71,7 @@ export function emitAssessmentResults({ assertions, controls, efficacy = {}, asO
       // otherwise-unchanged export produce a dirty diff. Shared with every other artifact so the
       // package agrees with itself about oscal-version and about how the fixture stamp is worded.
       metadata: metadata({
-        title: 'Reco continuous control assessment results',
+        title: 'GRC Program continuous control assessment results',
         assertions,
         subject: 'This assessment results package',
       }),
@@ -98,7 +98,7 @@ export function emitAssessmentResults({ assertions, controls, efficacy = {}, asO
         findings,
       }],
       'back-matter': {
-        resources: [resource('assessment-plan', 'Reco continuous control assessment plan', FILENAMES['assessment-plan'])],
+        resources: [resource('assessment-plan', 'GRC Program continuous control assessment plan', FILENAMES['assessment-plan'])],
       },
     },
   };
@@ -106,7 +106,7 @@ export function emitAssessmentResults({ assertions, controls, efficacy = {}, asO
 
 /**
  * FAIR-CAM props extension. OSCAL has nowhere to carry control measurement, so it goes in
- * namespaced props on a namespace Reco controls. Spec-legal, ignorable by tools that do not know
+ * namespaced props on a namespace the organization controls. Spec-legal, ignorable by tools that do not know
  * the namespace, and it makes an OSCAL package carry the risk layer rather than only the
  * compliance layer.
  */

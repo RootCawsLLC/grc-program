@@ -45,12 +45,12 @@ export function emitPoam({ controls, assertions = [], variance = [] }) {
   return {
     'plan-of-action-and-milestones': {
       uuid: ids.document('poam'),
-      metadata: metadata({ title: 'Reco plan of action and milestones', assertions }),
+      metadata: metadata({ title: 'GRC Program plan of action and milestones', assertions }),
       'import-ssp': { href: ref('ssp') },
-      'system-id': { id: 'reco-grc', 'identifier-type': 'https://reco.ai/ns/grc/system-id' },
+      'system-id': { id: 'grc-program', 'identifier-type': 'https://reco.ai/ns/grc/system-id' },
       'poam-items': items,
       'back-matter': {
-        resources: [resource('ssp', 'Reco system security plan (generated)', FILENAMES.ssp)],
+        resources: [resource('ssp', 'GRC Program system security plan (generated)', FILENAMES.ssp)],
       },
     },
   };

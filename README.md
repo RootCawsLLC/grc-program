@@ -1,6 +1,6 @@
-# reco-grc
+# grc-program
 
-**The control inventory, evidence pipeline and risk layer for Reco's GRC program.**
+**The control inventory, evidence pipeline and risk layer for the organization's GRC program.**
 
 This repository is the system of record. Scytale, the trust center, every framework baseline and
 every OSCAL package are projections of what is in here.
@@ -10,14 +10,14 @@ every OSCAL package are projections of what is in here.
 
 ---
 
-## 👉 Starting at Reco? Open [`docs/SOP-DAY-ONE.md`](docs/SOP-DAY-ONE.md)
+## 👉 Starting at the organization? Open [`docs/SOP-DAY-ONE.md`](docs/SOP-DAY-ONE.md)
 
 That is the checkbox procedure for your first day — machine setup, the eight access requests with
 paste-ready text, the ownership question, and the baselines nobody else will take. Follow it line
 by line.
 
 **Haven't started yet?** [`docs/PREP-PLAN.md`](docs/PREP-PLAN.md) is six sessions of work you can
-give Claude Code today — all machinery, none of it requiring Reco access.
+give Claude Code today — all machinery, none of it requiring the organization access.
 
 Everything below is reference. Those two are the things you actually do.
 
@@ -26,7 +26,7 @@ Everything below is reference. Those two are the things you actually do.
 ## Quick start
 
 ```bash
-git clone <this-repo> reco-grc && cd reco-grc
+git clone <this-repo> grc-program && cd grc-program
 npm ci
 npm test           # 75 tests
 npm run baseline   # intake + control health + gap assessment
@@ -39,7 +39,7 @@ endings all need setting, and the line-endings one is a correctness issue rather
 one.
 
 The first `npm run baseline` looks bleak: 9 controls, 1 instrumented, 117 gaps. That is correct. It
-shows you the shape of the output, not the state of the company — none of those controls are Reco's
+shows you the shape of the output, not the state of the company — none of those controls are the organization's
 yet.
 
 ---
@@ -127,7 +127,7 @@ automatically.
 **Subagents** — `requirement-decomposer` · `crosswalk-mapper` · `test-author` · `policy-generator` ·
 `evidence-scout` · `scenario-scoper` · `exception-triage` · `attestation-writer`
 
-**Skills** — `reco-context` (established facts, confirmed and inferred kept separate, so you never
+**Skills** — `client-context` (established facts, confirmed and inferred kept separate, so you never
 re-derive them) · `soc2-report-anatomy` (how to read the report you will spend day two on) ·
 `control-health` (the deficiency catalogue)
 
@@ -188,7 +188,7 @@ returning no rows would make `dbt run` succeed while proving nothing. `fixtures/
 scenario parameter is `derivation_level: assumed` at confidence tier 1. Those are not omissions.
 Guessing a cost produces a ROSI ranking that looks authoritative and is arbitrary; an `assumed`
 range with a confident-looking min/most-likely/max is the exact failure mode FAIR exists to prevent.
-They get filled from Reco's own data, by a named human, in weeks 2 and 6.
+They get filled from the organization's own data, by a named human, in weeks 2 and 6.
 
 [`BUILD-ORDER.md`](BUILD-ORDER.md) turns each of these into a prompt.
 

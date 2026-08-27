@@ -1,6 +1,6 @@
 scenario_id: scn.data-exposure.prompt-egress
 statement: >
-  Customer data classes not authorised for external inference leave the Reco boundary in a prompt to a third-party model endpoint.
+  Customer data classes not authorised for external inference leave the processing boundary in a prompt to a third-party model endpoint.
 asset: "customer data in scope of the DPA"
 threat_actor: "internal actor without malicious intent"
 effect: confidentiality

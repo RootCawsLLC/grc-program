@@ -16,7 +16,7 @@
  * before anything tries to use any of it.
  *
  * WHAT THIS IS NOT. It does not make CCM collect. It cannot: the secrets are Susan's to set and
- * `collect`/`assert`/`drift`/`route` are unbuilt work blocked on Reco access. It replaces a
+ * `collect`/`assert`/`drift`/`route` are unbuilt work blocked on the organization access. It replaces a
  * misleading failure with an accurate one, which is the part that was actually fixable.
  *
  * REQUIREMENTS ARE DERIVED FROM THE WORKFLOW, NEVER HARDCODED. A second list of required secrets
@@ -101,7 +101,7 @@ export function report(result) {
       'purge was correct; restoring the secrets was the step that did not follow it.',
       '',
       'Only a human with the credential values can fix this:',
-      '  gh secret set <NAME> --repo RootCawsLLC/reco-grc',
+      '  gh secret set <NAME> --repo RootCawsLLC/grc-program',
       '',
     );
   }
@@ -111,7 +111,7 @@ export function report(result) {
       `${result.commands.missing.length} command(s) do not exist. RESTORING THE SECRETS WOULD NOT MAKE THIS RUN`,
       'GREEN — it would fail at the first of these instead, one step later.',
       '',
-      'These are unbuilt pipeline work, blocked on Reco access rather than on anything in this repo:',
+      'These are unbuilt pipeline work, blocked on the organization access rather than on anything in this repo:',
       '  collect  BUILD-ORDER B2/B5 — collectors have never run against a live tenant',
       '  assert   BUILD-ORDER B2 — needs a collection to assert over',
       '  drift    needs an assertion history to compare against',
