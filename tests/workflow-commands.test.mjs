@@ -61,7 +61,7 @@ function definedNpmScripts() {
  * Precedence for the working directory is step, then job defaults, then workflow defaults. Anything
  * that is not the root belongs to another checkout and is not ours to resolve.
  */
-function rootRunSteps() {
+function allRunSteps() {
   const steps = [];
   for (const file of readdirSync(WORKFLOW_DIR).filter((f) => /\.ya?ml$/.test(f))) {
     const wf = parseYaml(readFileSync(join(WORKFLOW_DIR, file), 'utf8'));
@@ -71,13 +71,14 @@ function rootRunSteps() {
       for (const step of job?.steps ?? []) {
         if (typeof step?.run !== 'string') continue;
         const dir = step['working-directory'] ?? jobDir ?? '.';
-        if (dir !== '.' && dir !== './') continue;
-        steps.push({ file, job: jobName, name: step.name ?? '(unnamed)', run: step.run });
+        steps.push({ file, job: jobName, name: step.name ?? '(unnamed)', run: step.run, dir });
       }
     }
   }
   return steps;
 }
+
+const rootRunSteps = () => allRunSteps().filter((s) => s.dir === '.' || s.dir === './');
 
 const cliRefs = (run) => [...run.matchAll(/cli\.mjs\s+([a-z][a-z:-]*)/g)].map((m) => m[1]);
 const npmRefs = (run) => [...run.matchAll(/npm run\s+([a-z][a-z:-]*)/g)].map((m) => m[1]);
@@ -154,6 +155,61 @@ test('every not-built-yet entry is actually referenced by a workflow', () => {
   const referenced = new Set(rootRunSteps().flatMap((s) => cliRefs(s.run)));
   const orphans = Object.keys(NOT_BUILT_YET).filter((c) => !referenced.has(c));
   assert.deepEqual(orphans, [], `NOT_BUILT_YET entries no workflow references: ${orphans.join(', ')}`);
+});
+
+/**
+ * No workflow may push, commit, or otherwise write to a repository.
+ *
+ * Guardrail 2: "A pull request is the only path to normative. A human merges. The merge is the
+ * control." A scheduled job that commits artifacts to the default branch is precisely what that
+ * rule exists to prevent — the artifacts arrive normative without anyone having merged them.
+ *
+ * ccm.yml carried such a step from the day the repository was created. It could not work — `out/`
+ * is gitignored, `evidence/` never existed, and the token is read-only — so it staged nothing and
+ * exited 0 forever (#7). It was removed rather than repaired: repairing it meant granting
+ * contents: write and having ccm-bot push to main, which trades a broken step for a broken
+ * control.
+ *
+ * This is the part that stops it coming back. The failure mode is not someone deciding to bypass
+ * the rule; it is someone fixing the *symptom* — pointing the step at a real path and adding the
+ * permission — without noticing which control they just dissolved.
+ */
+test('no workflow commits or pushes to a repository', () => {
+  const offenders = [];
+  for (const step of allRunSteps()) {
+    for (const [pattern, what] of [
+      [/git\s+push/, 'git push'],
+      [/git\s+commit/, 'git commit'],
+      [/gh\s+pr\s+merge/, 'gh pr merge'],
+    ]) {
+      if (pattern.test(step.run)) offenders.push(`${step.file} [${step.name}] -> ${what}`);
+    }
+  }
+  assert.deepEqual(
+    offenders,
+    [],
+    'a workflow writes to a repository. Guardrail 2 makes the human merge the control; a job that\n' +
+      'commits or pushes routes around it. If evidence needs to survive the runner, that is\n' +
+      `warehouse work (B1/B22), not a git push from CI.\n  ${offenders.join('\n  ')}`
+  );
+});
+
+test('the workflows still declare a read-only contents permission', () => {
+  // The other half of the same control. Dropping the commit step matters little if the next change
+  // quietly escalates the token; contents: write is what makes a push possible in the first place.
+  const escalated = [];
+  for (const file of readdirSync(WORKFLOW_DIR).filter((f) => /\.ya?ml$/.test(f))) {
+    const wf = parseYaml(readFileSync(join(WORKFLOW_DIR, file), 'utf8'));
+    const scopes = [['(workflow)', wf?.permissions]].concat(
+      Object.entries(wf?.jobs ?? {}).map(([n, j]) => [n, j?.permissions])
+    );
+    for (const [where, perms] of scopes) {
+      if (perms && perms.contents && perms.contents !== 'read') {
+        escalated.push(`${file} [${where}] -> contents: ${perms.contents}`);
+      }
+    }
+  }
+  assert.deepEqual(escalated, [], `contents write access granted:\n  ${escalated.join('\n  ')}`);
 });
 
 test('a step in another checkout is not held to this repo package.json', () => {
