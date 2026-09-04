@@ -21,6 +21,11 @@ import { readFile } from 'node:fs/promises';
 
 export const FIXTURE_STAMP = 'NOT REAL EVIDENCE';
 
+/** True for `fixtures/…` and `…/fixtures/…`, Windows or POSIX. */
+export function isUnderFixtures(path) {
+  return /(^|\/)fixtures\//.test(String(path).replace(/\\/g, '/'));
+}
+
 /** A record is real unless it says otherwise. Absence of the flag is not ambiguity. */
 export const isFixture = (a) => a?.fixture === true;
 

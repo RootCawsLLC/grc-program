@@ -29,6 +29,16 @@ Do not strip it to make a demo produce a nicer number.
 landing/cycle-<date>.json   one collection cycle: as_of, a stamp, a comment explaining what the
                             cycle exercises, and rows keyed by landing table
 assertions.json             a single hand-written assertion record, used by the OSCAL tests
+events/*.json               inbound dispatch envelopes and Slack `block_actions` payloads for
+                            `npm run orchestrate` / `npm run gate -- --interaction`.
+                            Each carries `_stamp: NOT REAL EVIDENCE`. `loadEvent` refuses an
+                            unstamped file under this directory. A Slack `user.id` is not a
+                            `per.*` actor — `--actor per.*` or `--map fixtures/identity/slack-map.json`.
+                            `auditor-request.json` is an evidence-scout envelope against a control
+                            whose status is `building` — the draft must refuse, not answer.
+identity/slack-map.json     synthetic Slack `U…` and GitHub numeric account id → `per.*`.
+                            Unmapped users are refused; usernames and logins are not identity.
+                            Stamped.
 ```
 
 ## Why three cycles

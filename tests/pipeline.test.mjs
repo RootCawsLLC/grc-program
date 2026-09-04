@@ -5,6 +5,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { runPipeline, loadCycles, impossibleStart, CONTROL_MODEL } from '../src/pipeline.mjs';
 import { denominatorDrift } from '../src/lib/assertion.mjs';
+import { assessDrift } from '../src/drift.mjs';
+import { route } from '../src/route.mjs';
+import { dispatchRoute } from '../src/host.mjs';
 
 // The pipeline is read-only against the repo and builds an in-memory warehouse, so one run serves
 // every assertion below.
@@ -135,4 +138,35 @@ test('no control record changed status — this unit builds plumbing, it does no
   const statuses = run.controls.map((c) => `${c.control_id}=${c.status}`).sort();
   assert.ok(statuses.length >= 9);
   assert.ok(!statuses.some((s) => s.endsWith('=undefined')));
+});
+
+test('dispatching the synthetic pipeline does not send and does not execute', async () => {
+  const drift = assessDrift({ assertions: run.assertions });
+  const routed = route({ assertions: run.assertions, controls: run.controls, drift });
+  assert.equal(routed.held, false, 'fixture denominator is designed to hold steady');
+  const r = await dispatchRoute({ routed, assertions: run.assertions, store: null });
+  assert.equal(r.sent, false);
+  assert.equal(r.executed, false);
+  for (const result of r.results) {
+    assert.equal(result.sent, false);
+    assert.equal(result.executed, false);
+  }
+});
+
+test('the latest fixture cycle has no new failures; the previous cycle does', () => {
+  const asOfs = [...new Set(run.assertions.map((a) => a.as_of))].sort();
+  assert.ok(asOfs.length >= 2);
+  const latestRouted = route({
+    assertions: run.assertions,
+    controls: run.controls,
+    drift: assessDrift({ assertions: run.assertions }),
+  });
+  assert.equal(latestRouted.items.filter((i) => i.status === 'new').length, 0);
+  const prior = run.assertions.filter((a) => a.as_of <= asOfs.at(-2));
+  const priorRouted = route({
+    assertions: prior,
+    controls: run.controls,
+    drift: assessDrift({ assertions: prior }),
+  });
+  assert.ok(priorRouted.items.some((i) => i.status === 'new'));
 });

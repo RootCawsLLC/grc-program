@@ -1,0 +1,10 @@
+{
+  "_stamp": "NOT REAL EVIDENCE",
+  "event_id": "evt.fixture.risk-acceptance",
+  "kind": "risk.acceptance",
+  "source": "fixtures/events/risk-acceptance.json",
+  "as_of": "2026-09-04T04:00:00Z",
+  "payload": {
+    "control_id": "ctl.iam.cloud-platform.mfa"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "_stamp": "NOT REAL EVIDENCE",
+  "event_id": "evt.fixture.threat-intel-leftpad",
+  "kind": "threat-intel.match",
+  "source": "fixtures/events/threat-intel-match.json",
+  "as_of": "2026-09-04T04:00:00Z",
+  "payload": {
+    "cve": "CVE-2026-0001",
+    "component": "leftpad",
+    "branch": "production"
+  }
+}

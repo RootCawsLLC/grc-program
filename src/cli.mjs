@@ -350,7 +350,303 @@ const commands = {
     }
     if (r.note) console.log(`  ${r.note}`);
     if (r.silent && r.items.length) console.log('\n  Nothing new this cycle. A silent channel is a working channel.');
+
+    if (flag('dispatch')) {
+      if (flag('live') || flag('send')) {
+        console.log('\nrefusing --live/--send on route --dispatch. Events are planned, not posted.\n');
+        return 1;
+      }
+      const { dispatchRoute, DEFAULT_GATES } = await import('./host.mjs');
+      const store = flag('no-store') ? null : (opt('store') ?? DEFAULT_GATES);
+      const dispatched = await dispatchRoute({ routed: r, assertions, store });
+      console.log(`  DISPATCH — ${dispatched.events.length} event(s)  executed=${dispatched.executed}  sent=${dispatched.sent}`);
+      for (const ev of dispatched.events) {
+        console.log(`    ${ev.kind.padEnd(22)} ${ev.event_id}`);
+      }
+      if (!dispatched.events.length) console.log('    (none — continuing subjects stay silent)');
+      if (flag('pack') || flag('draft')) {
+        const { materializeDispatch, defaultPackDir } = await import('./pack.mjs');
+        const packDir = opt('pack-dir') ?? defaultPackDir(Boolean(assertions.some((a) => a.fixture)));
+        try {
+          const packed = await materializeDispatch({
+            results: dispatched.results,
+            events: dispatched.events,
+            dir: packDir,
+            fixture: Boolean(assertions.some((a) => a.fixture)),
+          });
+          console.log(`  PACK — ${packed.files.length} file(s)  shared_state_file=${packed.shared_state_file}  executed=${packed.executed}`);
+          for (const f of packed.files) console.log(`    ${f}`);
+          if (!packed.files.length) console.log('    (none — no specialist was packed)');
+          if (flag('draft')) {
+            const { materializeDrafts } = await import('./draft.mjs');
+            const drafted = await materializeDrafts({
+              packs: packed.packs,
+              dir: packDir,
+              fixture: Boolean(assertions.some((a) => a.fixture)),
+            });
+            console.log(`  DRAFT — ${drafted.files.length} file(s)  posted=${drafted.posted}  executed=${drafted.executed}`);
+            for (const d of drafted.drafts) {
+              console.log(`    ${(d.specialist ?? '?').padEnd(24)} ok=${d.ok}  ${d.code ?? d.redirect ?? d.tool ?? ''}`);
+            }
+          }
+        } catch (err) {
+          console.log(`\n${err.message}\n`);
+          return 1;
+        }
+      }
+    }
     console.log('');
+  },
+
+  async orchestrate() {
+    const { loadEvent, runGate, DEFAULT_GATES } = await import('./host.mjs');
+    if (flag('live') || flag('send')) {
+      console.log('\nrefusing --live/--send. This host writes presenter payloads. It does not post them.\n');
+      return 1;
+    }
+    const path = opt('event');
+    if (!path) {
+      console.log('\norchestrate needs --event <file>\n');
+      return 1;
+    }
+    let event;
+    try {
+      event = await loadEvent(path);
+    } catch (err) {
+      console.log(`\n${err.message}\n`);
+      return 1;
+    }
+    const store = flag('no-store') ? null : (opt('store') ?? DEFAULT_GATES);
+    const r = await runGate({ event, store });
+    const stamp = r.fixture ? `   ** ${FIXTURE_STAMP} — synthetic fixture **` : '';
+    console.log(`\nORCHESTRATE — ${event.kind}  ${event.event_id}${stamp}\n`);
+    if (r.plan) {
+      console.log(`  accepted=${r.plan.accepted}  freeze=${r.plan.freeze}  held=${r.plan.held}  executed=${r.executed}  sent=${r.sent}`);
+      if (r.plan.reason) console.log(`  ${r.plan.reason}`);
+      for (const t of r.plan.tasks) console.log(`  task  ${t.agent.padEnd(24)} effect=${t.effect}`);
+      if (!r.plan.tasks.length) console.log('  (no specialists — human decision or a hold)');
+    }
+    if (r.gate) {
+      console.log(`\n  gate  ${r.gate.gate_id}  ${r.gate.kind} via ${r.gate.presenter}`);
+      console.log(`        next_step=${r.gate.next_step}  executed=${r.gate.executed}${store ? `  store=${store}` : ''}`);
+    } else {
+      console.log('\n  (no gate)');
+    }
+    if (flag('pack') || flag('draft')) {
+      const { materializePacks, defaultPackDir } = await import('./pack.mjs');
+      const packDir = opt('pack-dir') ?? defaultPackDir(Boolean(r.fixture));
+      try {
+        const packed = await materializePacks({
+          plan: r.plan,
+          event,
+          dir: packDir,
+          fixture: Boolean(r.fixture),
+        });
+        console.log(`\n  PACK — ${packed.files.length} file(s)  shared_state_file=${packed.shared_state_file}  executed=${packed.executed}`);
+        for (const f of packed.files) console.log(`    ${f}`);
+        if (!packed.files.length) console.log('    (none — no specialist was packed)');
+        if (flag('draft')) {
+          const { materializeDrafts } = await import('./draft.mjs');
+          const drafted = await materializeDrafts({
+            packs: packed.plan.tasks.map((t) => t.input_pack),
+            dir: packDir,
+            fixture: Boolean(r.fixture),
+          });
+          console.log(`\n  DRAFT — ${drafted.files.length} file(s)  posted=${drafted.posted}  executed=${drafted.executed}`);
+          for (const d of drafted.drafts) {
+            console.log(`    ${(d.specialist ?? '?').padEnd(24)} ok=${d.ok}  ${d.code ?? d.redirect ?? d.tool ?? ''}`);
+          }
+        }
+      } catch (err) {
+        console.log(`\n${err.message}\n`);
+        return 1;
+      }
+    }
+    if (flag('json')) {
+      const out = opt('out') ?? 'out/orchestrate.json';
+      await mkdir(out.replace(/[/\\][^/\\]+$/, ''), { recursive: true });
+      await writeFile(out, stableStringify(r));
+      console.log(`\n  wrote ${out}`);
+    }
+    console.log('');
+    return r.ok ? 0 : 1;
+  },
+
+  async gate() {
+    const { loadEvent, runGate, listStored, DEFAULT_GATES } = await import('./host.mjs');
+    if (flag('live') || flag('send')) {
+      console.log('\nrefusing --live/--send. This host writes presenter payloads. It does not post them.\n');
+      return 1;
+    }
+    const store = flag('no-store') ? null : (opt('store') ?? DEFAULT_GATES);
+
+    if (flag('list')) {
+      const pending = await listStored(store ?? DEFAULT_GATES);
+      console.log(`\nGATES — ${pending.length} pending  store=${store ?? DEFAULT_GATES}\n`);
+      for (const g of pending) {
+        console.log(`  ${g.gate_id.padEnd(42)} ${g.kind.padEnd(22)} ${g.action}`);
+      }
+      if (!pending.length) console.log('  (none)');
+      console.log('');
+      return 0;
+    }
+
+    const interactionPath = opt('interaction');
+    if (interactionPath) {
+      const { handleStoredInteraction, loadEvent: loadPayload } = await import('./host.mjs');
+      const { readIdentityMap, resolveInteractionActor, verifySlackRequest, verifyGitHubRequest } = await import('./inbound.mjs');
+      if (flag('signed-github')) {
+        const rawBody = await readFile(interactionPath, 'utf8');
+        const verified = verifyGitHubRequest({
+          signingSecret: process.env.GITHUB_WEBHOOK_SECRET,
+          rawBody,
+          signature: opt('signature'),
+        });
+        if (!verified.ok) {
+          console.log(`\n${verified.message}\n`);
+          return 1;
+        }
+      } else if (flag('signed') || opt('signature')) {
+        const rawBody = await readFile(interactionPath, 'utf8');
+        const verified = verifySlackRequest({
+          signingSecret: process.env.SLACK_SIGNING_SECRET,
+          timestamp: opt('timestamp'),
+          rawBody,
+          signature: opt('signature'),
+        });
+        if (!verified.ok) {
+          console.log(`\n${verified.message}\n`);
+          return 1;
+        }
+      }
+      let payload;
+      try {
+        payload = await loadPayload(interactionPath);
+      } catch (err) {
+        console.log(`\n${err.message}\n`);
+        return 1;
+      }
+      let map;
+      if (opt('map')) {
+        try {
+          map = await readIdentityMap(opt('map'));
+        } catch (err) {
+          console.log(`\n${err.message}\n`);
+          return 1;
+        }
+      }
+      const resolved = resolveInteractionActor({ payload, map, actor: opt('actor') });
+      if (!resolved.ok) {
+        console.log(`\n${resolved.message}\n`);
+        return 1;
+      }
+      const r = await handleStoredInteraction({
+        store: store ?? DEFAULT_GATES,
+        payload,
+        map,
+        extras: {
+          actor: resolved.actor,
+          at: opt('at'),
+          expires_on: opt('expires-on'),
+          ge_materiality: flag('ge-materiality'),
+        },
+      });
+      const stamp = r.fixture ? `   ** ${FIXTURE_STAMP} — synthetic fixture **` : '';
+      console.log(`\nGATE — interaction  ${r.gate?.gate_id ?? ''}${stamp}\n`);
+      if (r.decision) {
+        console.log(`  decision  ok=${r.decision.ok}  status=${r.decision.record.status}  executed=${r.decision.record.executed}  sent=${r.sent}`);
+        if (r.decision.code) console.log(`            ${r.decision.code}: ${r.decision.message}`);
+      } else {
+        console.log(`  ${r.message ?? r.code ?? 'no decision'}`);
+      }
+      console.log('');
+      return r.ok ? 0 : 1;
+    }
+
+    if (flag('present')) {
+      const { sendPresenter } = await import('./present.mjs');
+      const { loadGateLog, latestGate } = await import('./gates.mjs');
+      const { presentGate } = await import('./gate.mjs');
+      const gateId = opt('id');
+      if (!gateId) {
+        console.log('\n--present needs --id <gate_id>\n');
+        return 1;
+      }
+      const { entries } = await loadGateLog(store ?? DEFAULT_GATES);
+      const pending = latestGate(entries, gateId);
+      if (!pending) {
+        console.log(`\nNo gate ${gateId} in ${store ?? DEFAULT_GATES}\n`);
+        return 1;
+      }
+      const payload = presentGate(pending);
+      let sent;
+      try {
+        sent = await sendPresenter({ presenter: pending.presenter, payload, live: false });
+      } catch (err) {
+        console.log(`\n${err.message}\n`);
+        return 1;
+      }
+      console.log(`\nPRESENT — ${gateId}  dryRun=${sent.dryRun}  sent=${sent.sent}  executed=${sent.executed}\n`);
+      if (payload.text) console.log(`  slack fallback: ${payload.text}`);
+      if (payload.body) console.log(`  github comment written to payload (${payload.body.split('\n').length} lines)`);
+      if (payload.title) console.log(`  linear: ${payload.title}`);
+      console.log('');
+      return 0;
+    }
+
+    const path = opt('event');
+    const gateId = opt('id');
+    if (!path && !gateId) {
+      console.log('\ngate needs --event <file>, --id <gate_id>, --list, --interaction <file>, or --present\n');
+      return 1;
+    }
+    let event;
+    if (path) {
+      try {
+        event = await loadEvent(path);
+      } catch (err) {
+        console.log(`\n${err.message}\n`);
+        return 1;
+      }
+    }
+    const verdict = opt('verdict');
+    const decision = verdict
+      ? {
+        verdict,
+        actor: opt('actor'),
+        at: opt('at') ?? event?.as_of,
+        expires_on: opt('expires-on'),
+        ge_materiality: flag('ge-materiality'),
+      }
+      : undefined;
+    const r = await runGate({ event, gate_id: gateId, decision, store });
+    const stamp = r.fixture ? `   ** ${FIXTURE_STAMP} — synthetic fixture **` : '';
+    const label = event?.kind ?? r.gate?.kind ?? 'gate';
+    console.log(`\nGATE — ${label}  ${event?.event_id ?? gateId ?? ''}${stamp}\n`);
+    if (!r.gate) {
+      console.log(`  ${r.message ?? 'no gate'}\n`);
+      return 1;
+    }
+    console.log(`  ${r.gate.gate_id}  ${r.gate.kind} via ${r.presenter?.presenter ?? r.gate.presenter}`);
+    console.log(`  ${r.gate.summary}`);
+    console.log(`  executed=${r.executed}  sent=${r.sent}  next_step=${r.gate.next_step}${store ? `  store=${store}` : ''}`);
+    if (r.presenter?.text) console.log(`\n  slack fallback: ${r.presenter.text}`);
+    if (r.presenter?.body) console.log(`\n  github comment:\n${r.presenter.body.split('\n').map((l) => `    ${l}`).join('\n')}`);
+    if (r.presenter?.description) console.log(`\n  linear: ${r.presenter.title}`);
+    if (r.decision) {
+      console.log(`\n  decision  ok=${r.decision.ok}  status=${r.decision.record.status}  executed=${r.decision.record.executed}`);
+      if (r.decision.code) console.log(`            ${r.decision.code}: ${r.decision.message}`);
+    } else {
+      console.log('\n  pending — pass --id <gate_id> --verdict approve|reject|acknowledge --actor per.*');
+    }
+    if (flag('json')) {
+      const out = opt('out') ?? 'out/gate.json';
+      await mkdir(out.replace(/[/\\][^/\\]+$/, ''), { recursive: true });
+      await writeFile(out, stableStringify(r));
+      console.log(`\n  wrote ${out}`);
+    }
+    console.log('');
+    return r.ok ? 0 : 1;
   },
 
   async baseline() {
@@ -375,6 +671,14 @@ const commands = {
   baseline     intake + health + gap, in reading order. Start here on day 1.
   oscal        emit OSCAL assessment-results with deterministic UUIDs
   push         build the Scytale payload (dry-run unless --live)
+  collect      land source state, time-indexed (--fixture for a dry run)
+  assert       build assertion records from what collect landed
+  drift        denominator movement, checked BEFORE failures are routed
+  route        failing subjects -> work items. --dispatch wraps new items as events. --pack / --draft hydrate and draft, never post
+  orchestrate  dispatch one event envelope (--event). --pack / --draft write per-specialist files. --live is refused
+  gate         present / decide a human gate (--event | --id | --list | --interaction | --present | --map | --signed | --signed-github). --live is refused
+  probe        AI agent control probes against a local target
+  simulate     FAIR Monte Carlo; refuses uncalibrated scenarios
 
 The control repo is the system of record. Everything else is a projection of it.`);
   },

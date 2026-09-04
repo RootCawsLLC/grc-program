@@ -1,0 +1,14 @@
+{
+  "_stamp": "NOT REAL EVIDENCE",
+  "type": "block_actions",
+  "actions": [
+    {
+      "action_id": "gate.approve",
+      "value": "gate.evt.fixture.threat-intel-leftpad"
+    }
+  ],
+  "user": {
+    "id": "U000FIXTURE",
+    "username": "not-a-person-id"
+  }
+}

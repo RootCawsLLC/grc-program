@@ -23,6 +23,44 @@ as an extraordinary claim requiring extraordinary evidence.
 
 The general form: **the LLM is the interface to the analysis, not the analyst.**
 
+## Dispatch is a function, not a layer
+
+`orchestrator` is not a parent. Hierarchical CISO → router → SME → worker trees burn context
+re-reading state the session already holds, and they create a place for a model to "sign off" on
+risk. Both are refused here.
+
+`route --dispatch` wraps **new** failing subjects (and a held denominator) as those
+envelopes via `src/from-route.mjs`. Continuing subjects stay silent — that rule is not
+re-derived here. `--pack` hydrates each specialist's `input_pack` from the read-only
+MCP tools and writes one file per agent under `out-synthetic/packs/` (fixtures) or
+`.warehouse/packs/` (real). `--draft` turns those packs into payloads: a Linear
+`save_issue` body, an evidence package, a scenario stub, or a questionnaire
+answer. Drafts are not posted. A CVE match is redirected as a control
+deficiency rather than calibrated. Design-time specialists still need a
+session — this host will not write `controls/`, `policies/` or `scenarios/`.
+
+Inbound events go through `planDispatch` in `src/orchestrate.mjs`. The function names the
+specialist, packs a per-task `input_pack` (no shared state file), and states whether a human
+gate is required. Mechanical refusals — unlabelled numbers, model self-scores, efficacy
+conclusions, normative writes — are implemented in code. The agent file
+(`.claude/agents/orchestrator.md`) is the interface to that plan.
+
+A proposed merge, risk acceptance, exception approval or cloud write freezes and pages a human
+through `src/gate.mjs`. The presenter (Slack / GitHub / Linear) records consent.
+Opened gates are appended to `.warehouse/gates.json` so a later process can decide the same
+`gate_id` — including `gate --interaction` on a Slack `block_actions` payload. A Slack
+`user.id` is not a `per.*` actor: `--actor` or `--map` joins it explicitly, and
+`src/inbound.mjs` verifies the Slack signing secret when `--signed` is passed,
+and the GitHub webhook HMAC when `--signed-github` is passed. Slack keys are
+`U…` user ids; GitHub keys are numeric account ids. Usernames and logins are
+not identity. Unmapped users are refused. There is no HTTP listener.
+`src/present.mjs` posts only after a confirmed contract (currently false) and named
+credentials; a successful post still leaves `executed` false (ADR-0009). Merging is still
+a human on GitHub, risk acceptance is still a named `per.*` on a PR with an expiry, and a
+cloud write is acknowledge-only.
+Opening a PR or a Linear item is draft. Merging is the control. Synthetic and real gates do not
+share a log.
+
 ## Design-time agents — run when the inventory changes, output is a PR
 
 | Agent | Input | Output | Never |
@@ -40,6 +78,7 @@ The general form: **the LLM is the interface to the analysis, not the analyst.**
 | `attestation-writer` | assertion records | customer-questionnaire and trust-center answer text, generated from measured state | answer from a static document when a measured control exists |
 | `scenario-scoper` | an incident or a new product surface | a scenario in taxonomy grammar with empty, provenance-stamped parameters | populate the parameters |
 | `evidence-scout` | an auditor request | the assertion, the query, the lineage, and the time series | produce a screenshot |
+| `orchestrator` | an inbound event envelope | a dispatch plan: specialists, packed inputs, optional human gate | hold shared state; merge; accept risk; conclude efficacy |
 
 `attestation-writer` is the one with revenue attached. Trust-center and questionnaire answers
 generated from continuously measured controls rather than from static PDFs is the difference

@@ -18,6 +18,11 @@ import { join } from 'node:path';
 import { runPipeline, impossibleStart, isoish } from '../src/pipeline.mjs';
 import { decomposeVariance } from '../src/faircam.mjs';
 import { emitAssessmentResults, stableStringify } from '../src/oscal/assessment-results.mjs';
+import { assessDrift } from '../src/drift.mjs';
+import { route } from '../src/route.mjs';
+import { dispatchRoute } from '../src/host.mjs';
+import { materializeDispatch } from '../src/pack.mjs';
+import { materializeDrafts } from '../src/draft.mjs';
 import { FIXTURE_STAMP } from '../src/lib/load.mjs';
 
 const OUT_DIR = 'out-synthetic';
@@ -103,9 +108,74 @@ console.log(`  ${doc['assessment-results'].metadata.title}`);
 console.log(`  wrote ${OUT_DIR}/{assessment-results,assertions,variance-events}.json`);
 console.log('  Re-running on unchanged input re-exports byte-identically. Review the diff, not the file.');
 
+rule('5. ROUTE → DISPATCH — new failures pack a specialist; continuing stays silent');
+const forRoute = assertions.map(strip);
+const drift = assessDrift({ assertions: forRoute });
+const routed = route({ assertions: forRoute, controls, drift });
+const gateStore = join(OUT_DIR, 'gates.json');
+const dispatched = await dispatchRoute({ routed, assertions: forRoute, store: gateStore });
+await writeFile(join(OUT_DIR, 'dispatch.json'), JSON.stringify({
+  held: Boolean(routed.held),
+  items: routed.items ?? [],
+  events: dispatched.events,
+  sent: dispatched.sent,
+  executed: dispatched.executed,
+}, null, 2) + '\n');
+
+if (routed.held) {
+  console.log(`  HELD  ${routed.reason}`);
+  console.log(`  gate via slack, sent=${dispatched.sent}, executed=${dispatched.executed}`);
+} else {
+  const neu = (routed.items ?? []).filter((i) => i.status === 'new');
+  const continuing = (routed.items ?? []).filter((i) => i.status !== 'new');
+  console.log(`  ${neu.length} new  ${continuing.length} continuing  ${dispatched.events.length} event(s) dispatched`);
+  dispatched.events.forEach((ev, i) => {
+    const task = dispatched.results[i]?.plan?.tasks?.[0];
+    console.log(`    ${ev.kind.padEnd(22)} ${ev.payload?.subject_id ?? ev.event_id}  →  ${task?.agent ?? '(no specialist)'}`);
+  });
+  if (!dispatched.events.length) console.log('    (none — continuing subjects stay silent)');
+  console.log(`  sent=${dispatched.sent}  executed=${dispatched.executed}  store=${gateStore}`);
+}
+console.log('  A ticket is draft. A gate records consent. Neither merges.');
+
+rule('6. DRAFT — the previous cycle had new failures; this one is silent');
+const asOfs = [...new Set(forRoute.map((a) => a.as_of))].sort();
+const priorAsOf = asOfs.at(-2);
+const prior = forRoute.filter((a) => a.as_of <= priorAsOf);
+const priorDrift = assessDrift({ assertions: prior });
+const priorRouted = route({ assertions: prior, controls, drift: priorDrift });
+const priorDispatched = await dispatchRoute({ routed: priorRouted, assertions: prior, store: null });
+const packDir = join(OUT_DIR, 'packs');
+const packed = await materializeDispatch({
+  results: priorDispatched.results,
+  events: priorDispatched.events,
+  dir: packDir,
+  fixture: true,
+});
+const drafted = await materializeDrafts({ packs: packed.packs ?? [], dir: packDir, fixture: true });
+await writeFile(join(OUT_DIR, 'drafts.json'), JSON.stringify({
+  as_of: priorAsOf,
+  posted: drafted.posted,
+  executed: drafted.executed,
+  drafts: drafted.drafts,
+}, null, 2) + '\n');
+
+const tickets = drafted.drafts.filter((d) => d.tool === 'save_issue' && d.ok);
+console.log(`  cycle ${fmt(priorAsOf)}  ${priorRouted.items.filter((i) => i.status === 'new').length} new  ${drafted.files.length} draft(s)`);
+console.log(`  posted=${drafted.posted}  executed=${drafted.executed}`);
+for (const d of tickets) {
+  console.log(`\n  ${d.issue.title}`);
+  for (const line of d.issue.description.split('\n').slice(0, 6)) {
+    console.log(`    ${line}`);
+  }
+}
+if (!tickets.length) console.log('    (no ticket bodies — unexpected on this fixture set)');
+console.log('\n  Latest cycle stayed silent. These bodies are from the cycle that actually had something new.');
+
 rule('WHAT THIS DID NOT DO');
 console.log('  No control record changed status. Nothing was instrumented. Nothing above is evidence');
-console.log(`  about any real system, and every artifact says ${FIXTURE_STAMP} on its face.\n`);
+console.log(`  about any real system, and every artifact says ${FIXTURE_STAMP} on its face.`);
+console.log('  No Slack, GitHub or Linear message was posted. Consent was not recorded as a merge.\n');
 
 await warehouse.close();
 

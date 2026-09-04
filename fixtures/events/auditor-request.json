@@ -1,0 +1,11 @@
+{
+  "_stamp": "NOT REAL EVIDENCE",
+  "event_id": "evt.fixture.auditor-mfa",
+  "kind": "auditor.request",
+  "source": "fixtures/events/auditor-request.json",
+  "as_of": "2026-09-04T04:00:00Z",
+  "derivation_level": "measured",
+  "payload": {
+    "control_id": "ctl.iam.cloud-platform.mfa"
+  }
+}

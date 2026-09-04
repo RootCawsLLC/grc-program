@@ -105,8 +105,10 @@ npm run simulate   FAIR Monte Carlo; refuses uncalibrated scenarios, which is th
 npm run collect    land source state, time-indexed, into the warehouse (--fixture for a dry run)
 npm run assert     build assertion records from what collect landed
 npm run drift      denominator movement, checked BEFORE failures are routed
-npm run route      failing subjects -> work items, deduplicated by subject
-npm test           282 tests
+npm run route      failing subjects -> work items, deduplicated by subject. --dispatch wraps new items as events; --pack / --draft hydrate and draft
+npm run orchestrate  dispatch one event envelope (--event). --pack / --draft write per-specialist files. --live is refused
+npm run gate       present / decide a human gate (--event | --id | --list | --interaction | --present | --map | --signed | --signed-github). --live is refused
+npm test           375 tests
 ```
 
 ## Day one
