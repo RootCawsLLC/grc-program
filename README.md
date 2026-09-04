@@ -1,12 +1,17 @@
 # grc-program
 
-**The control inventory, evidence pipeline and risk layer for the organization's GRC program.**
+**The control inventory, evidence pipeline and risk layer — as a git repository you can fork.**
 
-This repository is the system of record. Scytale, the trust center, every framework baseline and
-every OSCAL package are projections of what is in here.
+This repository is the system of record. The trust center, every framework baseline and every
+OSCAL package are projections of what is in here.
 
-> ⚠️ **This repo must be private.** It will hold extracted audit findings, control state and
-> exception detail. Audit source documents never enter it at all — `intake/source/` is gitignored.
+**Live guide** — what it does, when to use it, how to run it, how to take a private copy into an
+organisation: https://rootcawsllc.github.io/grc-program/
+
+> **Public template, private instance.** This remote is public so you can clone, fork, or use it
+> as a GitHub template and run the fixture pipeline. **Set your copy private before you add real
+> inventory, findings, exceptions, or a non-fixture collect.** `intake/source/` is gitignored;
+> audit reports never enter git. Do not open a PR that adds your evidence to this repository.
 
 ---
 
@@ -28,11 +33,13 @@ Everything below is reference. Those two are the things you actually do.
 ```bash
 git clone <this-repo> grc-program && cd grc-program
 npm ci
-npm test           # 75 tests
+npm test           # 375 tests
 npm run baseline   # intake + control health + gap assessment
 ```
 
-Then open Claude Code **in the repo root** and run `/week-one`.
+Then `npm run demo` for the synthetic pipeline (landing → variance → OSCAL → silent latest
+cycle → draft ticket bodies from the previous one). Open Claude Code **in the repo root** and
+run `/week-one` when this copy is your programme, not while you are still on the public template.
 
 **On Windows, read [`docs/SETUP.md`](docs/SETUP.md) first** — execution policy, long paths and line
 endings all need setting, and the line-endings one is a correctness issue rather than a cosmetic
@@ -83,7 +90,7 @@ npm run health     control health as a classification          [-- --detail] [--
 npm run gap        four-direction gap assessment  [-- --direction remediation|risk|assurance|coverage]
 npm run oscal      OSCAL assessment-results, deterministic UUIDs
 npm run push:dry   build the Scytale payload without sending
-npm test           75 tests
+npm test           375 tests
 ```
 
 `npm run oscal` twice produces a byte-identical file. That is the point, and CI gates on it.
@@ -170,7 +177,7 @@ efficacy**. See [ADR-0004](docs/adr/0004-agents-do-not-evaluate-efficacy.md).
 
 Stated plainly so nobody mistakes one for the other.
 
-**Real and tested (75 tests)** — FAIR-CAM efficacy math, including a test documenting where the
+**Real and tested (375 tests)** — FAIR-CAM efficacy math, including a test documenting where the
 exact arithmetic diverges from a commonly circulated worked example and why we do not round
 intermediates; deterministic UUID generation, verified against the RFC 4122 v5 test vector; the
 assertion builder and its exception handling; denominator drift detection; all nine inventory guards
@@ -195,6 +202,9 @@ They get filled from the organization's own data, by a named human, in weeks 2 a
 ---
 
 ## Licensing
+
+The code is [AGPL-3.0-or-later](LICENSE). Fork it, run it, take a private instance. A network
+service that exposes this software still owes the corresponding source.
 
 Framework identifiers only; no normative text from any standard. SCF is resolved at runtime from a
 local release and never vendored — it is CC BY-ND 4.0 and its terms explicitly prohibit using AI to

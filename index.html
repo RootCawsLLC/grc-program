@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>grc-program — a GRC programme as a git repository</title>
+<meta name="description" content="The control inventory is the system of record. Fork the public template, run the fixture pipeline, then make your copy private before any real evidence lands. A ticket is a draft. A human merge is the control.">
+<style>
+:root{
+  --bg:#FAFAF8;--panel:#FFFFFF;--panel-2:#F5F1E8;--border:#e0e0e0;
+  --ink:#1a1a1a;--ink-2:#444444;--ink-3:#666666;--accent:#6B63B5;--accent-soft:#efedf9;
+  --breach:#B4413F;--held:#2F7D53;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#1a1a1a;--panel:#242424;--panel-2:#2d2d2d;--border:#333333;
+    --ink:#f0f0f0;--ink-2:#c0c0c0;--ink-3:#999999;--accent:#8B7FD6;--accent-soft:#2b2740;
+    --breach:#E58A88;--held:#7FC79B;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;padding:2.5rem 1.25rem 4rem;background:var(--bg);color:var(--ink);
+  font:15px/1.65 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:46rem;margin:0 auto}
+h1{font-size:1.7rem;margin:0 0 .35rem;letter-spacing:-.01em}
+.thesis{color:var(--ink-2);margin:0 0 1.25rem;font-size:1.02rem}
+.thesis b{color:var(--ink)}
+nav.toc{display:flex;flex-wrap:wrap;gap:.4rem .75rem;margin:0 0 2rem;padding:0;
+  font-size:.82rem}
+nav.toc a{color:var(--accent);text-decoration:none}
+nav.toc a:hover{text-decoration:underline}
+h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);
+  margin:2.25rem 0 .75rem;font-weight:600}
+h3{font-size:1rem;margin:1.35rem 0 .4rem}
+p,li{color:var(--ink-2)}
+p{margin:0 0 .85rem}
+ul,ol{margin:.2rem 0 1rem;padding-left:1.2rem}
+li{margin:.25rem 0}
+a.card{display:block;background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--accent);
+  border-radius:9px;padding:.9rem 1.1rem;margin-bottom:.6rem;text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--accent)}
+a.card .t{font-weight:600;margin-bottom:.15rem;color:var(--ink)}
+a.card .d{color:var(--ink-3);font-size:.87rem}
+.note{background:var(--panel-2);border-radius:8px;padding:.85rem 1.05rem;font-size:.89rem;
+  color:var(--ink-2);margin:1.25rem 0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:0 0 1rem}
+@media (max-width:640px){.pair{grid-template-columns:1fr}}
+.box{background:var(--panel);border:1px solid var(--border);border-radius:9px;padding:.85rem 1rem}
+.box h3{margin:.1rem 0 .4rem}
+.box.use{border-left:4px solid var(--held)}
+.box.dont{border-left:4px solid var(--breach)}
+pre{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;
+  padding:.85rem 1rem;overflow-x:auto;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color:var(--ink);margin:0 0 1rem}
+code{font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin:0 0 1rem}
+th,td{text-align:left;vertical-align:top;padding:.45rem .5rem .45rem 0;border-bottom:1px solid var(--border)}
+th{color:var(--ink-3);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--border);
+  color:var(--ink-3);font-size:.84rem}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>grc-program</h1>
+<p class="thesis">A GRC programme as a git repository. The control inventory is the
+<b>system of record</b> — frameworks, the trust center, and every OSCAL package are projections.
+This page is how you run the public template, and how you take a private copy into your own
+organisation before any real evidence lands.</p>
+
+<nav class="toc" aria-label="On this page">
+  <a href="#what">What it does</a>
+  <a href="#when">When to use it</a>
+  <a href="#how">How to use it</a>
+  <a href="#template">Public template, private instance</a>
+  <a href="#org">Take it into your org</a>
+  <a href="#run">What a fixture run shows</a>
+  <a href="#limits">Honest limits</a>
+</nav>
+
+<h2 id="what">What it does</h2>
+<p>Most GRC tooling treats a control as a document: a policy PDF, a questionnaire answer, a
+screenshot of a settings page. This repository treats a control as a record you can query.
+Every framework requirement, scenario, policy paragraph and piece of evidence is a foreign key
+to a <code>control_id</code>. Nothing else is first-class.</p>
+<p>The pipeline lands source state time-indexed (so a shrinking denominator cannot look like an
+improving pass rate), asserts every control against a fully enumerated population, routes
+<i>new</i> failing subjects as work, and drafts a ticket body without posting it. A human gate
+records consent. Consent is not a merge. Live send stays off until a named contract is confirmed
+against the sink you actually use.</p>
+<p>Output is an OSCAL package with deterministic v5 UUIDs, a four-direction gap assessment,
+control-health as a classification (not a score), and FAIR-CAM math that refuses an unlabelled
+number. Agents may pack context and draft. They do not evaluate control efficacy, and they do
+not write the inventory on a shared branch.</p>
+
+<h2 id="when">When and where to use it</h2>
+<div class="pair">
+  <div class="box use">
+    <h3>Use it when</h3>
+    <ul>
+      <li>You are standing up a GRC programme and need a system of record you own, not a platform you cannot read from.</li>
+      <li>You want evidence that is a query against a population — <code>total</code>, a fully enumerated <code>failing[]</code>, a coverage basis — not a screenshot.</li>
+      <li>You need machine-readable artefacts an assessor can re-run: OSCAL that re-exports byte-identically, a warehouse you can open on a past date.</li>
+      <li>You want a GRC engineer to practise the discipline: a ticket is draft, a gate records consent, a human merge is the control.</li>
+    </ul>
+  </div>
+  <div class="box dont">
+    <h3>Do not use it when</h3>
+    <ul>
+      <li>You need a hosted dashboard on day one. This is a CLI and a git repository. The demo writes files. Nothing is a SaaS.</li>
+      <li>You want the model to decide that a control works. Efficacy is a named human with a confidence tier. That refusal is the product.</li>
+      <li>You need a finished CMMC, FedRAMP 20x, or AI-probe programme. Those are <a href="https://rootcawsllc.github.io/cui-control-plane/">cui-control-plane</a>, <a href="https://rootcawsllc.github.io/ksi-harness/">ksi-harness</a>, and <a href="https://rootcawsllc.github.io/proofplane/">proofplane</a>. This repo is the general programme.</li>
+      <li>You plan to commit real evidence to a public fork. That is the one thing this page exists to stop.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 id="how">How to use it</h2>
+<p>Node 22+. No API key, no cloud account, no spend. Nothing contacts a real system. Windows,
+macOS and Linux. On Windows, read
+<a href="https://github.com/RootCawsLLC/grc-program/blob/main/docs/SETUP.md">docs/SETUP.md</a>
+first — line endings are a correctness issue here, not cosmetics.</p>
+<p><b>1. Clone and confirm the suite.</b></p>
+<pre>git clone https://github.com/RootCawsLLC/grc-program.git
+cd grc-program
+npm ci
+npm test
+npm run validate
+npm run baseline</pre>
+<p><code>npm ci</code> runs the prepare hook that pins git identity. Do not skip it: a tree that
+skipped install commits under whatever git infers. The first <code>baseline</code> looks bleak —
+seed controls, almost none instrumented, a long gap list. That is the shape of the output, not
+the state of any company. None of those records are yours yet.</p>
+<p><b>2. Run the synthetic pipeline end to end.</b></p>
+<pre>npm run demo</pre>
+<p>Three fixture cycles land, the denominator holds, variance is decomposed into the three
+FAIR-CAM segments, and OSCAL assessment results write under <code>out-synthetic/</code> stamped
+<code>NOT REAL EVIDENCE</code>. Section 5 of the demo is the latest cycle: one continuing
+subject, no new ticket. Section 6 walks the <i>previous</i> cycle — the one that actually had
+something new — and prints draft <code>save_issue</code> bodies. <code>posted=false</code>.
+<code>executed=false</code>. That is the whole argument in one run.</p>
+<p><b>3. Read one control end to end.</b> Open a file under <code>controls/</code>. The record
+has an owner, a population definition, a primary FAIR-CAM function, and framework identifiers —
+never framework text. Then run the pieces the demo already chained:</p>
+<pre>npm run collect -- --fixture
+npm run assert
+npm run drift
+npm run route -- --dispatch --pack --draft</pre>
+<p>New subjects become events. Continuing subjects stay silent. Packs hydrate from the
+read-only MCP tools into one file per specialist. Drafts sit next to those packs. Nothing is
+posted. <code>--live</code> is a refusal.</p>
+<p><b>4. Useful commands once you have run it once.</b></p>
+<pre>npm run health          # classification, not a score
+npm run gap -- --direction remediation
+npm run emit            # the OSCAL package; re-run is byte-identical
+npm run simulate        # FAIR Monte Carlo; refuses uncalibrated scenarios
+npm run orchestrate -- --event fixtures/events/risk-acceptance.json
+npm run gate -- --list
+npm run mcp             # eight read-only tools over the control graph</pre>
+<p>A risk-acceptance event without a named <code>per.*</code> actor and an expiry is refused.
+A Slack or GitHub click can decide a stored gate only after HMAC verification and an identity
+map from a platform user id to that <code>per.*</code>. There is no HTTP listener. Usernames
+and logins are not identity.</p>
+
+<h2 id="template">Public template, private instance</h2>
+<p>This repository is public so you can see the machinery, run the fixtures, and copy the
+shape. It is a <b>template</b>, not a hosted programme. Real inventory, extracted findings,
+exceptions, and warehouse rows name accounts, roles, and failing people. Those do not belong
+on a public remote.</p>
+<ol>
+  <li><b>Use it as a GitHub template, or fork it.</b> Either produces a repository you own.
+    The public original stays the template. Your copy is the instance.</li>
+  <li><b>Keep the copy public while it is still fixtures.</b> Run <code>npm test</code> and
+    <code>npm run demo</code>. Read the ADRs. Nothing in <code>fixtures/</code> is evidence,
+    and the stamp is designed to travel into every artefact generated from it. Do not strip
+    the stamp to make a demo produce a nicer number.</li>
+  <li><b>Set the copy private before any real data lands.</b> Do this before the first real
+    control YAML, the first extracted finding, the first exception, and the first
+    non-fixture collect. GitHub: <code>Settings → General → Danger zone → Change repository
+    visibility</code>. A public instance that later “just has one real row” is already a
+    leak.</li>
+  <li><b>Never commit real evidence.</b> <code>out/</code>, <code>out-synthetic/</code>,
+    <code>.warehouse/</code>, <code>.evidence/</code> and <code>intake/source/</code> are
+    gitignored. Audit reports are NDA-gated and stay on disk, not in git. Generated output
+    overwrites without asking — redirect or back up before a trial run against anything
+    you care about.</li>
+  <li><b>Replace the seed, do not decorate it.</b> The shipped controls, scenarios and
+    identity map are worked examples. Your <code>control_id</code>s, owners, populations and
+    <code>per.*</code> roster are yours. Do not invent Slack or GitHub mappings for people
+    who are not on that roster.</li>
+  <li><b>Leave live send off</b> until you have confirmed the sink contract against the real
+    UI and named the credentials. A silent no-op send is forbidden; an unconfirmed send is
+    a throw. Same for an HTTP listener: verification is a function so a half-wired server
+    cannot become first inbound.</li>
+</ol>
+<div class="note">
+  <b>The public repo is the template. The private fork is the programme.</b>
+  If you are deciding which of those you are looking at, and the remote is still
+  <code>RootCawsLLC/grc-program</code>, you are on the template. Do not open a PR that adds
+  your evidence here.
+</div>
+
+<h2 id="org">Take it into your organisation</h2>
+<p>You do not clone this onto a shared drive and call it the GRC function. You take the
+<b>rule</b> and the <b>shape</b>.</p>
+<ol>
+  <li><b>Controls are the substrate.</b> A risk register is an inventory of control gaps. An
+    incident is a control failure that produced harm. A policy is a written expectation about
+    a control. Split by layer when owner, cost, threat model or failure mode differs.
+    Platform IAM, enterprise SSO, in-product authz and customer SSO are four controls, not
+    one “Access Control.”</li>
+  <li><b>Policy last.</b> Build the control, instrument it, observe it holding, then generate
+    the policy from the record. Guard G2 fails the build on a policy for a control that is
+    not operating.</li>
+  <li><b>Populations, not samples.</b> Every test returns <code>total</code>, a fully
+    enumerated <code>failing[]</code>, <code>coverage_basis</code> and <code>query_ref</code>.
+    A pass rate that “improved” because the denominator shrank is a failure of the asset
+    inventory.</li>
+  <li><b>Time-index everything.</b> If the landing layer overwrites, the pipeline is a
+    dashboard and Variance Duration is unreachable.</li>
+  <li><b>Label every number</b> <code>measured</code>, <code>derived</code>,
+    <code>calibrated-estimate</code> or <code>assumed</code>. An unlabelled number is
+    rejected. A range with no provenance and a range with six sourced parameters must not
+    look equally authoritative.</li>
+  <li><b>A pull request is the only path to normative.</b> Nobody writes
+    <code>controls/</code>, <code>policies/</code> or <code>exceptions/</code> on a shared
+    branch. A human merges. The merge is the control, and it is reviewable as a diff.</li>
+  <li><b>No agent evaluates control efficacy.</b> A probe may run and record what happened.
+    Efficacy is a relationship between control state, threat behaviour, asset value and
+    compensating controls. The training data to learn it does not exist. A fluent answer
+    here is the most dangerous possible output, because it is indistinguishable in form from
+    a correct one.</li>
+</ol>
+<p>If this is week one of a real programme,
+<a href="https://github.com/RootCawsLLC/grc-program/blob/main/docs/SOP-DAY-ONE.md">docs/SOP-DAY-ONE.md</a>
+is the checkbox procedure.
+<a href="https://github.com/RootCawsLLC/grc-program/blob/main/BUILD-ORDER.md">BUILD-ORDER.md</a>
+is the remaining units.
+<a href="https://github.com/RootCawsLLC/grc-program/tree/main/docs/adr">docs/adr/</a>
+is why the machinery is shaped this way. This page is the operator’s entrance.</p>
+
+<h2 id="run">What a fixture run shows</h2>
+<p>You cannot press a button on this page and get a live warehouse — the tool is a CLI. You
+can run the same fixture path the documentation claims, on a laptop, in about a minute, and
+get the same refusals.</p>
+
+<a class="card" href="https://github.com/RootCawsLLC/grc-program">
+  <div class="t">Source repository</div>
+  <div class="d">RootCawsLLC/grc-program — public template. Clone, fork, or use as a GitHub
+    template. Set <i>your</i> copy private before real data.</div>
+</a>
+
+<a class="card" href="https://github.com/RootCawsLLC/grc-program/blob/main/scripts/demo.mjs">
+  <div class="t">The offline demo — landing, model, variance, OSCAL, route, draft</div>
+  <div class="d">Three cycles. Latest: 0 new, 1 continuing, silent. Previous: two
+    <code>save_issue</code> bodies, posted=false, executed=false.</div>
+</a>
+
+<a class="card" href="https://github.com/RootCawsLLC/grc-program/tree/main/docs/adr">
+  <div class="t">ADRs</div>
+  <div class="d">The evidence sink is a sink. No framework text. Agents do not evaluate
+    efficacy. Gates record consent; they do not execute.</div>
+</a>
+
+<a class="card" href="https://github.com/RootCawsLLC/grc-program/blob/main/docs/AGENT-TOPOLOGY.md">
+  <div class="t">Agent topology</div>
+  <div class="d">Flat specialists, packed per-task context, no shared state file. MCP over
+    the graph is eight read-only tools.</div>
+</a>
+
+<div class="note">
+  The latest fixture cycle has nothing new. That is not an empty demo — it is the rule.
+  Continuing subjects stay silent so the queue is not a ticker. Ticket bodies come from the
+  cycle that actually had a new subject.
+</div>
+
+<h2 id="limits">Honest limits</h2>
+<div class="note">
+  <b>Read the status honestly.</b> The seed inventory is a worked example, not your
+  programme. Fixture runs stamp every artefact <code>NOT REAL EVIDENCE</code>. Collectors
+  are written against API shapes and have not been run against a live tenant. Live Slack,
+  GitHub and Linear send is a refusal until a contract is confirmed; a confirmed send still
+  leaves <code>executed</code> false. There is no HTTP listener. Scenario parameters ship as
+  <code>assumed</code> at confidence tier 1; filling them with a plausible range is the
+  failure mode FAIR exists to prevent. Framework identifiers only — no normative text from
+  any standard. The full working agreement is
+  <a href="https://github.com/RootCawsLLC/grc-program/blob/main/CLAUDE.md">CLAUDE.md</a>.
+</div>
+
+<footer>
+  Source, ADRs, SOP:
+  <a href="https://github.com/RootCawsLLC/grc-program">github.com/RootCawsLLC/grc-program</a>
+  · Portfolio:
+  <a href="https://xnasusx.github.io/portfolio/#builds">xnasusx.github.io/portfolio</a><br>
+  Copyright &copy; 2026 RootCaws LLC &middot; AGPL-3.0-or-later
+</footer>
+
+</div></body>
+</html>

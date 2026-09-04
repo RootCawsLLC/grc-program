@@ -2,9 +2,9 @@
   "name": "grc-program",
   "version": "0.1.0",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-or-later",
   "type": "module",
-  "description": "Control inventory, evidence pipeline and risk layer for the organization's GRC program. This repo is the system of record.",
+  "description": "Control inventory, evidence pipeline and risk layer. Public template; take a private copy before real evidence lands.",
   "engines": {
     "node": ">=22"
   },
