@@ -27,6 +27,8 @@
     "simulate": "node src/cli.mjs simulate",
     "preflight": "node src/cli.mjs preflight",
     "collect": "node src/cli.mjs collect",
+    "sandbox": "node src/cli.mjs collect --sandbox",
+    "sandbox:provision": "node scripts/provision-sandbox-github.mjs",
     "assert": "node src/cli.mjs assert",
     "drift": "node src/cli.mjs drift",
     "route": "node src/cli.mjs route",

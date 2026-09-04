@@ -151,7 +151,15 @@ npm run route -- --dispatch --pack --draft</pre>
 <p>New subjects become events. Continuing subjects stay silent. Packs hydrate from the
 read-only MCP tools into one file per specialist. Drafts sit next to those packs. Nothing is
 posted. <code>--live</code> is a refusal.</p>
-<p><b>4. Useful commands once you have run it once.</b></p>
+<p><b>4. UAT the collectors against dummy sources before connecting a live tenant.</b></p>
+<pre>npm run sandbox</pre>
+<p><code>--sandbox</code> is a third mode, not a fallback from live collect. It runs the
+collectors against official-format IAM credential-report CSV, dummy GitHub repos
+(<code>RootCawsLLC/sandbox-uat-*</code>), a file IdP, and an HRIS inbox CSV. Everything is
+stamped <code>NOT REAL EVIDENCE</code>. <code>--sandbox</code> and <code>--fixture</code>
+cannot be combined. Live collect still refuses without credentials, and still refuses with
+them until a live client is wired.</p>
+<p><b>5. Useful commands once you have run it once.</b></p>
 <pre>npm run health          # classification, not a score
 npm run gap -- --direction remediation
 npm run emit            # the OSCAL package; re-run is byte-identical

@@ -28,6 +28,9 @@ Do not strip it to make a demo produce a nicer number.
 ```
 landing/cycle-<date>.json   one collection cycle: as_of, a stamp, a comment explaining what the
                             cycle exercises, and rows keyed by landing table
+sandbox/                    dummy sources for `collect --sandbox` (official IAM CSV, GitHub
+                            stand-in, file IdP, HRIS inbox). See sandbox/README.md.
+                            Not a fallback from live collect.
 assertions.json             a single hand-written assertion record, used by the OSCAL tests
 events/*.json               inbound dispatch envelopes and Slack `block_actions` payloads for
                             `npm run orchestrate` / `npm run gate -- --interaction`.

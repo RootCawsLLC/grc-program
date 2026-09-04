@@ -265,9 +265,11 @@ const commands = {
     try {
       manifest = await collect({
         fixture: flag('fixture'),
+        sandbox: flag('sandbox'),
         allowEmpty: flag('allow-empty'),
         warehousePath: opt('warehouse') ?? undefined,
         asOf: opt('as-of') ?? null,
+        githubSource: opt('github-source') ?? 'auto',
       });
     } catch (err) {
       // A refusal is a decision, not a crash. Printed as prose so a CI log reads as an answer
@@ -276,8 +278,15 @@ const commands = {
       return 1;
     }
     const path = await writeManifest(manifest);
-    console.log(`\nCOLLECT — ${manifest.total_rows} row(s) across ${manifest.cycles.length} cycle(s)\n`);
+    console.log(`\nCOLLECT — ${manifest.mode}  ${manifest.total_rows} row(s) across ${manifest.cycles.length} cycle(s)\n`);
     for (const c of manifest.cycles) console.log(`  ${c.as_of}   ${String(c.rows).padStart(3)} rows   ${c.source}`);
+    if (manifest.collectors) {
+      console.log('');
+      for (const [name, slice] of Object.entries(manifest.collectors)) {
+        const n = slice.rows == null ? '—' : String(slice.rows);
+        console.log(`  ${name.padEnd(8)} ${String(slice.status).padEnd(8)} rows=${n.padStart(3)}  ${slice.source}`);
+      }
+    }
     if (manifest.fixture) console.log(`\n  ${manifest.note}`);
     console.log(`\n  warehouse: ${manifest.warehouse}\n  manifest:  ${path}\n`);
   },
@@ -671,7 +680,7 @@ const commands = {
   baseline     intake + health + gap, in reading order. Start here on day 1.
   oscal        emit OSCAL assessment-results with deterministic UUIDs
   push         build the Scytale payload (dry-run unless --live)
-  collect      land source state, time-indexed (--fixture for a dry run)
+  collect      land source state, time-indexed (--fixture | --sandbox; default is live and refuses)
   assert       build assertion records from what collect landed
   drift        denominator movement, checked BEFORE failures are routed
   route        failing subjects -> work items. --dispatch wraps new items as events. --pack / --draft hydrate and draft, never post

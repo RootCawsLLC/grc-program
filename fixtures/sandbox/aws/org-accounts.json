@@ -1,0 +1,9 @@
+{
+  "_stamp": "NOT REAL EVIDENCE",
+  "_comment": "Sandbox org list. Same three invented account IDs as fixtures/landing. sandbox-team is out of the MFA population (is_production_org=false).",
+  "accounts": [
+    { "account_id": "111122223333", "account_name": "prod-core",    "account_status": "ACTIVE", "is_production_org": true },
+    { "account_id": "444455556666", "account_name": "prod-data",    "account_status": "ACTIVE", "is_production_org": true },
+    { "account_id": "999988887777", "account_name": "sandbox-team", "account_status": "ACTIVE", "is_production_org": false }
+  ]
+}

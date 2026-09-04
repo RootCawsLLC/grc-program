@@ -1,0 +1,4 @@
+subject_id,passing,reason,first_observed
+per.alice,true,,
+per.bob,true,,
+per.erin,false,no_current_assignment,2026-04-19T00:00:00Z

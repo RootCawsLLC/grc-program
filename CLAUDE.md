@@ -102,13 +102,15 @@ npm run demo       the whole synthetic pipeline, end to end, on stamped fixtures
 npm run probe      AI agent control probes, paired guarded/unguarded, against a local target
 npm run mcp        read-only MCP server over the control graph (8 tools)
 npm run simulate   FAIR Monte Carlo; refuses uncalibrated scenarios, which is the point
-npm run collect    land source state, time-indexed, into the warehouse (--fixture for a dry run)
+npm run collect    land source state, time-indexed, into the warehouse (--fixture | --sandbox)
+npm run sandbox    UAT collect against dummy sources (official IAM CSV, GitHub sandbox-uat-*, file IdP)
+npm run sandbox:provision  create/update RootCawsLLC/sandbox-uat-* dummy GitHub repos
 npm run assert     build assertion records from what collect landed
 npm run drift      denominator movement, checked BEFORE failures are routed
 npm run route      failing subjects -> work items, deduplicated by subject. --dispatch wraps new items as events; --pack / --draft hydrate and draft
 npm run orchestrate  dispatch one event envelope (--event). --pack / --draft write per-specialist files. --live is refused
 npm run gate       present / decide a human gate (--event | --id | --list | --interaction | --present | --map | --signed | --signed-github). --live is refused
-npm test           375 tests
+npm test           386 tests
 ```
 
 ## Day one

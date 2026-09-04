@@ -8,15 +8,18 @@
  * That is the single most dangerous artifact this pipeline could produce, so a zero-row collection
  * is refused unless somebody says in writing that empty is the expected answer.
  *
- * TWO SOURCES, AND THE CHOICE IS ALWAYS EXPLICIT.
+ * THREE SOURCES, AND THE CHOICE IS ALWAYS EXPLICIT.
  *
  *   --fixture   reads fixtures/landing/*.json — stamped NOT REAL EVIDENCE, no credentials, no
  *               network. Everything it lands is marked fixture-derived and stays marked.
+ *   --sandbox   runs collectors against dummy sources (official IAM CSV, GitHub sandbox-uat-*
+ *               repos, file IdP, HRIS inbox). Also stamped. Not a live tenant.
  *   (default)   live collection, which REFUSES without credentials rather than falling back.
  *
- * There is deliberately no automatic fallback from live to fixture. A scheduled run that quietly
- * collected fixtures when its credentials lapsed would go green having measured nothing, and the
- * first real failure would look exactly like the thirty fake successes before it.
+ * There is deliberately no automatic fallback from live to fixture or sandbox. A scheduled run
+ * that quietly collected dummy data when its credentials lapsed would go green having measured
+ * nothing, and the first real failure would look exactly like the thirty fake successes before it.
+ * `--sandbox` and `--fixture` cannot be combined: one lands JSON cycles, the other runs collectors.
  */
 
 import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
@@ -26,6 +29,7 @@ import { Warehouse } from './warehouse.mjs';
 import { TABLES } from './lib/tables.mjs';
 import { FIXTURE_STAMP } from './lib/load.mjs';
 import { COLLECTORS } from './collectors/registry.mjs';
+import { collectSandbox, DEFAULT_SANDBOX_WAREHOUSE } from './sandbox.mjs';
 
 export const DEFAULT_WAREHOUSE = '.warehouse/ccm.duckdb';
 
@@ -77,12 +81,36 @@ export async function readFixtureCycles(dir = 'fixtures/landing') {
  */
 export async function collect({
   fixture = false,
-  warehousePath = DEFAULT_WAREHOUSE,
+  sandbox = false,
+  warehousePath,
   fixtureDir = 'fixtures/landing',
+  sandboxDir,
   allowEmpty = false,
   env = process.env,
   asOf = null,
+  githubClient = null,
+  githubSource = 'auto',
 } = {}) {
+  if (fixture && sandbox) {
+    throw new Error(
+      'refusing to collect: --sandbox and --fixture cannot be combined.\n' +
+      '  Fixture cycles are pre-landed JSON. Sandbox runs collectors against dummy sources.\n' +
+      '  Mixing them would make a collector run look like a fixture load, and the other way around.',
+    );
+  }
+
+  if (sandbox) {
+    return collectSandbox({
+      sandboxDir,
+      warehousePath: warehousePath ?? DEFAULT_SANDBOX_WAREHOUSE,
+      allowEmpty,
+      env,
+      asOf: asOf ?? undefined,
+      githubClient,
+      githubSource,
+    });
+  }
+
   if (!fixture) {
     const readiness = liveReadiness(env);
     const blocked = readiness.filter((r) => !r.ready);
@@ -93,7 +121,8 @@ export async function collect({
         '\n\n  There is no fallback to fixtures. A scheduled run that quietly collected synthetic\n' +
         '  data when its credentials lapsed would go green having measured nothing, and the first\n' +
         '  real failure would look identical to every fake success before it.\n' +
-        '\n  For a credential-free run against stamped fixtures, ask for it: `collect --fixture`.',
+        '\n  For a credential-free run against stamped fixtures, ask for it: `collect --fixture`.\n' +
+        '  For UAT against dummy sources, ask for it: `collect --sandbox`.',
       );
     }
     // Live collection is reachable only with credentials, and the collectors have never been
@@ -109,6 +138,8 @@ export async function collect({
       '  actually read.',
     );
   }
+
+  warehousePath = warehousePath ?? DEFAULT_WAREHOUSE;
 
   const cycles = await readFixtureCycles(fixtureDir);
   const selected = asOf ? cycles.filter((c) => c.as_of === asOf) : cycles;

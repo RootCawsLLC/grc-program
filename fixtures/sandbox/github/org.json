@@ -1,0 +1,46 @@
+{
+  "_stamp": "NOT REAL EVIDENCE",
+  "_comment": "File stand-in for RootCawsLLC/sandbox-uat-* dummy repos. Population is topic=production. scratch has no production topic and must not appear. api is the passing shape (protection + required reviews + SHA-pinned third-party action). app fails (no protection, tag-pinned trivy-action — the March 2026 class of finding).",
+  "org": "RootCawsLLC",
+  "repos": [
+    {
+      "name": "sandbox-uat-prod-app",
+      "default_branch": "main",
+      "topics": ["production", "sandbox-uat"],
+      "pushed_at": "2026-09-04T00:00:00Z",
+      "protection": { "enabled": false, "required_reviews": false, "allow_force_pushes": false },
+      "workflows": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "uses": ["actions/checkout@v4", "aquasecurity/trivy-action@master"]
+        }
+      ]
+    },
+    {
+      "name": "sandbox-uat-prod-api",
+      "default_branch": "main",
+      "topics": ["production", "sandbox-uat"],
+      "pushed_at": "2026-09-04T00:00:00Z",
+      "protection": { "enabled": true, "required_reviews": true, "allow_force_pushes": false, "updated_at": "2026-09-04T00:00:00Z" },
+      "workflows": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "uses": ["actions/checkout@v4", "aquasecurity/trivy-action@d2a0b60797ff03db6132bd4e2b293f9b37081297"]
+        }
+      ]
+    },
+    {
+      "name": "sandbox-uat-scratch",
+      "default_branch": "main",
+      "topics": ["sandbox-uat"],
+      "pushed_at": "2026-09-04T00:00:00Z",
+      "protection": { "enabled": false, "required_reviews": false, "allow_force_pushes": false },
+      "workflows": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "uses": ["actions/checkout@v4", "aquasecurity/trivy-action@master"]
+        }
+      ]
+    }
+  ]
+}

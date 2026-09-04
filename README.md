@@ -33,12 +33,14 @@ Everything below is reference. Those two are the things you actually do.
 ```bash
 git clone <this-repo> grc-program && cd grc-program
 npm ci
-npm test           # 375 tests
+npm test           # 386 tests
 npm run baseline   # intake + control health + gap assessment
 ```
 
 Then `npm run demo` for the synthetic pipeline (landing → variance → OSCAL → silent latest
-cycle → draft ticket bodies from the previous one). Open Claude Code **in the repo root** and
+cycle → draft ticket bodies from the previous one). `npm run sandbox` runs the collectors
+against dummy sources (official IAM CSV, GitHub `sandbox-uat-*` repos, file IdP) before any
+live tenant is connected. Open Claude Code **in the repo root** and
 run `/week-one` when this copy is your programme, not while you are still on the public template.
 
 **On Windows, read [`docs/SETUP.md`](docs/SETUP.md) first** — execution policy, long paths and line
@@ -90,7 +92,7 @@ npm run health     control health as a classification          [-- --detail] [--
 npm run gap        four-direction gap assessment  [-- --direction remediation|risk|assurance|coverage]
 npm run oscal      OSCAL assessment-results, deterministic UUIDs
 npm run push:dry   build the Scytale payload without sending
-npm test           375 tests
+npm test           386 tests
 ```
 
 `npm run oscal` twice produces a byte-identical file. That is the point, and CI gates on it.
@@ -177,7 +179,7 @@ efficacy**. See [ADR-0004](docs/adr/0004-agents-do-not-evaluate-efficacy.md).
 
 Stated plainly so nobody mistakes one for the other.
 
-**Real and tested (375 tests)** — FAIR-CAM efficacy math, including a test documenting where the
+**Real and tested (386 tests)** — FAIR-CAM efficacy math, including a test documenting where the
 exact arithmetic diverges from a commonly circulated worked example and why we do not round
 intermediates; deterministic UUID generation, verified against the RFC 4122 v5 test vector; the
 assertion builder and its exception handling; denominator drift detection; all nine inventory guards
@@ -185,8 +187,10 @@ and all seven intake guards; OSCAL emission and its determinism; control health 
 four-direction gap assessment; the Scytale payload shape and its refusal to send unconfirmed; and
 the validation hook itself, across relative, POSIX-absolute and Windows-backslash paths.
 
-**Scaffolding, clearly marked** — the four collectors take an injected client and are written against
-the API shapes, but have not been run against live credentials. Two dbt models are worked examples;
+**Scaffolding, clearly marked** — live collect still refuses (credentials are not a live client).
+`collect --sandbox` runs the four collectors against dummy sources so UAT does not wait on a
+tenant. The collectors take an injected client and are written against the API shapes, but have
+not been run against live credentials. Two dbt models are worked examples;
 the staging models they reference are deliberately absent rather than stubbed, because an empty stub
 returning no rows would make `dbt run` succeed while proving nothing. `fixtures/assertions.json` and
 `intake/extracted/EXAMPLE-*` are synthetic and labelled.

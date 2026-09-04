@@ -1,0 +1,66 @@
+{
+  "_stamp": "NOT REAL EVIDENCE",
+  "_comment": "Collector-contract identities, not a live Okta tenant. Exclusion is by type=SERVICE, never by name — svc-human looks human and must still be excluded. bob has TOTP only (no phishing-resistant factor). carol has no factor.",
+  "users": [
+    {
+      "id": "00uSANDBOXALICE",
+      "status": "ACTIVE",
+      "type": "USER",
+      "userType": "EMPLOYEE",
+      "created": "2025-02-11T00:00:00Z",
+      "lastUpdated": "2026-08-01T00:00:00Z",
+      "profile": { "entity": "us", "login": "alice@sandbox.example" },
+      "factors": [{ "factorType": "WEBAUTHN", "status": "ACTIVE" }]
+    },
+    {
+      "id": "00uSANDBOXBOB",
+      "status": "ACTIVE",
+      "type": "USER",
+      "userType": "EMPLOYEE",
+      "created": "2025-03-02T00:00:00Z",
+      "lastUpdated": "2026-07-14T00:00:00Z",
+      "profile": { "entity": "us", "login": "bob@sandbox.example" },
+      "factors": [{ "factorType": "token:software:totp", "status": "ACTIVE" }]
+    },
+    {
+      "id": "00uSANDBOXCAROL",
+      "status": "ACTIVE",
+      "type": "USER",
+      "userType": "EMPLOYEE",
+      "created": "2025-05-20T00:00:00Z",
+      "lastUpdated": "2026-05-22T00:00:00Z",
+      "profile": { "entity": "us", "login": "carol@sandbox.example" },
+      "factors": []
+    },
+    {
+      "id": "00uSANDBOXDANA",
+      "status": "ACTIVE",
+      "type": "USER",
+      "userType": "CONTRACTOR",
+      "created": "2025-06-01T00:00:00Z",
+      "lastUpdated": "2026-08-02T00:00:00Z",
+      "profile": { "entity": "us", "login": "dana@sandbox.example" },
+      "factors": [{ "factorType": "FIDO2", "status": "ACTIVE" }]
+    },
+    {
+      "id": "00uSANDBOXSVC",
+      "status": "ACTIVE",
+      "type": "SERVICE",
+      "userType": "SERVICE",
+      "created": "2025-08-01T00:00:00Z",
+      "lastUpdated": "2026-08-01T00:00:00Z",
+      "profile": { "entity": "us", "login": "svc-human@sandbox.example" },
+      "factors": []
+    },
+    {
+      "id": "00uSANDBOXINACTIVE",
+      "status": "DEPROVISIONED",
+      "type": "USER",
+      "userType": "EMPLOYEE",
+      "created": "2024-01-01T00:00:00Z",
+      "lastUpdated": "2026-01-01T00:00:00Z",
+      "profile": { "entity": "us", "login": "gone@sandbox.example" },
+      "factors": []
+    }
+  ]
+}
