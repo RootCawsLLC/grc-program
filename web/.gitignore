@@ -1,0 +1,6 @@
+# Web app build + deps. The tool's own node_modules is separate (repo root).
+node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+.env*.local
