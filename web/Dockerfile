@@ -68,7 +68,12 @@ ENV GRC_ROOT=/repo
 # Bring the whole built tree (tool src + node_modules incl. the duckdb binding,
 # web .next + node_modules, and every data dir). The web/node_modules/grc-program
 # symlink points at /repo, which exists at the same path here, so it resolves.
-COPY --from=build /repo /repo
+# Owned by the built-in non-root `node` user so the runtime can read (and Next
+# can write its .next/cache) without running as root.
+COPY --chown=node:node --from=build /repo /repo
+
+# Drop root: the runtime only reads bundled fixtures and serves HTTP.
+USER node
 
 WORKDIR /repo/web
 EXPOSE 3240
