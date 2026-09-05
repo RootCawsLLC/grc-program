@@ -133,7 +133,7 @@
         "string",
         "null"
       ],
-      "description": "A named human. Mapping is a judgement and carries a name."
+      "description": "A named human. Mapping is a judgment and carries a name."
     },
     "disposition": {
       "type": "string",
@@ -201,7 +201,7 @@
               "string",
               "null"
             ],
-            "description": "A named human. Mapping is a judgement and carries a name, per mapping."
+            "description": "A named human. Mapping is a judgment and carries a name, per mapping."
           },
           "basis": {
             "type": "string",

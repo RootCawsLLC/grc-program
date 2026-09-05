@@ -2,7 +2,7 @@
  * `orchestrate` — turn an inbound event into a dispatch plan.
  *
  * The rules live in `.claude/agents/orchestrator.md`. This module implements the
- * mechanical ones, because they do not need judgement:
+ * mechanical ones, because they do not need judgment:
  *
  *   - unknown or incomplete envelopes are refused, not guessed
  *   - an unlabelled number is rejected (guardrail 1)
@@ -244,7 +244,7 @@ export const TOOL_DEFINITIONS = Object.freeze([
   {
     name: 'get_assertion_history',
     effect: 'read',
-    description: 'Time series behind one control. Not an efficacy judgement.',
+    description: 'Time series behind one control. Not an efficacy judgment.',
     inputSchema: {
       type: 'object',
       additionalProperties: false,

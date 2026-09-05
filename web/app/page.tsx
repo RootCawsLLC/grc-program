@@ -92,7 +92,7 @@ export default function Page() {
     <>
       <h1>grc-program</h1>
       <p className="thesis">
-        A GRC programme as a <b>git repository</b>. The <b>control inventory is the system of
+        A GRC program as a <b>git repository</b>. The <b>control inventory is the system of
         record</b>; frameworks, evidence, health, gaps and OSCAL are all <b>projections</b> of it.
         The same pipeline that lands time-indexed evidence derives per-control assertions, decomposes
         each variance into the FAIR-CAM functions, and emits the OSCAL package with deterministic UUIDs.
@@ -135,7 +135,7 @@ export default function Page() {
         </div>
         <div className="run-row">
           <button className="run" onClick={run} disabled={running}>
-            {running ? 'Running…' : 'Run the programme'}
+            {running ? 'Running…' : 'Run the program'}
           </button>
           {running && (
             <span className="notes">

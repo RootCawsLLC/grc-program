@@ -12,7 +12,7 @@
  *   1. every tool declares `effect: 'read'`;
  *   2. this server REFUSES TO START if any registered tool declares anything else;
  *   3. tests/mcp.test.mjs exercises every tool and then asserts the working tree is unchanged.
- * The third is the one that would actually catch a regression, because it tests behaviour rather
+ * The third is the one that would actually catch a regression, because it tests behavior rather
  * than a label.
  *
  * Run it:      npm run mcp

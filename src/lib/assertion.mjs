@@ -57,7 +57,7 @@ export function buildAssertion({
 
 function assertNotExpired(ex, asOf) {
   if (!ex.expires_on) {
-    throw new Error(`${ex.exception_id} has no expires_on. An exception without an expiry is an undocumented control change and will not be honoured.`);
+    throw new Error(`${ex.exception_id} has no expires_on. An exception without an expiry is an undocumented control change and will not be honored.`);
   }
   if (new Date(ex.expires_on) < new Date(asOf)) {
     throw new Error(`${ex.exception_id} expired ${ex.expires_on} and is still referenced at ${asOf}. Renew it or let the subjects fail.`);

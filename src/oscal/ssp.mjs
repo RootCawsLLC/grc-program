@@ -94,10 +94,10 @@ function systemCharacteristics(framework, controls, assertions) {
       'information-types': [
         {
           uuid: ids.resource('information-type|unclassified'),
-          title: 'Not yet categorised',
+          title: 'Not yet categorized',
           description:
             'PLACEHOLDER. No information-type categorisation has been performed. This entry exists ' +
-            'because OSCAL requires at least one, and it is labelled rather than guessed.',
+            'because OSCAL requires at least one, and it is labeled rather than guessed.',
           props: [PLACEHOLDER],
           'confidentiality-impact': { base: 'fips-199-moderate' },
           'integrity-impact': { base: 'fips-199-moderate' },

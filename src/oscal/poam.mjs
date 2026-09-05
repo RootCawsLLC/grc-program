@@ -83,7 +83,7 @@ function poamItem({ control, assertion, failing, variance }) {
     emit('variance-started-at-quality', variance.started_at_quality);
     if (!variance.remediation_started_at) {
       // Not cosmetic: without a first-touch timestamp the middle segment collapses and a
-      // prioritisation failure is indistinguishable from an implementation failure.
+      // prioritization failure is indistinguishable from an implementation failure.
       emit('variance-segment-unavailable', 'detected-to-triaged: no ticket first-touch recorded');
     }
   } else {

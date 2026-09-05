@@ -8,7 +8,7 @@
  *
  * The harness therefore treats a non-breaching unguarded run as VOID rather than as a pass. That is
  * the difference between this and a green test suite over a control that measures nothing, and it
- * is the single most important behaviour in this file.
+ * is the single most important behavior in this file.
  *
  * Ported in design from RootCawsLLC/proofplane (AGPL-3.0-or-later to third parties; see
  * THIRD-PARTY-NOTICES.md). No proofplane source is copied — its harness is Python.
@@ -26,9 +26,9 @@ export function wilson95(breached, n) {
   const z = 1.959964;
   const p = breached / n;
   const d = 1 + (z * z) / n;
-  const centre = (p + (z * z) / (2 * n)) / d;
+  const center = (p + (z * z) / (2 * n)) / d;
   const margin = (z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n))) / d;
-  return [round(Math.max(0, centre - margin)), round(Math.min(1, centre + margin))];
+  return [round(Math.max(0, center - margin)), round(Math.min(1, center + margin))];
 }
 
 const round = (x) => Math.round(x * 10_000) / 10_000;

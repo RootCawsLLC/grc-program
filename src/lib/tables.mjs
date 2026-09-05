@@ -41,7 +41,7 @@ export const TABLES = {
   },
 
   // organizations:ListAccounts. Without this the control cannot say which accounts are in the
-  // production organisation, and "production only" would be a comment rather than a predicate.
+  // production organization, and "production only" would be a comment rather than a predicate.
   landing_aws_org_accounts: {
     source: 'aws',
     scope: 'organizations:ListAccounts',
@@ -55,7 +55,7 @@ export const TABLES = {
   },
 
   // The ticketing system. This is the table that keeps the middle variance segment from collapsing:
-  // without a first-touch timestamp, prioritisation failures hide inside implementation failures
+  // without a first-touch timestamp, prioritization failures hide inside implementation failures
   // and "remediate faster" gets aimed at the wrong team.
   landing_ticket_first_touch: {
     source: 'ticketing',

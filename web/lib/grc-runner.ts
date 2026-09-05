@@ -7,7 +7,7 @@
  * that `npm run demo` / `grc health` / `grc gap` / `grc emit` drive, then relays
  * that process's JSON result.
  *
- * Running out-of-process keeps the tool's ESM resolution and filesystem behaviour
+ * Running out-of-process keeps the tool's ESM resolution and filesystem behavior
  * identical to the CLI, avoids the ESM/CJS interop that breaks when a pure-ESM
  * tool is pulled into the Next bundle under `next start`, and — critically here —
  * keeps the duckdb native addon loaded by a normal Node process rather than by

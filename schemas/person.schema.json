@@ -40,7 +40,7 @@
       "type": "object",
       "required": ["scope", "from"],
       "additionalProperties": false,
-      "description": "A scope held over a date range. Grants are dated because entitlement is a fact about a moment: an approval signed before the grant began, or after it ended, was not authorised — and that is only checkable if the range is on the record.",
+      "description": "A scope held over a date range. Grants are dated because entitlement is a fact about a moment: an approval signed before the grant began, or after it ended, was not authorized — and that is only checkable if the range is on the record.",
       "properties": {
         "scope": { "$ref": "#/$defs/scope" },
         "from": { "type": "string", "format": "date", "description": "First date the grant is effective, inclusive." },
@@ -68,7 +68,7 @@
         "is_principal": {
           "type": "boolean",
           "default": false,
-          "description": "The fallback approver of last resort. Exactly one person should carry this. A programme where the principal is the only approver for a scope is a programme with an undelegated control — see G11."
+          "description": "The fallback approver of last resort. Exactly one person should carry this. A program where the principal is the only approver for a scope is a program with an undelegated control — see G11."
         },
         "started_on": { "type": "string", "format": "date" },
         "departed_on": {

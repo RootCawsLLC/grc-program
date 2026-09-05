@@ -4,7 +4,7 @@
  * Runs in its own plain Node ESM process — the same way `src/cli.mjs` and
  * `scripts/demo.mjs` run the tool — so grc-program is never touched by the Next
  * bundler, its DuckDB native addon is loaded by a normal Node process, and its
- * filesystem behaviour is exactly as shipped. The API route spawns this with cwd
+ * filesystem behavior is exactly as shipped. The API route spawns this with cwd
  * set to the tool repo root, writes a request as JSON on stdin, and reads a
  * result as JSON on stdout.
  *
@@ -56,7 +56,7 @@ function partial(e) {
     total_duration_days: null,
     segments: [
       { span: 'started_to_detected', days: days(e.variance_started_at, e.variance_detected_at), faircam_function: 'control-monitoring', fix: 'monitoring cadence or coverage' },
-      { span: 'detected_to_triaged', days: touched ? days(e.variance_detected_at, touched) : null, faircam_function: 'treatment-selection', fix: 'prioritisation or ownership' },
+      { span: 'detected_to_triaged', days: touched ? days(e.variance_detected_at, touched) : null, faircam_function: 'treatment-selection', fix: 'prioritization or ownership' },
       { span: 'triaged_to_remediated', days: null, faircam_function: 'implementation', fix: 'capacity or tooling' },
     ],
   };

@@ -170,7 +170,7 @@ export function guards({ controls, exceptions, scenarios, roster, scopes }) {
     // G11 - every authority scope has an eligible non-principal approver. A scope that only the
     // principal can approve is an undelegated control: it will be approved by whoever is available
     // rather than whoever is entitled, and that is invisible until someone audits the approvals.
-    // Warning rather than error because early in a programme it is TRUE and blocking the build
+    // Warning rather than error because early in a program it is TRUE and blocking the build
     // over an unfinished delegation would just teach people to skip validation.
     if (scopes?.length) {
       const uncovered = uncoveredScopes(people, scopes, today);
@@ -184,7 +184,7 @@ export function guards({ controls, exceptions, scenarios, roster, scopes }) {
     // This is the guard that catches EX-0001. "approved_by" has always been required, but nothing
     // resolved it, so a placeholder string passed CI. Entitlement is checked against approved_on
     // rather than today because authority is a fact about a moment - an approval signed before a
-    // delegation began, or after the approver left, was never authorised, and that stops being
+    // delegation began, or after the approver left, was never authorized, and that stops being
     // reconstructable the moment the org chart is overwritten.
     const REASON = {
       'unknown-person': () => 'no such person_id in roster/people.yaml',

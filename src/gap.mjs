@@ -8,7 +8,7 @@ import { mappingsOf, needsVerification, describeConfidence, describeAttribution 
  *                -> fix: decompose the requirement and write a control, or justify exclusion in the SoA
  *
  *   assurance    a control with no executable evidence behind it
- *                -> fix: write the query. This is the gap most programmes never look at, because
+ *                -> fix: write the query. This is the gap most programs never look at, because
  *                   the framework says "covered" and nobody asks what covered means
  *
  *   remediation  an open finding with no operating control behind it
@@ -72,7 +72,7 @@ export function assessGaps({ controls, scenarios = [], findings = [], requiremen
           ? `${c.control_id} is evidenced by a manual procedure.`
           : `${c.control_id} has no executable evidence.`,
         severity_basis: manual
-          ? 'Legitimate but expensive. In a one-person programme the scarce resource is human attention, so manual controls are the budget. Count them deliberately rather than letting them accumulate.'
+          ? 'Legitimate but expensive. In a one-person program the scarce resource is human attention, so manual controls are the budget. Count them deliberately rather than letting them accumulate.'
           : 'The control exists as a record and produces no measurement. It is an assertion, not a control.',
         related: c.scenarios ?? [],
       });
@@ -85,7 +85,7 @@ export function assessGaps({ controls, scenarios = [], findings = [], requiremen
       ? ` Mapping confidence is ${m.mapping_confidence ? `"${m.mapping_confidence}"` : 'not recorded'}; treat the attribution as unverified.`
       : '';
 
-  /** How a secondary mapping is labelled in a statement, so a reader knows which one they are reading. */
+  /** How a secondary mapping is labeled in a statement, so a reader knows which one they are reading. */
   const role = (m) => (m.primary ? '' : ' (also_implicates)');
 
   // --- 3. REMEDIATION ------------------------------------------------------------------
@@ -138,7 +138,7 @@ export function assessGaps({ controls, scenarios = [], findings = [], requiremen
       // pointed at the wrong control and the right one reads clean.
       //
       // Guardrail 3 in CLAUDE.md applies to numbers: an unlabelled one is rejected, and a range
-      // with no provenance must not read like a sourced one. A control attribution is a judgement
+      // with no provenance must not read like a sourced one. A control attribution is a judgment
       // with a name on it and decays the same way. It gets the same treatment.
       if (needsVerification(m)) {
         gaps.push({
@@ -149,7 +149,7 @@ export function assessGaps({ controls, scenarios = [], findings = [], requiremen
             `${f.finding_id} is mapped to ${m.control_id}${role(m)} at ` +
             `${describeConfidence(m)}${describeAttribution(m)}. The mapping is unverified.`,
           severity_basis:
-            'Mapping is a judgement, not a lookup. Until it is confirmed, this finding may be ' +
+            'Mapping is a judgment, not a lookup. Until it is confirmed, this finding may be ' +
             'attributed to the wrong control — which both misdirects the remediation and leaves the ' +
             'correct control reading clean. Re-check against the report once the full system ' +
             'description has been read; a mapping made during extraction is the first thing to revisit.',
