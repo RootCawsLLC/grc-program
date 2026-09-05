@@ -1,0 +1,26 @@
+# Build products and deps are installed fresh inside the image; never copy them
+# in. (CodeBuild packages the repo with `git archive HEAD`, which already omits
+# gitignored paths — this keeps a local `docker build .` honest too.)
+**/node_modules
+**/.next
+.git
+web/.env*.local
+**/*.log
+source.zip
+
+# Infra and docs are not part of the runtime image.
+infra-web
+docs
+
+# Generated evidence / warehouse / OSCAL output — gitignored build products.
+out
+out-synthetic
+out-probe
+out-simulation
+.warehouse
+.evidence
+.evidence-*
+
+# Audit source documents are NDA-gated and never enter the image.
+intake/source
+inbox
