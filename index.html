@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>grc-program — a GRC programme as a git repository</title>
+<title>grc-program — a GRC program as a git repository</title>
 <meta name="description" content="The control inventory is the system of record. Fork the public template, run the fixture pipeline, then make your copy private before any real evidence lands. A ticket is a draft. A human merge is the control.">
 <style>
 :root{
@@ -65,10 +65,10 @@ footer a{color:var(--accent)}
 <body><div class="wrap">
 
 <h1>grc-program</h1>
-<p class="thesis">A GRC programme as a git repository. The control inventory is the
+<p class="thesis">A GRC program as a git repository. The control inventory is the
 <b>system of record</b> — frameworks, the trust center, and every OSCAL package are projections.
 This page is how you run the public template, and how you take a private copy into your own
-organisation before any real evidence lands.</p>
+organization before any real evidence lands.</p>
 
 <nav class="toc" aria-label="On this page">
   <a href="#what">What it does</a>
@@ -100,10 +100,10 @@ not write the inventory on a shared branch.</p>
   <div class="box use">
     <h3>Use it when</h3>
     <ul>
-      <li>You are standing up a GRC programme and need a system of record you own, not a platform you cannot read from.</li>
+      <li>You are standing up a GRC program and need a system of record you own, not a platform you cannot read from.</li>
       <li>You want evidence that is a query against a population — <code>total</code>, a fully enumerated <code>failing[]</code>, a coverage basis — not a screenshot.</li>
       <li>You need machine-readable artefacts an assessor can re-run: OSCAL that re-exports byte-identically, a warehouse you can open on a past date.</li>
-      <li>You want a GRC engineer to practise the discipline: a ticket is draft, a gate records consent, a human merge is the control.</li>
+      <li>You want a GRC engineer to practice the discipline: a ticket is draft, a gate records consent, a human merge is the control.</li>
     </ul>
   </div>
   <div class="box dont">
@@ -111,7 +111,7 @@ not write the inventory on a shared branch.</p>
     <ul>
       <li>You need a hosted dashboard on day one. This is a CLI and a git repository. The demo writes files. Nothing is a SaaS.</li>
       <li>You want the model to decide that a control works. Efficacy is a named human with a confidence tier. That refusal is the product.</li>
-      <li>You need a finished CMMC, FedRAMP 20x, or AI-probe programme. Those are <a href="https://rootcawsllc.github.io/cui-control-plane/">cui-control-plane</a>, <a href="https://rootcawsllc.github.io/ksi-harness/">ksi-harness</a>, and <a href="https://rootcawsllc.github.io/proofplane/">proofplane</a>. This repo is the general programme.</li>
+      <li>You need a finished CMMC, FedRAMP 20x, or AI-probe program. Those are <a href="https://rootcawsllc.github.io/cui-control-plane/">cui-control-plane</a>, <a href="https://rootcawsllc.github.io/ksi-harness/">ksi-harness</a>, and <a href="https://rootcawsllc.github.io/proofplane/">proofplane</a>. This repo is the general program.</li>
       <li>You plan to commit real evidence to a public fork. That is the one thing this page exists to stop.</li>
     </ul>
   </div>
@@ -174,7 +174,7 @@ and logins are not identity.</p>
 
 <h2 id="template">Public template, private instance</h2>
 <p>This repository is public so you can see the machinery, run the fixtures, and copy the
-shape. It is a <b>template</b>, not a hosted programme. Real inventory, extracted findings,
+shape. It is a <b>template</b>, not a hosted program. Real inventory, extracted findings,
 exceptions, and warehouse rows name accounts, roles, and failing people. Those do not belong
 on a public remote.</p>
 <ol>
@@ -204,13 +204,13 @@ on a public remote.</p>
     cannot become first inbound.</li>
 </ol>
 <div class="note">
-  <b>The public repo is the template. The private fork is the programme.</b>
+  <b>The public repo is the template. The private fork is the program.</b>
   If you are deciding which of those you are looking at, and the remote is still
   <code>RootCawsLLC/grc-program</code>, you are on the template. Do not open a PR that adds
   your evidence here.
 </div>
 
-<h2 id="org">Take it into your organisation</h2>
+<h2 id="org">Take it into your organization</h2>
 <p>You do not clone this onto a shared drive and call it the GRC function. You take the
 <b>rule</b> and the <b>shape</b>.</p>
 <ol>
@@ -236,12 +236,12 @@ on a public remote.</p>
     <code>controls/</code>, <code>policies/</code> or <code>exceptions/</code> on a shared
     branch. A human merges. The merge is the control, and it is reviewable as a diff.</li>
   <li><b>No agent evaluates control efficacy.</b> A probe may run and record what happened.
-    Efficacy is a relationship between control state, threat behaviour, asset value and
+    Efficacy is a relationship between control state, threat behavior, asset value and
     compensating controls. The training data to learn it does not exist. A fluent answer
     here is the most dangerous possible output, because it is indistinguishable in form from
     a correct one.</li>
 </ol>
-<p>If this is week one of a real programme,
+<p>If this is week one of a real program,
 <a href="https://github.com/RootCawsLLC/grc-program/blob/main/docs/SOP-DAY-ONE.md">docs/SOP-DAY-ONE.md</a>
 is the checkbox procedure.
 <a href="https://github.com/RootCawsLLC/grc-program/blob/main/BUILD-ORDER.md">BUILD-ORDER.md</a>
@@ -287,7 +287,7 @@ get the same refusals.</p>
 <h2 id="limits">Honest limits</h2>
 <div class="note">
   <b>Read the status honestly.</b> The seed inventory is a worked example, not your
-  programme. Fixture runs stamp every artefact <code>NOT REAL EVIDENCE</code>. Collectors
+  program. Fixture runs stamp every artefact <code>NOT REAL EVIDENCE</code>. Collectors
   are written against API shapes and have not been run against a live tenant. Live Slack,
   GitHub and Linear send is a refusal until a contract is confirmed; a confirmed send still
   leaves <code>executed</code> false. There is no HTTP listener. Scenario parameters ship as

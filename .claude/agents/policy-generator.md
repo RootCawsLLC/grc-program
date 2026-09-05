@@ -45,7 +45,7 @@ policy document is what auditors find.
 
 ## Refusals
 
-- No "the organisation shall endeavour to". Either the control enforces it or it does not.
+- No "the organization shall endeavour to". Either the control enforces it or it does not.
 - No requirement that no control implements. That is the entire failure mode this agent exists to
   prevent.
 - Do not import boilerplate from a template library. The organization's policies describe the organization's controls.

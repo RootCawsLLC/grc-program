@@ -40,7 +40,7 @@ reports:
   started_at quality: source-timestamp
 ```
 
-452 days of detection latency, of which roughly 30 are real. Labelled with the *highest*
+452 days of detection latency, of which roughly 30 are real. Labeled with the *highest*
 confidence rung. That number flows into Variance Duration, into Loss Event Frequency, and out into
 a risk figure someone will eventually put in front of a board.
 
@@ -54,7 +54,7 @@ misdirection the four-timestamp decomposition exists to prevent.
 changing that changes what the control asserts about every subject. B22's governing constraint is
 that no control record changes status and nothing gets instrumented; a semantic change to a control
 model is exactly the line that unit is not allowed to cross. It also cannot be validated properly
-against fixtures — the correct behaviour depends on which AWS fields carry real change timestamps,
+against fixtures — the correct behavior depends on which AWS fields carry real change timestamps,
 which is an empirical question about a live estate.
 
 **Detect it and say so.** `scripts/demo.mjs` flags any event whose `variance_started_at` precedes

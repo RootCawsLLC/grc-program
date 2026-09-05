@@ -1,6 +1,6 @@
 ---
 name: control-health
-description: The control health deficiency catalogue, what each code means, and why the output is a classification rather than a score. Load when interpreting `npm run health` or deciding what to fix first.
+description: The control health deficiency catalog, what each code means, and why the output is a classification rather than a score. Load when interpreting `npm run health` or deciding what to fix first.
 ---
 
 # Control health
@@ -15,7 +15,7 @@ ratings produces a number that cannot validly enter arithmetic. And the moment s
 exists, someone divides by it, puts it in a board pack, and it becomes a target.
 
 A maturity score is also not a proxy for risk reduction. Only a minority of framework subcategories
-act on loss events at all; most affect decisions *about* controls. A programme can raise its
+act on loss events at all; most affect decisions *about* controls. A program can raise its
 average maturity while its actual exposure is unchanged.
 
 So the output is: named deficiencies per control, counts by deficiency across the inventory, and
@@ -31,11 +31,11 @@ number, explain this rather than computing one.
 | `declared` | A control record exists. No evidence has ever been produced against it. |
 | `aspirational` | Planned or building, with no evidence and no committed date. |
 
-Most programmes that pass audits comfortably are almost entirely `attested`. That is the finding,
+Most programs that pass audits comfortably are almost entirely `attested`. That is the finding,
 and it is not a criticism of the people who built it — it is what the tooling of the last decade
-optimised for.
+optimized for.
 
-## The deficiency catalogue
+## The deficiency catalog
 
 | Code | What it means, and what it actually costs you |
 |---|---|
@@ -47,7 +47,7 @@ optimised for.
 | `H6-owner-is-a-person` | Person-owned controls die when the person changes role. Owners are teams. |
 | `H7-unpriced` | No scenario joins to it, so it cannot be ROSI-ranked and cannot be defended against "why this and not that". |
 | `H8-uncosted` | `cost.opex_annual` unpopulated. ROSI is **undefined**, not infinite. |
-| `H9-manual` | Legitimate. But in a one-person programme human attention is the scarce resource, so manual controls are the budget. Count them deliberately rather than letting them accumulate. |
+| `H9-manual` | Legitimate. But in a one-person program human attention is the scarce resource, so manual controls are the budget. Count them deliberately rather than letting them accumulate. |
 | `H10-policy-orphan` | Operating with no generated policy. |
 | `H11-open-finding` | An assurance activity raised something against this control and it is still open. |
 | `H12-planned-indefinite` | Planned, no evidence, no date. Either commit or retire it — an inventory full of indefinite plans overstates coverage to everyone who reads it. |
@@ -58,7 +58,7 @@ The two numbers that matter most:
 
 1. **`declared` + `aspirational` as a share of the inventory.** This is the honest coverage figure,
    and it is usually far below the framework coverage number the platform reports.
-2. **`H9-manual` count.** This is the recurring human cost. In a one-person programme it is the
+2. **`H9-manual` count.** This is the recurring human cost. In a one-person program it is the
    constraint everything else is subject to, and it should trend down every quarter or the model
    does not work.
 

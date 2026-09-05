@@ -6,7 +6,7 @@
 hash-chained audit trail, and the paired guarded/unguarded run structure.
 
 - Source: <https://github.com/RootCawsLLC/proofplane>
-- Licence to third parties: AGPL-3.0-or-later
+- License to third parties: AGPL-3.0-or-later
 - Copyright: RootCawsLLC, which also holds the copyright in this repository
 
 **What was and was not carried across.** proofplane's harness is Python
@@ -19,7 +19,7 @@ guarded/unguarded run that is the whole point of the approach.
 The probe **target** is not vendored. `src/probes/` speaks HTTP to proofplane's own instrumented
 target agent, which is what that agent exists for. Nothing here points at a production system.
 
-Attribution is recorded because the two repositories have different licences to third parties and
+Attribution is recorded because the two repositories have different licenses to third parties and
 a common copyright holder. That combination is exactly the one that goes wrong silently when nobody
 writes it down.
 
@@ -30,7 +30,7 @@ G10-G12 — the authority-scope model: tokens describing what a person may appro
 that reports any scope whose only approver is the principal.
 
 - Source: <https://github.com/SenteLabsAI/OpenExecutive>
-- Licence to third parties: Apache-2.0
+- License to third parties: Apache-2.0
 - Copyright: Open Executive Contributors
 
 **What was and was not carried across.** Upstream is Python, Pydantic and SQLite

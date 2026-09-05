@@ -124,7 +124,7 @@ honest, and the day-45 calibration workshop produces a curve the same afternoon 
 a build.
 
 > Read BUILD-ORDER.md unit B21. Read RootCawsLLC/u-dont-grc-me — it has a working 10,000-trial
-> engine. Test against a labelled fixture scenario. Do NOT calibrate anything in scenarios/.
+> engine. Test against a labeled fixture scenario. Do NOT calibrate anything in scenarios/.
 
 ---
 

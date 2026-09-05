@@ -6,7 +6,7 @@ This repository is the system of record. The trust center, every framework basel
 OSCAL package are projections of what is in here.
 
 **Live guide** — what it does, when to use it, how to run it, how to take a private copy into an
-organisation: https://rootcawsllc.github.io/grc-program/
+organization: https://rootcawsllc.github.io/grc-program/
 
 > **Public template, private instance.** This remote is public so you can clone, fork, or use it
 > as a GitHub template and run the fixture pipeline. **Set your copy private before you add real
@@ -41,7 +41,7 @@ Then `npm run demo` for the synthetic pipeline (landing → variance → OSCAL �
 cycle → draft ticket bodies from the previous one). `npm run sandbox` runs the collectors
 against dummy sources (official IAM CSV, GitHub `sandbox-uat-*` repos, file IdP) before any
 live tenant is connected. Open Claude Code **in the repo root** and
-run `/week-one` when this copy is your programme, not while you are still on the public template.
+run `/week-one` when this copy is your program, not while you are still on the public template.
 
 **On Windows, read [`docs/SETUP.md`](docs/SETUP.md) first** — execution policy, long paths and line
 endings all need setting, and the line-endings one is a correctness issue rather than a cosmetic
@@ -138,7 +138,7 @@ automatically.
 
 **Skills** — `client-context` (established facts, confirmed and inferred kept separate, so you never
 re-derive them) · `soc2-report-anatomy` (how to read the report you will spend day two on) ·
-`control-health` (the deficiency catalogue)
+`control-health` (the deficiency catalog)
 
 **A hook** (`.claude/hooks/validate-on-change.mjs`) runs the guards after any edit to the inventory
 and blocks on failure. It is Node rather than a shell script so it runs identically on Windows,
@@ -193,7 +193,7 @@ tenant. The collectors take an injected client and are written against the API s
 not been run against live credentials. Two dbt models are worked examples;
 the staging models they reference are deliberately absent rather than stubbed, because an empty stub
 returning no rows would make `dbt run` succeed while proving nothing. `fixtures/assertions.json` and
-`intake/extracted/EXAMPLE-*` are synthetic and labelled.
+`intake/extracted/EXAMPLE-*` are synthetic and labeled.
 
 **Deliberately empty** — every `cost.opex_annual` is zero with a `PLACEHOLDER` basis, and every
 scenario parameter is `derivation_level: assumed` at confidence tier 1. Those are not omissions.

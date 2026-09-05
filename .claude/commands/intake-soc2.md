@@ -15,14 +15,14 @@ recipient, so the source document never reaches you and never reaches git.
 The protection is layered, and it is worth knowing which layer carries the weight: `.gitignore`
 stops a watermarked report ever reaching a commit; `tests/intake-source-guard.test.mjs` stops any
 repository code reading the directory; `Read(intake/source/**)` is denied in settings. The Bash
-deny entries are defence in depth and are **known incomplete** — see
+deny entries are defense in depth and are **known incomplete** — see
 `docs/adr/0008-intake-source-is-not-readable.md`, which exists because this instruction previously
 claimed the settings prevented it outright, and a rehearsal showed they bind the Read tool only.
 
 **The discipline that keeps the record defensible:**
 
 - `description`, `severity_as_stated`, `auditor_test_procedure` and `management_response` are
-  **transcribed verbatim**. Not summarised. Not tidied. Not re-graded onto our scale.
+  **transcribed verbatim**. Not summarized. Not tidied. Not re-graded onto our scale.
 - If the report stated no severity, `severity_as_stated` is `null`. Never infer one.
 - Use the **word the document used** in `kind`. A SOC 2 exception is not an ISO nonconformity and
   flattening them loses the thing that determines urgency.
@@ -38,7 +38,7 @@ claimed the settings prevented it outright, and a rehearsal showed they bind the
 - **Every mapping carries its own `mapping_confidence` and `mapped_by`, including secondaries.** A
   single confidence on the finding would apply the certainty of the primary to a mapping nobody
   checked as carefully.
-- `mapped_by` is me, by name. Mapping is a judgement and carries a name.
+- `mapped_by` is me, by name. Mapping is a judgment and carries a name.
 - Only `high` counts as verified. Leaving `mapping_confidence` unset is **weaker** than writing
   `low` — it means nobody recorded how sure they were — and `npm run intake` counts it in
   `unverified_mapping_open` either way.

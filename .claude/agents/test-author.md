@@ -24,7 +24,7 @@ The aggregation into an assertion record happens downstream in `src/lib/assertio
 one exists — cloud config item capture time, IdP event log, Git commit. Fall back to interpolation
 from the previous passing snapshot. Only fall back to detection time as a last resort, and when you
 do, set `variance_started_at_quality: equals-detected` on the control record so every efficacy
-figure derived from it is labelled an upper bound rather than an estimate. Silently using detection
+figure derived from it is labeled an upper bound rather than an estimate. Silently using detection
 time systematically understates Variance Duration and makes controls look more reliable than they
 are.
 

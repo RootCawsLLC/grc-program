@@ -1,6 +1,6 @@
 scenario_id: scn.tenant-boundary.cross-customer-read
 statement: >
-  A customer tenant, or an actor authenticated into one tenant, reads data belonging to a different customer tenant through a product API authorisation defect.
+  A customer tenant, or an actor authenticated into one tenant, reads data belonging to a different customer tenant through a product API authorization defect.
 asset: "customer SaaS configuration and identity data held in the product platform"
 threat_actor: "authenticated tenant or actor with tenant credentials"
 effect: confidentiality

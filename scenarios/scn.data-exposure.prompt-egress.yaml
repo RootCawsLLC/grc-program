@@ -1,12 +1,12 @@
 scenario_id: scn.data-exposure.prompt-egress
 statement: >
-  Customer data classes not authorised for external inference leave the processing boundary in a prompt to a third-party model endpoint.
+  Customer data classes not authorized for external inference leave the processing boundary in a prompt to a third-party model endpoint.
 asset: "customer data in scope of the DPA"
 threat_actor: "internal actor without malicious intent"
 effect: confidentiality
 estimation_level: lef
 estimation_rationale: >
-  Most likely realised as an error scenario rather than a malicious one. Frequency should be measured from egress telemetry once ctl.ai.inference.model-inventory is operating; until then it is not usefully estimable.
+  Most likely realized as an error scenario rather than a malicious one. Frequency should be measured from egress telemetry once ctl.ai.inference.model-inventory is operating; until then it is not usefully estimable.
 parameters:
   loss_event_frequency:
     min: 0.0

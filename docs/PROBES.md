@@ -104,7 +104,7 @@ chain. It makes silent edits detectable, which is what an audit trail needs.
 ## The guardrail this harness operates under
 
 A probe records what happened. It does not conclude that a control is effective — that is a
-relationship between control state, threat behaviour, asset value and compensating controls, and it
+relationship between control state, threat behavior, asset value and compensating controls, and it
 belongs to a named human with a confidence tier. See
 [ADR-0004](adr/0004-agents-do-not-evaluate-efficacy.md).
 

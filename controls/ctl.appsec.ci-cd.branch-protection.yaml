@@ -9,7 +9,7 @@ faircam:
   - { function: control-monitoring, primary: false }
 
 population_definition: >
-  Every repository in the organization's GitHub organisation whose default branch deploys to a production
+  Every repository in the organization's GitHub organization whose default branch deploys to a production
   environment. Passing requires ALL of: default-branch protection on, review required from a
   non-author, force-push disabled, and every third-party GitHub Action referenced by full commit
   SHA rather than a tag or branch.

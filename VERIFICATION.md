@@ -48,7 +48,7 @@ deadline. It defers:
 - Annex I embedded-product high-risk obligations → **2 August 2028**
 
 It did **not** defer the **Article 50 transparency obligations**, which applied from **2 August
-2026** as originally scheduled — chatbot disclosure, deepfake labelling, emotion-recognition
+2026** as originally scheduled — chatbot disclosure, deepfake labeling, emotion-recognition
 notices, synthetic-content marking.
 
 This is now enacted law, not a pending proposal. Reflected in `PROPOSAL.md` (days 31–60) and in an
@@ -60,24 +60,24 @@ Sources: [Gibson Dunn](https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-po
 [Jones Walker](https://www.joneswalker.com/en/insights/blogs/ai-law-blog/yes-august-2-still-matters-the-eu-approved-a-high-risk-ai-delay-but-most-trans.html) ·
 [CSA research note](https://labs.cloudsecurityalliance.org/research/csa-research-note-eu-ai-act-high-risk-deadline-omnibus-20260/)
 
-**3. SCF commercial licence pricing — softened.**
+**3. SCF commercial license pricing — softened.**
 
-The CC BY-ND 4.0 licence and the AI-derivatives clause are **confirmed verbatim** (below). The
+The CC BY-ND 4.0 license and the AI-derivatives clause are **confirmed verbatim** (below). The
 "$25,000/year Tier 1" figure appears in secondary sources and could **not** be confirmed from SCF
-directly. It is now labelled as unconfirmed in `docs/adr/0003-no-framework-text.md` and removed
+directly. It is now labeled as unconfirmed in `docs/adr/0003-no-framework-text.md` and removed
 from `PROPOSAL.md`. Verify before putting it in a budget.
 
 ---
 
 ## Confirmed
 
-**SCF licence and the AI clause** — confirmed. SCF is CC BY-ND 4.0. Its terms state that the
+**SCF license and the AI clause** — confirmed. SCF is CC BY-ND 4.0. Its terms state that the
 prohibition on derivative works *"includes utilizing Artificial Intelligence (AI) (or similar
 technologies) to leverage SCF content to generate policies, standards, procedures, metrics, risks,
-threats or other derivative content,"* and that a commercial licence is required to offer
+threats or other derivative content,"* and that a commercial license is required to offer
 derivative SCF content. This is the entire basis of ADR-0003.
 [Terms](https://securecontrolsframework.com/terms-and-conditions) ·
-[Commercial licence](https://securecontrolsframework.com/commercial-license)
+[Commercial license](https://securecontrolsframework.com/commercial-license)
 
 **The organization on Amazon Bedrock** — confirmed, and stronger than the draft claimed. The
 [AWS ML blog post](https://aws.amazon.com/blogs/machine-learning/how-reco-transforms-security-alerts-using-amazon-bedrock/)
@@ -101,7 +101,7 @@ arithmetic for the standard worked example (intended 0.90, variant 0.60, VF 1.0,
 **0.87534**, which rounds to 0.875. A commonly circulated props example shows **0.876**, which is
 reproducible only by rounding reliability to two decimals (0.92) *before* multiplying. We do not
 round intermediates; over a few hundred controls that drift is indistinguishable from real control
-movement. Both behaviours are asserted in `tests/faircam.test.mjs` so anyone diffing against the
+movement. Both behaviors are asserted in `tests/faircam.test.mjs` so anyone diffing against the
 published figure finds the explanation immediately.
 
 **Trust center contents, certifications, subprocessors, RTO/RPO, SafeBase-by-Drata footer** —
@@ -200,7 +200,7 @@ appointments, and **no CISO opening posted**. This is not a vacancy being filled
 CISO requisition. What is posted is **two `Security & Trust Manager` roles, Dallas TX and Boston MA,
 both filed under R&D**, plus a Security Researcher. The function is being staffed at manager level
 and in plural, under engineering, rather than headed. `PROPOSAL.md` is written around a one-person
-programme; that assumption is now a day-one question rather than a premise.
+program; that assumption is now a day-one question rather than a premise.
 
 ## Method correction
 

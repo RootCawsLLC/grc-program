@@ -24,4 +24,4 @@ warehouse is comparable. GitHub dummy repos are provisioned by `scripts/provisio
 
 This machine can assume `grc-smoke` / `AdministratorAccess-445817184167` via SSO. That session
 was not used to generate a credential report or to create IAM users. Either would put real
-account principals, or dummy users mixed with real ones, into a run labelled sandbox.
+account principals, or dummy users mixed with real ones, into a run labeled sandbox.

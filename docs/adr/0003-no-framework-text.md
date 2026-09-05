@@ -12,8 +12,8 @@ carry a type and a strength rather than a vague "related."
 SCF is licensed **CC BY-ND 4.0** — Attribution, **NoDerivatives**. Its terms now state that the
 prohibition on derivative works *"includes utilizing Artificial Intelligence (AI)… to leverage SCF
 content to generate policies, standards, procedures, metrics, risks, threats or other derivative
-content,"* and that an organisation must purchase a commercial licence to offer derivative SCF
-content. A commercial licence is required to produce or share derivative SCF content.
+content,"* and that an organization must purchase a commercial license to offer derivative SCF
+content. A commercial license is required to produce or share derivative SCF content.
 (Commercial tier pricing is reported in secondary sources at around $25,000/year for the entry
 tier; that figure is NOT confirmed from SCF and should be verified directly before it is used in
 any budget or business case.)
@@ -39,7 +39,7 @@ here. An agent that ingests SCF text and emits a policy is the exact activity th
 - CI enforces it: `.github/workflows/ci.yml` fails the build on `description:`,
   `requirement_text:` or `control_text:` keys under `controls/` or `reference/`.
 - Policy generation derives from **our own control records** — `population_definition`, `title`,
-  `owner`, live `failing[]` — never from framework text. This is not only the licence-safe path,
+  `owner`, live `failing[]` — never from framework text. This is not only the license-safe path,
   it is the correct one: a policy generated from a measured control describes something true,
   and a policy generated from framework text describes someone else's aspiration.
 

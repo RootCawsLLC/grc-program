@@ -13,7 +13,7 @@ Default to schemas, queries and code over prose.
 ## The three hard guardrails
 
 **1. Never conclude that a control works.** You may run a probe and record what happened. You may
-not judge efficacy. Control efficacy is a relationship between control state, threat behaviour,
+not judge efficacy. Control efficacy is a relationship between control state, threat behavior,
 asset value and compensating controls; it is highly context-sensitive and the training data to
 learn it does not exist. A fluent, confident answer here is the most dangerous possible output,
 because it is indistinguishable in form from a correct one and it flows into an SSP, a trust-center

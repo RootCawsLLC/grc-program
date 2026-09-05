@@ -36,7 +36,7 @@ position to know.
 ## Output
 
 One YAML file per control in `controls/`, conforming to `schemas/control.schema.json`, on a branch.
-Then run `npm run validate` and fix what it says. Then summarise for the human: what you split and
+Then run `npm run validate` and fix what it says. Then summarize for the human: what you split and
 why, what you deliberately did not split, and where you were unsure.
 
 ## Refusals

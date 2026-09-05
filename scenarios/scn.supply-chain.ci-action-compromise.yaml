@@ -6,7 +6,7 @@ threat_actor: "supply-chain actor"
 effect: integrity
 estimation_level: lef
 estimation_rationale: >
-  Directly evidenced base rate: the March 2026 trivy-action tag force-push (GHSA-69fq-xp46-6x23, CVE-2026-33634) is a documented occurrence of exactly this scenario against exactly this control gap. Frequency estimable from public incident record rather than judgement alone.
+  Directly evidenced base rate: the March 2026 trivy-action tag force-push (GHSA-69fq-xp46-6x23, CVE-2026-33634) is a documented occurrence of exactly this scenario against exactly this control gap. Frequency estimable from public incident record rather than judgment alone.
 parameters:
   loss_event_frequency:
     min: 0.0

@@ -33,7 +33,7 @@ crosswalk:
 
 scenarios: [scn.phish.bec]
 policy_ref: null
-cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER — training platform licence" }
+cost: { capex: 0, opex_annual: 0, basis: "PLACEHOLDER — training platform license" }
 
 notes: >
   The denominator inversion is the whole control. Sourcing the population from the training

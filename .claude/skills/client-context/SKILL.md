@@ -90,7 +90,7 @@ system, pharma), which is the customer profile that makes a stale public audit a
   Boston MA**, both under R&D, alongside a Security Researcher. Read plainly: the security and
   trust function is being staffed at *manager* level and in *plural*, under engineering, rather
   than headed. **This bears directly on `PROPOSAL.md`, which is written around a one-person
-  programme** — check that assumption on day one rather than inheriting it.
+  program** — check that assumption on day one rather than inheriting it.
 - **No FedRAMP, GovRAMP, HIPAA or PCI claim exists.** Absent from every public surface searched.
 
 ## Not knowable from outside — these are open items, not negative findings

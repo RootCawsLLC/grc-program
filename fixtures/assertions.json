@@ -2,7 +2,7 @@
   {
     "control_id": "ctl.iam.cloud-platform.mfa",
     "as_of": "2026-09-15T00:00:00Z",
-    "population_definition": "All IAM principals in every AWS account in the production organisation that can authenticate interactively or hold a long-lived access key.",
+    "population_definition": "All IAM principals in every AWS account in the production organization that can authenticate interactively or hold a long-lived access key.",
     "source_system": "aws",
     "query_ref": "models/controls/ctl_iam_cloud_platform_mfa.sql",
     "total": 47,

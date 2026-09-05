@@ -49,7 +49,7 @@ Four layers, and the ADR names which one carries the weight:
    settings file somebody can edit, or which tool a future agent happens to reach for.
 3. **The Read deny stays**, and the test asserts it is still there so it cannot be dropped
    silently.
-4. **Common read verbs are deny-listed as defence in depth, and are documented as incomplete.**
+4. **Common read verbs are deny-listed as defense in depth, and are documented as incomplete.**
    They raise the cost of an accident. They do not stop a determined path and are not claimed to.
 
 **The command text now says what is true**: the source document is read by a human, the model
@@ -67,4 +67,4 @@ that matters.
   workflow depends on — the operator has the report open beside the terminal, which is the whole
   design. Revisit if a real report is ever mishandled.
 - Layer 4 will look inadequate to anyone who reads the deny list expecting a boundary. That is why
-  it is labelled in the settings file itself rather than only here.
+  it is labeled in the settings file itself rather than only here.
