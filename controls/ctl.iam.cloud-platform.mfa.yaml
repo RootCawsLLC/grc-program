@@ -9,7 +9,7 @@ faircam:
   - { function: provide-asset-data, primary: false }
 
 population_definition: >
-  All IAM principals in every AWS account in the production organisation that can authenticate
+  All IAM principals in every AWS account in the production organization that can authenticate
   interactively or hold a long-lived access key — IAM users, roles assumable by a human principal,
   and root. Federated roles assumed via the enterprise IdP inherit ctl.iam.enterprise-sso.mfa and
   are counted here only for the static-key half of the test.

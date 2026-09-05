@@ -82,7 +82,7 @@ Load the `soc2-report-anatomy` skill (`/intake-soc2` pulls it in) and work in th
 3. **Section 3.** The system description. This is the closest thing to an existing control inventory
    the organization has. Read it to learn what the current control model actually is, and flag every narrative
    that reads as layer-munged. Those are your split candidates for day 91 — **not before**.
-4. **Subservice organisations.** Compare carve-outs against the five published subprocessors. A
+4. **Subservice organizations.** Compare carve-outs against the five published subprocessors. A
    mismatch is a real finding and it is one you can raise in week one without stepping on anyone.
 
 ```bash

@@ -7,8 +7,8 @@
 This program is one person plus agents. That ratio only works if agents do real work, which
 creates pressure to let them do the one thing they must not: judge whether a control is effective.
 
-Control efficacy is a relationship between control state, threat behaviour, asset value and
-compensating controls. It is highly context-sensitive, and the labelled training data that would
+Control efficacy is a relationship between control state, threat behavior, asset value and
+compensating controls. It is highly context-sensitive, and the labeled training data that would
 let a model learn it does not exist. A model asked whether a control is effective will produce a
 fluent, confident, unfalsifiable answer — which is the most dangerous possible output, because it
 is indistinguishable in form from a correct one and it flows directly into an SSP, a trust-center
@@ -32,13 +32,13 @@ Three guardrails, enforced in code and in the PR template rather than in a docum
 
 The general form: **the LLM is the interface to the analysis, not the analyst.** Agents are
 credible for loss-magnitude forecasting over abundant public loss data, and for natural-language
-reporting over completed analyses. Not for this.
+reporting over completed analyzes. Not for this.
 
 ## Consequences
 
 Slower than letting an agent fill in efficacy parameters, and that slowness is the product.
 
-It also draws the line the ISO 42001 audit will look for. An AIMS that governs the organisation's
+It also draws the line the ISO 42001 audit will look for. An AIMS that governs the organization's
 own use of AI in its assurance function — with documented refusals, not just documented
 permissions — is a stronger artifact than a policy asserting responsible use. We are the test case
 for our own AI governance claims.

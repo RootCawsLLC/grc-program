@@ -79,7 +79,7 @@ That is, substantially, an evidence pipeline for the SaaS half of a GRC program.
 
 **Consequence.** Point the product at itself. The knowledge graph becomes a collector — `mechanism: product-graph` — sitting alongside the AWS, IdP and GitHub collectors under the same assertion schema and the same guardrails. Three controls take it first: the subprocessor register, the AI model inventory, and SaaS configuration drift.
 
-The boundary matters and is stated explicitly in ADR-0005: **The organization supplies observed state; efficacy conclusions and mapping decisions stay under human authorship.** We use the product's collection, not the product's judgement — which is precisely what we would tell a customer to do.
+The boundary matters and is stated explicitly in ADR-0005: **The organization supplies observed state; efficacy conclusions and mapping decisions stay under human authorship.** We use the product's collection, not the product's judgment — which is precisely what we would tell a customer to do.
 
 Two things fall out of this that are worth more than the engineering saved. First, "our SOC 2 evidence is collected by our own product" is a claim almost no security vendor can make, and it belongs in the sales motion. Second, every gap found while instrumenting the organization's own controls is a real customer-workflow gap found before a customer finds it — the GRC lead becomes design partner zero.
 
@@ -180,9 +180,9 @@ The profile is what makes the Statement of Applicability defensible: it records 
 
 **AI agent control assurance in production.** `ctl.ai.agent.tool-allowlist` and the probe set behind it. An agent allowlist that exists in configuration but has never been exercised does not pass — the control is proved by an executed attempt that is denied and recorded, with paired guarded and unguarded evidence runs.
 
-This is the deliverable that changes the ISO 42001 surveillance conversation. Most certified organisations bring documentation to an AIMS audit. Bringing executed probe results against the organisation's own AI systems is a different class of artifact, and it is the same evidence that makes a customer-facing AI governance claim defensible instead of aspirational.
+This is the deliverable that changes the ISO 42001 surveillance conversation. Most certified organizations bring documentation to an AIMS audit. Bringing executed probe results against the organization's own AI systems is a different class of artifact, and it is the same evidence that makes a customer-facing AI governance claim defensible instead of aspirational.
 
-**Attestation generation.** Trust-center content and security questionnaire answers generated from measured control state. "Our Access Control Policy requires MFA" is what every vendor says. "Phishing-resistant MFA is enforced on 412 of 412 active human identities as of Tuesday, measured daily, with two break-glass accounts excluded under an exception expiring in March and covered by detection" is a different answer, and it is generated rather than written. Security review latency is deal latency; this is where the program pays for itself in a currency the CRO recognises.
+**Attestation generation.** Trust-center content and security questionnaire answers generated from measured control state. "Our Access Control Policy requires MFA" is what every vendor says. "Phishing-resistant MFA is enforced on 412 of 412 active human identities as of Tuesday, measured daily, with two break-glass accounts excluded under an exception expiring in March and covered by detection" is a different answer, and it is generated rather than written. Security review latency is deal latency; this is where the program pays for itself in a currency the CRO recognizes.
 
 **Policy generation, after the fact.** Only for controls that reached `status: operating`. Never before — a policy written for a control that does not exist is a documented expectation with nothing behind it, and in front of an auditor it is a liability rather than an asset. CI enforces this; guard G2 fails the build on a `policy_ref` set against a non-operating control.
 
@@ -214,7 +214,7 @@ Three commitments about how the numbers are handled:
 
 **Usefully precise beats precise.** A \$10M–\$500M range means the research was skipped. A \$748K–\$752K range is false precision. An estimate is usefully precise when more precision would not change the decision.
 
-The reporting output is a loss exceedance curve and a ROSI-ranked backlog, not a heat map. The organization is private and has no 8-K obligation of its own — but its enterprise customers do, and their contractual notification clocks run through the organization as a processor. That is where loss magnitude modelling attaches commercially: sizing notification exposure across the customer base, and sizing cyber insurance against something other than a broker's benchmark.
+The reporting output is a loss exceedance curve and a ROSI-ranked backlog, not a heat map. The organization is private and has no 8-K obligation of its own — but its enterprise customers do, and their contractual notification clocks run through the organization as a processor. That is where loss magnitude modeling attaches commercially: sizing notification exposure across the customer base, and sizing cyber insurance against something other than a broker's benchmark.
 
 ---
 
@@ -224,18 +224,18 @@ This is not a plan to start from a blank repository. Four working codebases alre
 
 | Asset | What transfers |
 |---|---|
-| **cui-control-plane** | The core pattern end to end — YAML control records with house IDs, collectors, DuckDB/dbt warehouse, assertion records, OSCAL O1–O5 emission with deterministic v5 UUIDs, variance derivation. All eight OSCAL artifacts validate against NIST's `oscal-cli` as a blocking CI gate. Includes the documented refusal set: unresolved inputs fail rather than pass, findings are never rounded up, nothing is annualised from a fortnight without being labelled extrapolation. |
+| **cui-control-plane** | The core pattern end to end — YAML control records with house IDs, collectors, DuckDB/dbt warehouse, assertion records, OSCAL O1–O5 emission with deterministic v5 UUIDs, variance derivation. All eight OSCAL artifacts validate against NIST's `oscal-cli` as a blocking CI gate. Includes the documented refusal set: unresolved inputs fail rather than pass, findings are never rounded up, nothing is annualised from a fortnight without being labeled extrapolation. |
 | **ksi-harness** | Collectors already written against AWS (Config, CloudTrail, IAM credential report, S3, security groups), GCP, GitHub (branch protection, Dependabot, workflows) and a generic IdP. Evidence bundling with RFC 3161 timestamping and an anchor log. Rego policy gates. 26 test files. |
 | **proofplane** | AI agent control assurance — 12 house-ID controls with 12 falsifiable probes mapped 1:1, including indirect injection, tenant isolation, tool allowlist, approval replay and egress destination. Already crosswalked to EU AI Act, ISO 42001, ISO 27002, ISO 27701 and NIST AI RMF; already carrying MITRE ATLAS and OWASP ASI threat mappings; already emitting OSCAL assessment-results; already shipping an MCP server. **This is the closest thing to a drop-in that exists for an ISO 42001-certified AI vendor.** |
 | **u-dont-grc-me** | Control-centric data model with a 10,000-trial FAIR Monte Carlo engine. |
 
-The SCF licensing problem is already solved in that work. SCF is CC BY-ND 4.0, and its terms state that the prohibition on derivative works *"includes utilizing Artificial Intelligence (AI) (or similar technologies) to leverage SCF content to generate policies, standards, procedures, metrics, risks, threats or other derivative content"* — a commercial licence is required to produce or share derivative SCF content. These repos carry identifiers only, resolve SCF at runtime from a local release, and never vendor the text. ADR-0003 preserves that decision here and CI enforces it with a grep, because an agent that ingests framework text and emits a policy is precisely the activity that clause names.
+The SCF licensing problem is already solved in that work. SCF is CC BY-ND 4.0, and its terms state that the prohibition on derivative works *"includes utilizing Artificial Intelligence (AI) (or similar technologies) to leverage SCF content to generate policies, standards, procedures, metrics, risks, threats or other derivative content"* — a commercial license is required to produce or share derivative SCF content. These repos carry identifiers only, resolve SCF at runtime from a local release, and never vendor the text. ADR-0003 preserves that decision here and CI enforces it with a grep, because an agent that ingests framework text and emits a policy is precisely the activity that clause names.
 
 ---
 
 ## Tooling and cost
 
-**Nothing new is purchased in the first 90 days.** Every component below is either already paid for, open source, or a seat licence.
+**Nothing new is purchased in the first 90 days.** Every component below is either already paid for, open source, or a seat license.
 
 | Layer | Choice | Note |
 |---|---|---|
@@ -248,7 +248,7 @@ The SCF licensing problem is already solved in that work. SCF is CC BY-ND 4.0, a
 | OSCAL | **metaschema-framework/oscal-cli** v3.2.0 | Not `usnistgov/oscal-cli`, whose newest tag is still v1.0.3 from February 2024 |
 | Crosswalk spine | SCF 2026.2, resolved at runtime | Never vendored. See ADR-0003 |
 | Agents | **Claude Agent SDK / Claude Code** with skills; an MCP server over the control graph, read-only | Scytale publishes open-source GRC Claude skills — vendor-neutral framework knowledge packs. Worth evaluating before writing our own. |
-| Code | **Cursor** | Seat licence |
+| Code | **Cursor** | Seat license |
 | CI | GitHub Actions, every third-party action SHA-pinned | See below |
 
 **On SHA-pinning.** In March 2026 an attacker force-pushed 76 of 77 tags in `aquasecurity/trivy-action` to malicious commits carrying an infostealer that harvested AWS, GCP and Azure credentials, SSH keys and kubeconfigs from CI runners. Tag immutability did not prevent it. An evidence pipeline is a higher-value target than a product build, because it holds read credentials to every system it collects from. The pipeline that measures `ctl.iam.cloud-platform.mfa` does not get to violate it — collection runs on OIDC, not on long-lived keys.

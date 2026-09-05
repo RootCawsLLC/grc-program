@@ -1,7 +1,7 @@
 # EXAMPLE ONLY — SYNTHETIC. DELETE THIS FILE once the real extraction exists.
 #
 # This shows the shape and, more importantly, shows the discipline: the auditor's words are
-# preserved verbatim in description and severity_as_stated; our judgement appears ONLY in
+# preserved verbatim in description and severity_as_stated; our judgment appears ONLY in
 # control_id, mapping_confidence, mapped_by and disposition. Never re-grade someone else's
 # finding and then present it as theirs.
 
@@ -19,7 +19,7 @@ findings:
     severity_as_stated: null
     description: >
       SYNTHETIC EXAMPLE. For 2 of 25 sampled privileged accounts, evidence of multi-factor
-      authentication enrolment could not be produced for the full period under examination.
+      authentication enrollment could not be produced for the full period under examination.
     auditor_test_procedure: >
       SYNTHETIC EXAMPLE. Inspected a sample of 25 privileged accounts and inquired of management.
     management_response: >

@@ -23,7 +23,7 @@ creep between the report and the sales conversation shows up.
 
 **Section 3 — Description of the System.** Long, and the one people skim. **This is the closest
 thing to an existing control inventory the company has.** It carries: the infrastructure and
-software inventory, the subservice organisations and whether they are carved out or inclusive
+software inventory, the subservice organizations and whether they are carved out or inclusive
 (compare this against the published subprocessor list — a mismatch is a real finding),
 complementary user entity controls (things the report pushes onto customers), and the narrative
 description of each control.
@@ -50,14 +50,14 @@ never cite it as assurance.
 
 ## Where findings hide
 
-Not everything adverse is labelled "exception":
+Not everything adverse is labeled "exception":
 
 - **"Deviation"** — sometimes used interchangeably, sometimes graded lower. Preserve the word used.
 - **Emphasis-of-matter or explanatory paragraphs** in Section 1 — rare and serious.
 - **Complementary User Entity Controls (CUECs)** — obligations pushed onto customers. Not findings
   about the organization, but each one is a commitment a customer may not know they have, and they belong in
   the record.
-- **Carved-out subservice organisations** — anything carved out is explicitly *not* covered by this
+- **Carved-out subservice organizations** — anything carved out is explicitly *not* covered by this
   opinion. Reconcile against the published subprocessor list.
 - **Scope narrowing between periods** — compare this report's boundary against last year's. A
   quietly removed system is a finding nobody wrote down.

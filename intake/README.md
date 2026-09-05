@@ -26,10 +26,10 @@ You read the report. Claude drafts. You check. It gets committed with your name 
 
 ## The rule that keeps the record honest
 
-**The auditor's words are preserved verbatim; our judgement is separately labelled.**
+**The auditor's words are preserved verbatim; our judgment is separately labeled.**
 
 `description`, `severity_as_stated`, `auditor_test_procedure` and `management_response` are
-transcribed, not summarised, not re-graded, not translated onto our severity scale. If the report
+transcribed, not summarized, not re-graded, not translated onto our severity scale. If the report
 stated no severity, `severity_as_stated` is `null` — not an inferred one.
 
 Our interpretation lives in exactly four fields: `control_id`, `mapping_confidence`, `mapped_by`

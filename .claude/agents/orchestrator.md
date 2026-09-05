@@ -99,7 +99,7 @@ stays false. Cloud writes and pages are acknowledge-only — they are not consen
 
 Return the plan, then either:
 
-- the specialist drafts (PR URL and/or Linear identifier), each number labelled, or
+- the specialist drafts (PR URL and/or Linear identifier), each number labeled, or
 - a presenter payload from `presentGate` when `gate` is set (Slack blocks, GitHub
   review comment, or Linear issue body), or
 - silence, when `control.failing` produced nothing new.

@@ -65,7 +65,7 @@ Everything here is buildable **today**, with no credentials from the organizatio
 decisions only the organization can make. That is the entry criterion: if a unit needs any of those three, it
 belongs in Phase 1 or later.
 
-**The organising principle: build machinery, not content.**
+**The organizing principle: build machinery, not content.**
 
 Machinery — OSCAL emitters, the MCP server, the simulation engine, the probe harness — is portable.
 It survives contact with whatever you actually find inside the organization, because it operates on whatever
@@ -238,12 +238,12 @@ I have a working 10,000-trial engine in RootCawsLLC/u-dont-grc-me. Read it befor
 scratch.
 ```
 
-**Done when:** the engine runs on a labelled fixture, refuses every real scenario with a clear
+**Done when:** the engine runs on a labeled fixture, refuses every real scenario with a clear
 message naming which parameters are uncalibrated, and ROSI ranks by loss reduction per dollar.
 
 ---
 
-## B22. Warehouse skeleton on labelled fixtures
+## B22. Warehouse skeleton on labeled fixtures
 
 **Blocked on:** nothing, **with one sharp caveat.**
 
@@ -375,7 +375,7 @@ Write the real client using the AWS SDK v3 and OIDC — no long-lived keys, beca
 measures ctl.iam.cloud-platform.mfa and does not get to violate it.
 
 It must:
-- enumerate every account in the production organisation, not a hardcoded list
+- enumerate every account in the production organization, not a hardcoded list
 - pull the IAM credential report per account and handle the async generation state properly
 - distinguish human-assumable roles from service roles by trust policy, NOT by name convention
 - surface the root account explicitly — it is in the population and it is expected to fail loudly
@@ -463,7 +463,7 @@ Three controls take it first:
 
 Hard boundary from the ADR: the organization supplies OBSERVED STATE ONLY. Never import a product risk score, a
 product compliance mapping, or a product severity into an assertion record. We use the product's
-collection, not the product's judgement — which is exactly what we would tell a customer.
+collection, not the product's judgment — which is exactly what we would tell a customer.
 
 Where product-graph overlaps a primary API collector, reconcile the two and report divergence. That
 reconciliation is the honesty mechanism for the circularity the auditor will ask about.
@@ -563,7 +563,7 @@ See docs/adr/0004-agents-do-not-evaluate-efficacy.md.
 
 **Blocked on:** the HRIS roster (B5) and a decision on the training platform.
 **Why this exists:** it was named in the original scope and the roadmap had a control record and a
-collector for it, and nothing that makes the programme actually run. That was a gap.
+collector for it, and nothing that makes the program actually run. That was a gap.
 
 The control record `ctl.people.workforce.security-training` already carries the important design
 decision — the population comes from **HRIS, not from the training platform's user list**. That
@@ -583,14 +583,14 @@ against.
 ```
 Read controls/ctl.people.workforce.security-training.yaml and src/collectors/idp.mjs.
 
-Build the training programme controls. Split by layer — these are NOT one control:
+Build the training program controls. Split by layer — these are NOT one control:
 
   ctl.people.workforce.security-training     baseline annual + 30-day new-hire, all workers
   ctl.people.engineering.secure-dev-training  engineers only, separate cadence and content
   ctl.people.ai-access.ai-training            anyone with production model or agent access
   ctl.people.workforce.phishing-simulation    a DIFFERENT control: measures susceptibility,
                                               not completion, and its population is the same
-                                              roster but its passing condition is behavioural
+                                              roster but its passing condition is behavioral
 
 The last one is the one people collapse into the others and should not. Completion is a
 Communication of Expectations control. Simulation susceptibility is a Susceptibility MEASUREMENT
@@ -726,7 +726,7 @@ Sections, all generated from data, none hand-written:
 Output markdown for review, then docx.
 
 The point: a hand-assembled review pack is three days of transcription that produces the same
-document. Generated, it is an hour of judgement about what the data means — which is the part that
+document. Generated, it is an hour of judgment about what the data means — which is the part that
 actually needs a human.
 ```
 
@@ -763,7 +763,7 @@ Hard requirements:
   can trace any sentence back to a measured thing.
 - If a policy sentence cannot be traced to a field on a control record, do not write it. Cut it.
   Aspiration in a policy document is what auditors find.
-- Emit markdown. Conversion to whatever the trust centre wants is a separate, later problem.
+- Emit markdown. Conversion to whatever the trust center wants is a separate, later problem.
 
 Then write the attestation tracking: who has acknowledged which version, sourced from HRIS roster
 as the population — same inversion as B14, for the same reason.
@@ -850,7 +850,7 @@ the organization directly. What does apply, and what actually drives the work:
 3. **GDPR Article 33.** 72 hours to the supervisory authority where the organization is a controller, and
    without undue delay to the controller where the organization is a processor — which is the usual case.
 4. **Cyber insurance sizing**, which currently rests on a broker benchmark rather than on the organization's
-   own loss modelling.
+   own loss modeling.
 
 ```
 Read scenarios/ and src/faircam.mjs.
@@ -860,17 +860,17 @@ Build two things.
 FIRST, the notification obligation register: extract from executed customer contracts the
 notification trigger, the clock length, the required content, and the recipient. Structure it so
 an incident commander can answer "who do we owe what, by when" from a query rather than from a
-lawyer reading contracts at 2am. This is the highest-value half and it needs no risk modelling
+lawyer reading contracts at 2am. This is the highest-value half and it needs no risk modeling
 at all.
 
-SECOND, loss magnitude modelling per scenario, decomposed into cost modules — investigation and
+SECOND, loss magnitude modeling per scenario, decomposed into cost modules — investigation and
 response, customer notification, credit monitoring, regulatory fines and judgements, legal
-defence, customer churn and contractual penalties, replacement technology, business interruption,
+defense, customer churn and contractual penalties, replacement technology, business interruption,
 public relations, and post-breach security improvement.
 
 Requirements:
 - Costs derive from the organization's own contracts and headcount where possible; industry benchmarks only
-  where nothing internal exists, and LABELLED as such with the source.
+  where nothing internal exists, and LABELED as such with the source.
 - Contractual penalty and churn modules come from the actual customer contract set, not from a
   benchmark. This is the module where a generic figure is most wrong and most consequential.
 - Every parameter carries derivation_level and confidence_tier, same discipline as scenarios/.
@@ -883,9 +883,9 @@ model itself.
 **Done when:** the notification register answers "who do we owe what, by when" as a query, and at
 least one scenario carries a magnitude estimate whose parameters trace to the organization's own contracts.
 
-**The incident-response runbook is earlier and cheaper than this.** It needs no modelling and
+**The incident-response runbook is earlier and cheaper than this.** It needs no modeling and
 should exist well before Phase 4 — if there is no current IR plan naming who declares an incident
-and who authorises customer notification, that is a week-one finding, not a Phase 4 build.
+and who authorizes customer notification, that is a week-one finding, not a Phase 4 build.
 
 ---
 

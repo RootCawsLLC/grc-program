@@ -1,12 +1,12 @@
-# IS Programme Gap Assessment
+# IS Program Gap Assessment
 
 State of the tooling portfolio across four repositories. 27 August 2026.
 
-> "An installer for a GRC engineering programme. Clone the repo, answer the
+> "An installer for a GRC engineering program. Clone the repo, answer the
 > questions, get a working information security program."
 
 The vision is a product family that lets a startup install a complete, working IS
-programme from a single repo. The customer answers questions about their environment;
+program from a single repo. The customer answers questions about their environment;
 the tool generates a tailored control inventory, evidence collectors, compliance
 artifacts, policies, and a CI pipeline. The success metric is **human-touch minutes
 per control per quarter**, falling by an order of magnitude.
@@ -31,7 +31,7 @@ The vision lives in four documents, each covering a different layer:
 
 | Document | What it covers |
 |---|---|
-| `grc-program/PROPOSAL.md` | The 30/60/90 plan: complete end-state for a one-person GRC programme at a specific organization |
+| `grc-program/PROPOSAL.md` | The 30/60/90 plan: complete end-state for a one-person GRC program at a specific organization |
 | `grc-wizard/docs/roadmap.md` | The installer roadmap: 13 items across four phases (now/next/then/later) |
 | `grc-program/BUILD-ORDER.md` | Implementation manual: 22 build units across five phases |
 | `grc-program/docs/OPERATING-MODEL.md` | The operating cadence: daily/weekly/monthly/quarterly/annual rhythms |
@@ -84,7 +84,7 @@ AWS, need SOC 2 for an acquisition.
 282 tests, 0 failures.
 
 The organizational deployment: control inventory, evidence pipeline, risk layer, OSCAL,
-FAIR. Built for a specific certified SaaS vendor's one-person GRC programme.
+FAIR. Built for a specific certified SaaS vendor's one-person GRC program.
 
 | Phase | Status | Units | Detail |
 |---|---|---|---|
@@ -92,7 +92,7 @@ FAIR. Built for a specific certified SaaS vendor's one-person GRC programme.
 | Phase 1 — days 1–30 | Blocked | B1–B4 | Warehouse with real data, live AWS collector, audit intake for real reports. **Blocked on:** read access to AWS, IdP, GitHub credentials; real audit reports; Statement of Applicability |
 | Phase 2 — days 31–60 | Blocked | B5–B9, B14 | IdP/GitHub/HRIS collectors, self-dogfooding, variance layer, FAIR calibration, AI probes, security training. **Blocked on:** credentials, product agreement, calibration workshop |
 | Phase 3 — days 61–90 | Partial | B10–B15, B17 | B10/B11 (OSCAL + MCP) already landed via Phase 0. Attestation, management review, policy generation, third-party risk remain. **Blocked on:** controls reaching `status: operating` |
-| Phase 4 — beyond 90 | Not started | B16 | Incident response and loss magnitude modelling. **Blocked on:** calibrated scenarios, executed contracts |
+| Phase 4 — beyond 90 | Not started | B16 | Incident response and loss magnitude modeling. **Blocked on:** calibrated scenarios, executed contracts |
 
 **What Phase 0 delivered:** 9 seed controls, control health classification (12
 deficiency codes), 4-direction gap assessment, audit finding intake with
@@ -129,10 +129,10 @@ contract and a CUI environment.
 
 ## Consolidated gap matrix
 
-Capabilities a complete IS programme needs, mapped to what exists and what does not —
+Capabilities a complete IS program needs, mapped to what exists and what does not —
 across the whole family.
 
-| IS Programme Capability | State | Where it lives | Gap |
+| IS Program Capability | State | Where it lives | Gap |
 |---|---|---|---|
 | Control inventory | **Done** | grc-wizard (44), grc-program (9), cui-control-plane (6) | — |
 | Framework crosswalk | **Done** | SOC 2 + ISO 27001 (wizard), CMMC/DFARS/889/SCRM/ITAR (ccp) | — |
@@ -160,7 +160,7 @@ across the whole family.
 | Product security (AI/ML, PSIRT) | **Done** | grc-wizard: 8 controls across AIS, PSR, PAZ, SSO domains | Evidence is periodic review (bucket B), not automated |
 | Vendor / third-party risk | Partial | grc-wizard: 2 vendor controls; grc-program: B17 designed | No automated third-party risk platform integration (ProcessUnity deferred) |
 | Security training management | Partial | grc-wizard: training control exists, manual evidence | No training platform collector; B14 blocked on HRIS roster + platform decision |
-| Incident response + loss modelling | Partial | grc-wizard: IR planning + tracking controls; grc-program: B16 designed | Loss magnitude modelling blocked on calibrated scenarios |
+| Incident response + loss modeling | Partial | grc-wizard: IR planning + tracking controls; grc-program: B16 designed | Loss magnitude modeling blocked on calibrated scenarios |
 | Operating cadence automation | Partial | grc-program: OPERATING-MODEL.md defines daily/weekly/monthly/quarterly/annual | Not implemented — the cadence is documented but the routing, alerting, and reporting machinery does not exist yet |
 | Attestation surface | **Gap** | grc-program: B12 designed | Questionnaire answers from measured state not built |
 | Management review pack | **Gap** | grc-program: B13 designed | ISO 27001/42001 Cl. 9.3 generator not built |
@@ -212,13 +212,13 @@ OPERATING-MODEL.md describes daily/weekly/monthly/quarterly/annual rhythms with 
 time budgets (0 min daily, 90 min weekly, half-day monthly, 3 days quarterly). But the
 routing (new failures to owning team's channel), the denomination drift alarms, the
 repeat-offender escalation, and the management review pack generation are all designs,
-not running code. The gap between "what the programme does" and "what the code does" is
+not running code. The gap between "what the program does" and "what the code does" is
 widest here.
 
 ### Consider whether grc-wizard should become the single entry point
 
 Today the repos serve different audiences (startup vs. specific org vs. FedRAMP vs.
-DoD). But the installer metaphor — answer questions, get a programme — could unify them.
+DoD). But the installer metaphor — answer questions, get a program — could unify them.
 A profile answer like `framework: [soc2, iso27001, cmmc]` could route to different
 control catalogs and collector sets from one interview. The crosswalk-edge architecture
 was designed for exactly this: "adding ISO 27001 later is adding a crosswalk entry to

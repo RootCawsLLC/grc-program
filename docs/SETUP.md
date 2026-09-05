@@ -163,7 +163,7 @@ it. Worth knowing before you report a number to anyone.
 
 ## Branch name
 
-`gh repo create` may have set your default branch to `master`. If your org standardises on `main`:
+`gh repo create` may have set your default branch to `master`. If your org standardizes on `main`:
 
 ```
 git branch -m master main

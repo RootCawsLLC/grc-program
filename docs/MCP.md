@@ -24,7 +24,7 @@ control, and a model that can write to `controls/` has removed the only human st
 2. `assertReadOnly()` **refuses to start the server** if any registered tool declares anything else.
 3. A test exercises every tool and then asserts `git status --porcelain` is unchanged.
 
-The third is the one that would actually catch a regression, because it tests behaviour rather than
+The third is the one that would actually catch a regression, because it tests behavior rather than
 a label. The first two are only as good as the label somebody typed.
 
 ## The tools
@@ -84,7 +84,7 @@ collection that first saw it), and `remediation_completed_at` (the collection th
 
 **`remediation_started_at` is not.** It comes from the ticketing system and is not in an assertion
 record, so it is returned as `null` and the answer says why. Without it the middle segment collapses
-and a prioritisation failure becomes indistinguishable from an implementation failure — the exact
+and a prioritization failure becomes indistinguishable from an implementation failure — the exact
 misreading the four-timestamp decomposition exists to prevent. The full join lives in
 `models/variance/variance_events.sql`.
 

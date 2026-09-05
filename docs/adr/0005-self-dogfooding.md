@@ -30,13 +30,13 @@ Three controls take it first, chosen because the product's strength maps directl
 
 **Explicit boundary, per ADR-0004:** the organization supplies observed state. Efficacy conclusions and
 framework mapping decisions stay in this repo, under human authorship. We use the product's
-collection, not the product's judgement — and we would tell a customer to do the same.
+collection, not the product's judgment — and we would tell a customer to do the same.
 
 ## Consequences
 
 **Good.** Collection capability that already exists and costs nothing incremental. A reference
 story with unusual weight — "our SOC 2 evidence is collected by our own product" is a claim
-almost no security vendor can make, and it converts the GRC function from a cost centre into
+almost no security vendor can make, and it converts the GRC function from a cost center into
 product proof. It also makes the GRC lead design partner zero: every gap found while
 instrumenting the organization's own controls is a real customer-workflow gap found before a customer finds it.
 

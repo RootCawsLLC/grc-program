@@ -36,7 +36,7 @@ cost:
   capex: 0
   opex_annual: 0
   basis: >
-    PLACEHOLDER — populate from the actual IdP licence line in the FY26 security budget during
+    PLACEHOLDER — populate from the actual IdP license line in the FY26 security budget during
     discovery. ROSI cannot be computed against a zero. This field is deliberately not guessed.
 
 notes: >

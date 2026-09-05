@@ -1,6 +1,6 @@
 {
   "_stamp": "NOT REAL EVIDENCE",
-  "_comment": "Collection cycle 1 of 3. Establishes the baseline: 6 principals in the population, 1 failing. Account 999988887777 is outside the production organisation and 1111:svc-batch has neither a console password nor an active key, so both sit outside the population and prove the WHERE clause in models/controls/ctl_iam_cloud_platform_mfa.sql is doing work. Every identifier, account number and timestamp in this file is invented. The AWS account IDs are RFC-style placeholders and belong to nobody.",
+  "_comment": "Collection cycle 1 of 3. Establishes the baseline: 6 principals in the population, 1 failing. Account 999988887777 is outside the production organization and 1111:svc-batch has neither a console password nor an active key, so both sit outside the population and prove the WHERE clause in models/controls/ctl_iam_cloud_platform_mfa.sql is doing work. Every identifier, account number and timestamp in this file is invented. The AWS account IDs are RFC-style placeholders and belong to nobody.",
   "as_of": "2026-06-15T00:00:00Z",
   "tables": {
     "landing_aws_org_accounts": [
