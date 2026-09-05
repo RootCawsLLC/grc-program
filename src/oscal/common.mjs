@@ -59,7 +59,7 @@ export const resource = (kind, title, filename) => ({
 
 /**
  * Crosswalk links use a URN, not a fragment, for the same reason. A crosswalk target is an
- * external identifier — not a document in this package — and modelling it as `#soc2:CC6.1` invites
+ * external identifier — not a document in this package — and modeling it as `#soc2:CC6.1` invites
  * the validator to resolve a fragment that was never going to exist.
  *
  * IDENTIFIERS ONLY. No framework text travels through here or anywhere else in this package.

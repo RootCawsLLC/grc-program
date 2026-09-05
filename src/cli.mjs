@@ -58,7 +58,7 @@ const commands = {
     }
     if (summary.unverified_mapping_open) {
       console.log(`\n  ${summary.unverified_mapping_open} open finding(s) carry an UNVERIFIED mapping — confidence below "high", or none recorded.`);
-      console.log('  Mapping is a judgement, not a lookup. An unverified one misdirects the remediation');
+      console.log('  Mapping is a judgment, not a lookup. An unverified one misdirects the remediation');
       console.log('  and leaves the control that should have been named reading clean.');
     }
     if (problems.length) {
@@ -106,7 +106,7 @@ const commands = {
       const set = r.gaps.filter((g) => g.direction === dir);
       if (!set.length || (only && only !== dir)) continue;
       console.log(`\n── ${dir.toUpperCase()} ──`);
-      // Coverage is noisy by nature; summarise unless asked for it specifically.
+      // Coverage is noisy by nature; summarize unless asked for it specifically.
       const show = dir === 'coverage' && !only ? set.slice(0, 5) : set;
       for (const g of show) console.log(`  ${g.gap_id}  ${g.statement}`);
       if (show.length < set.length) console.log(`  … and ${set.length - show.length} more. Run \`npm run gap -- --direction coverage\`.`);

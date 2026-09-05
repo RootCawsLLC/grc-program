@@ -303,7 +303,7 @@ export const TOOLS = [
       'it) and remediation_completed (the collection that first did not). ' +
       'The fourth, remediation_started, comes from the TICKETING SYSTEM and is not in an assertion ' +
       'record, so it is reported as null here rather than guessed. Without it the middle segment ' +
-      'collapses and a prioritisation failure is indistinguishable from an implementation failure. ' +
+      'collapses and a prioritization failure is indistinguishable from an implementation failure. ' +
       'An episode still open has no duration and is reported as open rather than measured to now, ' +
       'which would grow by itself on every call.',
     inputSchema: {
@@ -388,7 +388,7 @@ export const TOOLS = [
       'the inventory is the sharpest available signal that the control model has a hole, because ' +
       'an auditor found something the model has no place to put. ' +
       'Read `unverified_mapping_open` alongside it: those findings ARE mapped, but at a confidence ' +
-      'below "high" or with none recorded, so the attribution is somebody\'s judgement and has not ' +
+      'below "high" or with none recorded, so the attribution is somebody\'s judgment and has not ' +
       'been confirmed. A wrong mapping misdirects the remediation AND leaves the control that ' +
       'should have been named reading clean, so these are not a softer version of unmapped — they ' +
       'are the ones that hide. ' +

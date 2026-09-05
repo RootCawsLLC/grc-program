@@ -28,12 +28,12 @@ export const DEFAULT_FIXTURE_PACK_DIR = 'out-synthetic/packs';
 const BLOCKED_SEGMENTS = Object.freeze(['controls', 'policies', 'exceptions']);
 const SHARED_NAMES = Object.freeze(['state.json', 'shared.json', 'shared-state.json', 'state.md']);
 
-function normalised(path) {
+function normalized(path) {
   return String(path).replace(/\\/g, '/');
 }
 
 function sameDir(a, b) {
-  return normalised(a).replace(/\/+$/, '') === normalised(b).replace(/\/+$/, '');
+  return normalized(a).replace(/\/+$/, '') === normalized(b).replace(/\/+$/, '');
 }
 
 export function defaultPackDir(fixture) {
@@ -48,7 +48,7 @@ export function assertPackDir(dir) {
   if (!dir || typeof dir !== 'string') {
     throw new Error('materializePacks needs a directory. Packs are per-task files, not a shared state file.');
   }
-  const parts = normalised(dir).split('/').filter(Boolean);
+  const parts = normalized(dir).split('/').filter(Boolean);
   for (const seg of BLOCKED_SEGMENTS) {
     if (parts.includes(seg)) {
       throw new Error(

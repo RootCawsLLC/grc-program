@@ -58,7 +58,7 @@ export function reconcile({ findings, controls }) {
     seen.add(f.finding_id);
 
     // F2 and F3 run over EVERY mapping, primary and secondary. A dangling secondary is exactly as
-    // broken as a dangling primary, and an unattributed one is exactly as much of a judgement —
+    // broken as a dangling primary, and an unattributed one is exactly as much of a judgment —
     // checking only the primary would let a whole class of mapping in unexamined.
     for (const m of mappingsOf(f)) {
       const which = m.primary ? 'primary mapping' : 'also_implicates';
@@ -66,7 +66,7 @@ export function reconcile({ findings, controls }) {
         problems.push({ severity: 'error', ...at, rule: 'F2-dangling-control', message: `${which} names ${m.control_id}, which is not in the inventory` });
       }
       if (!m.mapped_by) {
-        problems.push({ severity: 'warning', ...at, rule: 'F3-unattributed-mapping', message: `${which} to ${m.control_id} has no mapped_by. Mapping is a judgement and carries a name.` });
+        problems.push({ severity: 'warning', ...at, rule: 'F3-unattributed-mapping', message: `${which} to ${m.control_id} has no mapped_by. Mapping is a judgment and carries a name.` });
       }
     }
 
@@ -97,7 +97,7 @@ export function reconcile({ findings, controls }) {
       open: open.length,
       unmapped_open: open.filter((f) => !f.control_id).length,
       // Same shape as unmapped_open, and for the same reason: a count in the summary is what makes
-      // a soft signal visible. A mapping is a judgement with a name on it, so anything not recorded
+      // a soft signal visible. A mapping is a judgment with a name on it, so anything not recorded
       // as `high` is unverified — including `null`, which is weaker than `low` because nobody even
       // said how sure they were.
       unverified_mapping_open: open.filter((f) => mappingsOf(f).some(needsVerification)).length,

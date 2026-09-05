@@ -15,7 +15,7 @@
  */
 
 /**
- * Normalises a finding's mappings into one list, primary first.
+ * Normalizes a finding's mappings into one list, primary first.
  *
  * Returns `[]` for an unmapped finding. That is not the same as "no mappings to check" — an
  * unmapped finding is its own, sharper gap, and callers handle it before reaching here.
@@ -54,8 +54,8 @@ export const touches = (finding, controlId) => controlsTouched(finding).includes
  * A mapping needs verifying unless somebody recorded that they were sure.
  *
  * `null` counts as needing verification and is WEAKER than an explicit `low`: nobody even said how
- * sure they were. Treating absence as acceptable is how an unlabelled judgement acquires the
- * authority of a checked one — Guardrail 3, applied to a judgement rather than a number.
+ * sure they were. Treating absence as acceptable is how an unlabelled judgment acquires the
+ * authority of a checked one — Guardrail 3, applied to a judgment rather than a number.
  */
 export const needsVerification = (mapping) => mapping.mapping_confidence !== 'high';
 

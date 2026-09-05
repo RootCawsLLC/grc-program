@@ -3,7 +3,7 @@
  *
  * Deliberately a CLASSIFICATION, not a score.
  *
- * The temptation is to rate each control 1-5 and average it into a programme number that goes on a
+ * The temptation is to rate each control 1-5 and average it into a program number that goes on a
  * slide. Resist it. Ordinal values are not ratio values — a 5 is not five times a 1 — so averaging
  * them produces a number that cannot validly be used for anything, and the moment it exists someone
  * will divide by it. A maturity score is also not a proxy for risk reduction: most framework
@@ -19,7 +19,7 @@ const CADENCE_DAYS = {
   continuous: 1, daily: 1, weekly: 7, monthly: 31, quarterly: 92, annual: 366,
 };
 
-/** Deficiency catalogue. Each carries the fix, because a finding without a fix is a complaint. */
+/** Deficiency catalog. Each carries the fix, because a finding without a fix is a complaint. */
 export const DEFICIENCIES = {
   'H1-no-evidence':        { fix: 'write the dbt model; until then this control is a claim, not a control' },
   'H2-stale':              { fix: 'collection is behind its declared cadence — fix the collector or lower the declared cadence to the truth' },
@@ -29,7 +29,7 @@ export const DEFICIENCIES = {
   'H6-owner-is-a-person':  { fix: 'reassign to a team; person-owned controls die when the person changes role' },
   'H7-unpriced':           { fix: 'no scenario joins to this control, so it cannot be ranked or defended against "why this and not that"' },
   'H8-uncosted':           { fix: 'cost.opex_annual is unpopulated, so ROSI is undefined for this control' },
-  'H9-manual':             { fix: 'legitimate, but it consumes the scarce resource in a one-person programme — count these deliberately' },
+  'H9-manual':             { fix: 'legitimate, but it consumes the scarce resource in a one-person program — count these deliberately' },
   'H10-policy-orphan':     { fix: 'operating with no generated policy; generate it from the control record' },
   'H11-open-finding':      { fix: 'an assurance activity raised a finding against this control and it is still open' },
   'H12-planned-indefinite':{ fix: 'planned with no evidence and no date; either commit to building it or retire it from the inventory' },
@@ -71,7 +71,7 @@ export function assessControl({ control, assertions = [], findings = [], asOf = 
   if (control.collection?.variance_started_at_quality === 'equals-detected') d.push('H5-variance-blind');
 
   // --- ownership ----------------------------------------------------------------------
-  // A team name is lowercase-hyphenated by convention here. Anything with an @, a capitalised
+  // A team name is lowercase-hyphenated by convention here. Anything with an @, a capitalized
   // given name, or a space is very likely a person.
   const owner = control.owner ?? '';
   if (/@/.test(owner) || /\s/.test(owner) || /[A-Z]/.test(owner)) d.push('H6-owner-is-a-person');
@@ -129,7 +129,7 @@ export function assessAll({ controls, assertions = [], findings = [], asOf }) {
     // Stated explicitly so nobody derives one anyway.
     scoring_note:
       'No aggregate score is produced. Deficiency counts and band membership are the output. ' +
-      'Averaging ordinal control ratings into a programme number yields a value that cannot ' +
+      'Averaging ordinal control ratings into a program number yields a value that cannot ' +
       'validly enter arithmetic, and it will be divided by the moment it exists.',
     controls: results,
   };

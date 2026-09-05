@@ -36,7 +36,7 @@ const IDENTIFIER = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,6})?Z$/;
 
 /**
- * Identifiers cannot be parameterised in SQL, so they are allowlisted instead. Every caller passes
+ * Identifiers cannot be parameterized in SQL, so they are allowlisted instead. Every caller passes
  * a name that came from tables.mjs or from a .sql filename; this refuses anything else rather than
  * trusting that to stay true.
  */

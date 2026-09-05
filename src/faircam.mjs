@@ -102,7 +102,7 @@ export function decomposeVariance(event) {
     total_duration_days: days(started, remDone),
     segments: [
       { span: 'started_to_detected',   days: days(started, detected),  faircam_function: 'control-monitoring',  fix: 'monitoring cadence or coverage' },
-      { span: 'detected_to_triaged',   days: days(detected, remStart), faircam_function: 'treatment-selection', fix: 'prioritisation or ownership' },
+      { span: 'detected_to_triaged',   days: days(detected, remStart), faircam_function: 'treatment-selection', fix: 'prioritization or ownership' },
       { span: 'triaged_to_remediated', days: days(remStart, remDone),  faircam_function: 'implementation',      fix: 'capacity or tooling' },
     ],
   };

@@ -3,7 +3,7 @@
  *
  * The rules are not invented here. They are written down in
  * `.claude/agents/exception-triage.md` and implemented deterministically, because every one of them
- * is a mechanical decision that does not need judgement:
+ * is a mechanical decision that does not need judgment:
  *
  *   - denominator movement outranks failure count, and HOLDS the routing
  *   - deduplicate by SUBJECT, not by finding — one item per subject, updated in place

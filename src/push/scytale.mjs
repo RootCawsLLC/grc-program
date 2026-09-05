@@ -16,7 +16,7 @@
  *
  * That posture is also the lock-in answer. Everything of value — control definitions, assertion
  * history, variance timestamps, OSCAL packages — lives here. Replacing Scytale becomes a
- * rewrite of this one file rather than a programme.
+ * rewrite of this one file rather than a program.
  *
  * TODO-ON-DAY-1 (tracked, not hidden): the field names below are a PLACEHOLDER contract. The real
  * contract is displayed in the Scytale UI when a Custom Integration is created. Run

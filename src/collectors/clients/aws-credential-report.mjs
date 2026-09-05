@@ -90,11 +90,11 @@ function parseTimestamp(raw) {
   const v = String(raw ?? '').trim();
   if (NULL_SENTINELS.has(v.toLowerCase())) return null;
   // AWS emits +00:00; landing / DuckDB want Z.
-  const normalised = v.replace(/\+00:00$/, 'Z').replace(/Z$/, 'Z');
-  if (!/^\d{4}-\d{2}-\d{2}T/.test(normalised)) {
+  const normalized = v.replace(/\+00:00$/, 'Z').replace(/Z$/, 'Z');
+  if (!/^\d{4}-\d{2}-\d{2}T/.test(normalized)) {
     throw new Error(`credential report: not a timestamp: ${JSON.stringify(raw)}`);
   }
-  return normalised.endsWith('Z') ? normalised : `${normalised}Z`;
+  return normalized.endsWith('Z') ? normalized : `${normalized}Z`;
 }
 
 /**

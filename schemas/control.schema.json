@@ -144,7 +144,7 @@
             "interpolated",
             "equals-detected"
           ],
-          "description": "equals-detected systematically understates Variance Duration. Reliability derived from it is an UPPER BOUND and must be labelled as such."
+          "description": "equals-detected systematically understates Variance Duration. Reliability derived from it is an UPPER BOUND and must be labeled as such."
         }
       }
     },
